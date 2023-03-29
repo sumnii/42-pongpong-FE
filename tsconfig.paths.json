@@ -2,7 +2,10 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@main/*": ["pages/main/components/*"]
+      "@main/*": ["pages/main/*"],
+      "@profile/*": ["components/profile/*"],
+      "@friendList/*": ["components/friendList/*"],
+      "@dmList/*": ["components/dmList/*"]
     }
   }
 }
