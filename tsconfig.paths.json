@@ -3,6 +3,8 @@
     "baseUrl": "./src",
     "paths": {
       "@main/*": ["pages/main/*"],
+      "@chatList/*": ["pages/chatList/*"],
+      "@gameList/*": ["pages/gameList/*"],
       "@profile/*": ["components/profile/*"],
       "@friendList/*": ["components/friendList/*"],
       "@dmList/*": ["components/dmList/*"]
