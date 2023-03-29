@@ -9,21 +9,21 @@ export const AppLayout = styled.div`
 
 export const LeftSideLayout = styled.div`
   height: 100%;
-  width: 300px;
+  width: 20%;
 
   background-color: green;
 `;
 
 export const CenterLayout = styled.div`
   height: 100%;
-  width: 100%;
+  width: 60%;
 
   background-color: blue;
 `;
 
 export const RightSideLayout = styled.div`
   height: 100%;
-  width: 300px;
+  width: 20%;
 
   display: flex;
   flex-direction: column;
