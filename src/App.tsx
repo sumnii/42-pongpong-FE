@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "@main/Main";
 import ChatList from "@chatList/ChatList";
 import GameList from "@gameList/GameList";
+import ChatRoom from "@chatRoom/ChatRoom";
 import Profile from "@leftSide/profile/Profile";
 import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
@@ -19,21 +20,24 @@ function App() {
       <S.CenterLayout>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Main setPage={setInPageOf} />}></Route>
+            <Route path="/" element={<Main setPage={setInPageOf} />} />
             <Route
-              path="/list/chat"
+              path="/chat/list"
               element={<ChatList setPage={setInPageOf} />}
-            ></Route>
+            />
             <Route
-              path="/list/game"
+              path="/game/list"
               element={<GameList setPage={setInPageOf} />}
-            ></Route>
+            />
+            <Route
+              path="/chat/:roomId"
+              element={<ChatRoom setPage={setInPageOf} />}
+            />
             {/* TODO: 경로 일치하지 않으면 404 NON FOUND 페이지 */}
           </Routes>
         </BrowserRouter>
       </S.CenterLayout>
       <S.RightSideLayout>
-        {/* page에 따라 유저+유저리스트 / 참여자 리스트로 나누기 */}
         <RightSide inPageOf={inPageOf} />
       </S.RightSideLayout>
     </S.AppLayout>

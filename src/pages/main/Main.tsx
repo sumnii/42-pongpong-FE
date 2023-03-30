@@ -5,10 +5,11 @@ export default function Main(props: {
   setPage: (page: "main" | "chat" | "game") => void;
 }) {
   const navigate = useNavigate();
+
   return (
     <>
-      <button onClick={() => navigate("/list/chat")}>채팅방</button>
-      <button onClick={() => navigate("/list/game")}>게임방</button>
+      <button onClick={() => navigate("/chat/list")}>채팅방</button>
+      <button onClick={() => navigate("/game/list")}>게임방</button>
       <h1>welcome to pongpong !</h1>
     </>
   );

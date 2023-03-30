@@ -5,6 +5,7 @@
       "@main/*": ["pages/main/*"],
       "@chatList/*": ["pages/chatList/*"],
       "@gameList/*": ["pages/gameList/*"],
+      "@chatRoom/*": ["pages/chatRoom/*"],
       "@leftSide/*": ["components/leftSide/*"],
       "@rightSide/*": ["components/rightSide/*"]
     }
