@@ -7,6 +7,7 @@ module.exports = {
       "@chatList": path.resolve(__dirname, "src/pages/chatList"),
       "@gameList": path.resolve(__dirname, "src/pages/gameList"),
       "@chatRoom": path.resolve(__dirname, "src/pages/chatRoom"),
+      "@gameRoom": path.resolve(__dirname, "src/pages/gameRoom"),
       "@leftSide": path.resolve(__dirname, "src/components/leftSide"),
       "@rightSide": path.resolve(__dirname, "src/components/rightSide"),
     },

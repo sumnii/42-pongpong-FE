@@ -4,6 +4,7 @@ import Main from "@main/Main";
 import ChatList from "@chatList/ChatList";
 import GameList from "@gameList/GameList";
 import ChatRoom from "@chatRoom/ChatRoom";
+import GameRoom from "@gameRoom/GameRoom";
 import Profile from "@leftSide/profile/Profile";
 import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
@@ -32,6 +33,10 @@ function App() {
             <Route
               path="/chat/:roomId"
               element={<ChatRoom setPage={setInPageOf} />}
+            />
+            <Route
+              path="/game/:gameId"
+              element={<GameRoom setPage={setInPageOf} />}
             />
             {/* TODO: 경로 일치하지 않으면 404 NON FOUND 페이지 */}
           </Routes>
