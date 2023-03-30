@@ -1,14 +1,16 @@
 import styled from "@emotion/styled";
 
-export const freindListLayout = styled.div`
+export const userListLayout = styled.div`
   display: flex;
   flex-direction: column;
-  height: 50%;
+  flex: 1 0 auto;
 
   padding: 10px;
+
+  background-color: purple;
 `;
 
-export const friendWrapper = styled.div`
+export const userWrapper = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;

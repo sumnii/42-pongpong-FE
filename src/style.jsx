@@ -27,6 +27,4 @@ export const RightSideLayout = styled.div`
 
   display: flex;
   flex-direction: column;
-
-  background-color: purple;
 `;

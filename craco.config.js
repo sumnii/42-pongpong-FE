@@ -6,9 +6,10 @@ module.exports = {
       "@main": path.resolve(__dirname, "src/pages/main"),
       "@chatList": path.resolve(__dirname, "src/pages/chatList"),
       "@gameList": path.resolve(__dirname, "src/pages/gameList"),
-      "@profile": path.resolve(__dirname, "src/components/profile"),
-      "@friendList": path.resolve(__dirname, "src/components/friendList"),
-      "@dmList": path.resolve(__dirname, "src/components/dmList"),
+      "@chatRoom": path.resolve(__dirname, "src/pages/chatRoom"),
+      "@gameRoom": path.resolve(__dirname, "src/pages/gameRoom"),
+      "@leftSide": path.resolve(__dirname, "src/components/leftSide"),
+      "@rightSide": path.resolve(__dirname, "src/components/rightSide"),
     },
   },
 };
