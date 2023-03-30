@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./style";
 
-export default function Profile() {
+export default function Profile(props: { user: number }) {
   return (
     <S.profileLayout>
       <h3>프로필</h3>
@@ -27,6 +27,7 @@ export default function Profile() {
         <S.player>아무개</S.player>
       </S.players>
       <S.score>3 : 3</S.score>
+      <div>{props.user === 0 ? "내 프로필" : "친구 프로필"}</div>
     </S.profileLayout>
   );
 }

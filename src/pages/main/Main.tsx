@@ -1,7 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Main() {
+export default function Main(props: {
+  setPage: (page: "main" | "chat" | "game") => void;
+}) {
   const navigate = useNavigate();
   return (
     <>
