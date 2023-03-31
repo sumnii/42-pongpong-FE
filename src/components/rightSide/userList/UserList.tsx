@@ -3,6 +3,7 @@ import * as S from "./style"
 
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "player" | "observer"
+  setProfileUser: (userId: number) => void
 }) {
   const tmpUser = [
     {
@@ -24,7 +25,7 @@ export default function UserList(props: {
         {/* 유저 클릭 시 프로필 렌더링 */}
         {tmpUser.map((user) => {
           return (
-            <S.userItem key={user.id}>
+            <S.userItem key={user.id} onClick={() => props.setProfileUser(user.id)}>
               <S.tmpImg />
               <span>
                 {user.nickname}
