@@ -22,7 +22,6 @@ export default function UserList(props: {
     <S.userListLayout>
       <h3>{props.listOf}</h3>
       <S.userList>
-        {/* 유저 클릭 시 프로필 렌더링 */}
         {tmpUser.map((user) => {
           return (
             <S.userItem key={user.id} onClick={() => props.setProfileUser(user.id)}>

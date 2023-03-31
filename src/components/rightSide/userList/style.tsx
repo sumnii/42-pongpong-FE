@@ -25,6 +25,7 @@ export const userItem = styled.li`
   align-items: center;
 
   list-type: none;
+  cursor: pointer;
 `
 
 export const tmpImg = styled.div`
