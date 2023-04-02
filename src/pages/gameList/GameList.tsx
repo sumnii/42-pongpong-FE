@@ -1,9 +1,8 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 export default function GameList(props: { setPage: (page: "main") => void }) {
-  props.setPage("main");
-  const navigate = useNavigate();
+  props.setPage("main")
+  const navigate = useNavigate()
   // 임시 더미데이터
   const gameData = [
     {
@@ -20,7 +19,7 @@ export default function GameList(props: { setPage: (page: "main") => void }) {
       player1Score: 2,
       player2Score: 2,
     },
-  ];
+  ]
 
   return (
     <div>
@@ -39,17 +38,17 @@ export default function GameList(props: { setPage: (page: "main") => void }) {
               <span>{game.player2Score}</span>
               <button onClick={() => navigate(`/game/${game.id}`)}>관전</button>
             </li>
-          );
+          )
         })}
       </ul>
       <button
         onClick={() => {
           // TODO: 모달 띄우기
-          alert("매치메이킹 모달!");
+          alert("매치메이킹 모달!")
         }}
       >
         매치메이킹
       </button>
     </div>
-  );
+  )
 }

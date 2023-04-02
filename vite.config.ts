@@ -15,6 +15,11 @@ export default defineConfig({
       { find: "@gameRoom", replacement: "src/pages/gameRoom" },
       { find: "@leftSide", replacement: "src/components/leftSide" },
       { find: "@rightSide", replacement: "src/components/rightSide" },
+      { find: "@centerHeader", replacement: "src/components/centerHeader" },
+      { find: "@style", replacement: "src/style" },
     ],
+  },
+  esbuild: {
+    jsxInject: `import React from "react"`,
   },
 })
