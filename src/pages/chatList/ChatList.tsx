@@ -1,11 +1,8 @@
-import { useNavigate } from "react-router-dom"
-import ChatRoom from "pages/chatRoom/ChatRoom"
 import ChatItem from "./ChatItem"
 import * as S from "./style"
 
 export default function ChatList(props: { setPage: (page: "main") => void }) {
   props.setPage("main")
-  const navigate = useNavigate()
   const chatInfo = [
     { id: 1, subject: "채팅방 1번", owner: "숨송", participantsCnt: 2 },
     { id: 2, subject: "채팅방 2번", owner: "아무개", participantsCnt: 4 },
@@ -38,7 +35,7 @@ export default function ChatList(props: { setPage: (page: "main") => void }) {
       <S.HeaderBox>
         <S.H2>참여중인 채팅방</S.H2>
       </S.HeaderBox>
-      <S.ChatList>{/* 참여중 채팅방 구현 예정 / 컴포넌트 분리 */}</S.ChatList>
+      <S.ChatList>{/* 참여중 채팅방 구현 예정 */}</S.ChatList>
     </S.PageLayout>
   )
 }
