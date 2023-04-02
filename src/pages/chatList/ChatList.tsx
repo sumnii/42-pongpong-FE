@@ -13,7 +13,9 @@ export default function ChatList(props: { setPage: (page: "main") => void }) {
 
   return (
     <S.PageLayout>
-      <S.H2>참여 가능한 채팅방</S.H2>
+      <S.HeaderBox>
+        <S.H2>참여 가능한 채팅방</S.H2>
+      </S.HeaderBox>
       <S.ChatList>
         <S.ChatItem head>
           <S.No>No</S.No>
@@ -41,7 +43,9 @@ export default function ChatList(props: { setPage: (page: "main") => void }) {
         })}
       </S.ChatList>
       <hr />
-      <S.H2>참여중인 채팅방</S.H2>
+      <S.HeaderBox>
+        <S.H2>참여중인 채팅방</S.H2>
+      </S.HeaderBox>
       <S.ChatList>{/* 참여중 채팅방 구현 예정 / 컴포넌트 분리 */}</S.ChatList>
     </S.PageLayout>
   )

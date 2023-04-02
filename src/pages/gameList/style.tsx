@@ -21,11 +21,17 @@ export const H2 = styled.h2`
   padding: 5px 0;
 `
 
-export const ChatList = styled.ul`
+export const MatchMakingBtn = styled.button`
+  ${button.basicColor};
+  font-size: 1.2rem;
+  padding: 10px 10px;
+`
+
+export const GameList = styled.ul`
   padding: 0;
 `
 
-export const ChatItem = styled.li`
+export const GameItem = styled.li`
   list-style: none;
 
   height: 30px;
@@ -40,7 +46,7 @@ export const ChatItem = styled.li`
 `
 
 /*
- *      Chat List Item
+ *      Game Item
  */
 
 export const No = styled.span`
@@ -48,17 +54,23 @@ export const No = styled.span`
   text-align: center;
 `
 
-export const Subject = styled.span`
-  width: 60%;
+export const Player = styled.span`
+  width: 25%;
+  text-align: ${(props: { left?: boolean }) => {
+    return props.left ? "right" : "left"
+  }};
 `
 
-export const Owner = styled.span`
-  width: 16%;
-`
-
-export const ParticipantsCnt = styled.span`
-  width: 7%;
+export const Versus = styled.span`
+  width: 5%;
   text-align: center;
+`
+
+export const Score = styled.span`
+  width: 11.5%;
+  text-align: ${(props: { left?: boolean }) => {
+    return props.left ? "right" : "left"
+  }};
 `
 
 export const EntryBtn = styled.button`
