@@ -33,7 +33,7 @@ export default function signUp() {
 
   function sendPhoneAuthHandler(event) {
     if (phoneInput) {
-			// 휴대폰 인증 번호 발송
+      // 휴대폰 인증 번호 발송
     } else {
       setFormCheck("휴대폰번호를 입력해주세요")
     }
@@ -46,7 +46,7 @@ export default function signUp() {
   function checkPhoneAuthHandler(event) {
     const dummy = "123"
     if (phoneAuthInput) {
-      if (event.target.value === dummy) {
+      if (phoneAuthInput === dummy) {
         setPhoneAuthCheck("인증완료")
       } else {
         setFormCheck("인증번호가 틀립니다")
@@ -86,13 +86,13 @@ export default function signUp() {
           <p>{pwCheck}</p>
         </div>
         <div>
-          <input placeholder="휴대폰 번호" required onChange={onPhoneHandler}></input>{" "}
+          <input placeholder="휴대폰 번호" required onChange={onPhoneHandler}></input>
           <button type="button" onClick={sendPhoneAuthHandler}>
             인증번호 발송
           </button>
         </div>
         <div>
-          <input placeholder="인증 번호" required onChange={onPhoneAuthHandler}></input>{" "}
+          <input placeholder="인증 번호" required onChange={onPhoneAuthHandler}></input>
           <button type="button" onClick={checkPhoneAuthHandler}>
             인증
           </button>
