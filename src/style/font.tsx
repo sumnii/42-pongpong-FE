@@ -1,4 +1,5 @@
 export const body = `
+  font-family: "Gothic A1", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 1.6rem;
@@ -16,16 +17,25 @@ export const bodyBold = `
 `
 
 export const title = `
-  font-style: normal;
-  font-weight: 800;
-  font-size: 2rem;
+  ${body}
+  font-size: 2.0rem;
   line-height: 2.4rem;
 `
 
+export const h1 = `
+  ${bodyBold}
+  font-size: 3rem;
+  line-height: 3.4rem;
+`
+
 export const inBtn = `
-  font-family: "Gothic A1", sans-serif;
-  font-style: normal;
-  font-weight: 400;
+  ${body}
   font-size: 1.2rem;
-  line-height: 1;
+  line-height: 1.2rem;
+`
+
+export const footer = `
+  ${body}
+  font-size: 1.2rem;
+  line-height: 1.6rem;
 `

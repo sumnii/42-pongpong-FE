@@ -8,6 +8,7 @@ export const HeaderLayout = styled.div`
 `
 
 export const HeaderBtn = styled.button`
+  padding-top: 10px;
   margin-bottom: 2px;
 
   background: none;
