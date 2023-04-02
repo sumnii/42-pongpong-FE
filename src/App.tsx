@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Main from "@main/Main"
 import ChatList from "@chatList/ChatList"
@@ -7,6 +7,7 @@ import ChatRoom from "@chatRoom/ChatRoom"
 import GameRoom from "@gameRoom/GameRoom"
 import Profile from "@leftSide/profile/Profile"
 import RightSide from "@rightSide/RightSide"
+import ListTabBar from "@centerHeader/ListTabBar"
 import * as S from "./style"
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       </S.LeftSideLayout>
       <S.CenterLayout>
         <BrowserRouter>
+          <ListTabBar />
           <Routes>
             <Route path="/" element={<Main setPage={setInPageOf} />} />
             <Route path="/chat/list" element={<ChatList setPage={setInPageOf} />} />
