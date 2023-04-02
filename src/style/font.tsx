@@ -2,18 +2,13 @@ export const body = `
   font-family: "Gothic A1", sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 1.6rem;
-  line-height: 2.0rem;
-`
-
-export const bodySemiBold = `
-  ${body}
-  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.7rem;
 `
 
 export const bodyBold = `
   ${body}
-  font-weight: 800;
+  font-weight: 600;
 `
 
 export const title = `
@@ -24,18 +19,18 @@ export const title = `
 
 export const h1 = `
   ${bodyBold}
-  font-size: 3rem;
+  font-size: 3.0rem;
   line-height: 3.4rem;
 `
 
 export const inBtn = `
   ${body}
-  font-size: 1.2rem;
-  line-height: 1.2rem;
+  font-size: 1.0rem;
+  line-height: 1.0rem;
 `
 
 export const footer = `
   ${body}
-  font-size: 1.2rem;
-  line-height: 1.6rem;
+  font-size: 1.0rem;
+  line-height: 1.4rem;
 `

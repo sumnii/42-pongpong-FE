@@ -21,5 +21,5 @@ export const HeaderBtn = styled.button`
     return ""
   }}
 
-  ${font.bodySemiBold}
+  ${font.bodyBold}
 `

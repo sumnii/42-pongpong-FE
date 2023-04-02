@@ -5,7 +5,6 @@ import * as S from "./style"
 export default function ListTabBar() {
   const navigate = useNavigate()
   const location = useLocation()
-  console.log("pathname:", location.pathname)
 
   return (
     <S.HeaderLayout>
