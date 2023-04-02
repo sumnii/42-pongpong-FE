@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom"
 import GameItem from "./GameItem"
 import * as S from "./style"
 
