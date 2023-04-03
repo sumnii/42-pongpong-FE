@@ -7,7 +7,7 @@ interface GameItemProps {
   p2: string
   p1Score: string | number
   p2Score: string | number
-  disabled?: boolean
+  head?: boolean
 }
 
 export default function GameItem(props: GameItemProps) {
@@ -22,8 +22,8 @@ export default function GameItem(props: GameItemProps) {
       <S.Score left>{props.p1Score}</S.Score>
       <S.Versus>:</S.Versus>
       <S.Score>{props.p2Score}</S.Score>
-      {props.disabled ? (
-        <S.EntryBtn disabled />
+      {props.head ? (
+        <S.EntryBtn head />
       ) : (
         <S.EntryBtn onClick={() => navigate(`/game/${props.no}`)}>관전</S.EntryBtn>
       )}

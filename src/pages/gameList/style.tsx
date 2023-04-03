@@ -76,8 +76,8 @@ export const Score = styled.span`
 export const EntryBtn = styled.button`
   width: 10%;
   ${button.mini}
-  ${(props: { disabled?: boolean }) => {
-    return props.disabled ? "background-color: white; cursor: default;" : ""
+  ${(props: { head?: boolean }) => {
+    return props.head ? "background-color: white; cursor: default;" : ""
   }}
   margin: auto;
 `

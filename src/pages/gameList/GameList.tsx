@@ -38,7 +38,7 @@ export default function GameList(props: { setPage: (page: "main") => void }) {
       </S.HeaderBox>
       <S.GameList>
         <S.GameItem head>
-          <GameItem no={"No"} p1={"P1"} p2={"P2"} p1Score={"P1"} p2Score={"P2"} disabled />
+          <GameItem no={"No"} p1={"P1"} p2={"P2"} p1Score={"P1"} p2Score={"P2"} head />
         </S.GameItem>
         {gameData.map((game) => {
           return (
