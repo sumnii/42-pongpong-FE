@@ -4,11 +4,7 @@ import UnAuth from "@unAuth/UnAuth"
 
 function App() {
   const [isSignIn, setIsSignIn] = useState(false)
-  return (
-		<main>
-			{isSignIn ? <Auth /> : <UnAuth setSign={setIsSignIn} />}
-		</main>
-	)
+  return <main>{isSignIn ? <Auth /> : <UnAuth setSign={setIsSignIn} />}</main>
 }
 
 export default App

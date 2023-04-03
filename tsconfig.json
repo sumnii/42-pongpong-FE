@@ -28,7 +28,9 @@
       "@auth/*": ["pages/auth/*"],
       "@unAuth/*": ["pages/unAuth/*"],
       "@leftSide/*": ["components/leftSide/*"],
-      "@rightSide/*": ["components/rightSide/*"]
+      "@rightSide/*": ["components/rightSide/*"],
+      "@centerHeader/*": ["components/centerHeader/*"],
+      "@style/*": ["style/*"]
     }
   },
   "include": ["src"],
