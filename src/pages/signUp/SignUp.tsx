@@ -1,16 +1,16 @@
-import React from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as S from "./style"
 
 export default function signUp() {
   const navigate = useNavigate()
-  const [idInput, setIdInput] = React.useState("")
-  const [pwInput, setPwInput] = React.useState("")
-  const [pwCheck, setPwCheck] = React.useState("")
-  const [phoneInput, setPhoneInput] = React.useState("")
-  const [phoneAuthInput, setPhoneAuthInput] = React.useState("")
-  const [phoneAuthCheck, setPhoneAuthCheck] = React.useState("")
-  const [formCheck, setFormCheck] = React.useState("")
+  const [idInput, setIdInput] = useState("")
+  const [pwInput, setPwInput] = useState("")
+  const [pwCheck, setPwCheck] = useState("")
+  const [phoneInput, setPhoneInput] = useState("")
+  const [phoneAuthInput, setPhoneAuthInput] = useState("")
+  const [phoneAuthCheck, setPhoneAuthCheck] = useState("")
+  const [formCheck, setFormCheck] = useState("")
 
   function onIdHandler(event) {
     setIdInput(event.target.value)

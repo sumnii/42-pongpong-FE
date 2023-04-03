@@ -1,12 +1,12 @@
-import React from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as S from "./style"
 
 export default function signIn() {
   const navigate = useNavigate()
-  const [idInput, setIdInput] = React.useState("")
-  const [pwInput, setPwInput] = React.useState("")
-  const [formCheck, setFormCheck] = React.useState("")
+  const [idInput, setIdInput] = useState("")
+  const [pwInput, setPwInput] = useState("")
+  const [formCheck, setFormCheck] = useState("")
 
   function onIdHandler(event) {
     setIdInput(event.target.value)
