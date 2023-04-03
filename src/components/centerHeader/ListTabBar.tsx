@@ -1,4 +1,3 @@
-import { useRef } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import * as S from "./style"
 
