@@ -4,7 +4,6 @@ import * as S from "./style"
 
 export default function GameList(props: { setPage: (page: "main") => void }) {
   props.setPage("main")
-  const navigate = useNavigate()
   let gameCnt = 0
   // 임시 더미데이터
   const gameData = [

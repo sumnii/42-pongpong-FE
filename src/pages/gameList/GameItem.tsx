@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import * as S from "./style"
 
 interface GameItemProps {
@@ -10,6 +11,8 @@ interface GameItemProps {
 }
 
 export default function GameItem(props: GameItemProps) {
+  const navigate = useNavigate()
+
   return (
     <>
       <S.No>{props.no}</S.No>
@@ -19,7 +22,11 @@ export default function GameItem(props: GameItemProps) {
       <S.Score left>{props.p1Score}</S.Score>
       <S.Versus>:</S.Versus>
       <S.Score>{props.p2Score}</S.Score>
-      <S.EntryBtn disabled={props.disabled}>관전</S.EntryBtn>
+      {props.disabled ? (
+        <S.EntryBtn disabled />
+      ) : (
+        <S.EntryBtn onClick={() => navigate(`/game/${props.no}`)}>관전</S.EntryBtn>
+      )}
     </>
   )
 }
