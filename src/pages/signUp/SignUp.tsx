@@ -32,7 +32,7 @@ export default function signUp() {
     setPhoneInput(event.target.value)
   }
 
-  function sendPhoneAuthHandler(event) {
+  function sendPhoneAuthHandler() {
     if (phoneInput) {
       // 휴대폰 인증 번호 발송
     } else {
@@ -44,7 +44,7 @@ export default function signUp() {
     setPhoneAuthInput(event.target.value)
   }
 
-  function checkPhoneAuthHandler(event) {
+  function checkPhoneAuthHandler() {
     const dummy = "123"
     if (phoneAuthInput) {
       if (phoneAuthInput === dummy) {
@@ -62,27 +62,28 @@ export default function signUp() {
     if (idInput && pwCheck === "패스워드가 일치합니다." && phoneAuthCheck === "인증완료") {
       navigate("/")
     } else {
-      if (!idInput) setFormCheck("아이디를 입력하세요.")
+      if (!idInput) setFormCheck("아이디를 입력해주세요.")
       else if (!pwCheck) setFormCheck("패스워드를 확인해주세요.")
       else if (!phoneAuthCheck) setFormCheck("휴대폰 인증을 해주세요.")
     }
   }
 
-  function onCheckIdHandler(event) {
+  function onCheckIdHandler() {
     const dummy = "호호"
     if (idInput === dummy) {
-      setIdCheck("아이디가 중복입니다.")
+      setIdCheck("이미 존재하는 아이디입니다.")
     } else {
 			setIdCheck("")
 		}
   }
 
   return (
-    <S.SignInLayout onClick={onCheckIdHandler} onFocus={onCheckIdHandler}>
+    <S.SignInLayout>
       <h3>회원가입</h3>
       <form>
         <div>
           <input placeholder="아이디" required onChange={onIdHandler}></input>
+					<button type="button" onClick={onCheckIdHandler}>중복확인</button>
 					<p>{idCheck}</p>
         </div>
         <div>
