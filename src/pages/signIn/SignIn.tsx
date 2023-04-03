@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as S from "./style"
 
-export default function signIn() {
+export default function signIn({ setSignTo }) {
   const navigate = useNavigate()
   const [idInput, setIdInput] = useState("")
   const [pwInput, setPwInput] = useState("")
@@ -16,6 +16,7 @@ export default function signIn() {
   }
   function isComplete() {
     if (idInput && pwInput) {
+      setSignTo(true)
       navigate("/")
     } else {
       if (!idInput) setFormCheck("아이디를 입력해주세요.")

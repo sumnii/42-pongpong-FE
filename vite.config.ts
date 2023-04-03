@@ -15,6 +15,8 @@ export default defineConfig({
       { find: "@gameRoom", replacement: "src/pages/gameRoom" },
       { find: "@signIn", replacement: "src/pages/signIn" },
       { find: "@signUp", replacement: "src/pages/signUp" },
+      { find: "@auth", replacement: "src/pages/auth" },
+      { find: "@unAuth", replacement: "src/pages/unAuth" },
       { find: "@leftSide", replacement: "src/components/leftSide" },
       { find: "@rightSide", replacement: "src/components/rightSide" },
     ],

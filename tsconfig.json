@@ -25,6 +25,8 @@
       "@gameRoom/*": ["pages/gameRoom/*"],
       "@signIn/*": ["pages/signIn/*"],
       "@signUp/*": ["pages/signUp/*"],
+      "@auth/*": ["pages/auth/*"],
+      "@unAuth/*": ["pages/unAuth/*"],
       "@leftSide/*": ["components/leftSide/*"],
       "@rightSide/*": ["components/rightSide/*"]
     }
