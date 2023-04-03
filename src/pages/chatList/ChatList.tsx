@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import ChatRoom from "pages/chatRoom/ChatRoom"
+import ChatItem from "./ChatItem"
 import * as S from "./style"
 
 export default function ChatList(props: { setPage: (page: "main") => void }) {
@@ -18,26 +19,17 @@ export default function ChatList(props: { setPage: (page: "main") => void }) {
       </S.HeaderBox>
       <S.ChatList>
         <S.ChatItem head>
-          <S.No>No</S.No>
-          <S.Subject>제목</S.Subject>
-          <S.Owner>방장</S.Owner>
-          <S.ParticipantsCnt>인원</S.ParticipantsCnt>
-          <S.EntryBtn disabled></S.EntryBtn>
+          <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
         </S.ChatItem>
         {chatInfo.map((room) => {
           return (
             <S.ChatItem key={room.id}>
-              <S.No>{(roomCnt += 1)}</S.No>
-              <S.Subject>{room.subject}</S.Subject>
-              <S.Owner>{room.owner}</S.Owner>
-              <S.ParticipantsCnt>{room.participantsCnt}</S.ParticipantsCnt>
-              <S.EntryBtn
-                onClick={() => {
-                  navigate(`/chat/${room.id}`)
-                }}
-              >
-                참가
-              </S.EntryBtn>
+              <ChatItem
+                no={(roomCnt += 1)}
+                subject={room.subject}
+                owner={room.owner}
+                participantsCnt={room.participantsCnt}
+              />
             </S.ChatItem>
           )
         })}
