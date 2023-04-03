@@ -49,10 +49,10 @@ export default function signUp() {
       if (phoneAuthInput === dummy) {
         setPhoneAuthCheck("인증완료")
       } else {
-        setFormCheck("인증번호가 틀립니다")
+        setFormCheck("인증번호가 일치하지 않습니다.")
       }
     } else {
-      setFormCheck("인증번호을 입력해주세요")
+      setFormCheck("인증번호을 입력해주세요.")
     }
   }
 
@@ -60,9 +60,9 @@ export default function signUp() {
     if (idInput && pwCheck && phoneAuthCheck) {
       navigate("/signin")
     } else {
-      if (!idInput) setFormCheck("아이디를 입력하세요")
-      else if (!pwCheck) setFormCheck("패스워드를 확인해주세요")
-      else if (!phoneAuthCheck) setFormCheck("휴대폰 인증을 해주세요")
+      if (!idInput) setFormCheck("아이디를 입력하세요.")
+      else if (!pwCheck) setFormCheck("패스워드를 확인해주세요.")
+      else if (!phoneAuthCheck) setFormCheck("휴대폰 인증을 해주세요.")
     }
   }
 

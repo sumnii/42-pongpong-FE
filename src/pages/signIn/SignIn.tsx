@@ -18,8 +18,8 @@ export default function signIn() {
     if (idInput && pwInput) {
       navigate("/")
     } else {
-      if (!idInput) setFormCheck("아이디를 입력해주세요")
-      else if (!pwInput) setFormCheck("패스워드를 입력해주세요")
+      if (!idInput) setFormCheck("아이디를 입력해주세요.")
+      else if (!pwInput) setFormCheck("패스워드를 입력해주세요.")
     }
   }
 

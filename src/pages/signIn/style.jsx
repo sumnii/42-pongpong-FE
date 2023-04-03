@@ -16,5 +16,5 @@ export const BtnWrapper = styled.div`
   margin: 10% 0;
 
   display: flex;
-  justify-content: spacee-between;
+  justify-content: space-between;
 `
