@@ -14,7 +14,8 @@ export default function signIn({ setSignTo }) {
   function onPwHandler(event) {
     setPwInput(event.target.value)
   }
-  function isComplete() {
+  function isComplete(event) {
+    event.preventDefault()
     if (idInput && pwInput) {
       setSignTo(true)
       navigate("/")
@@ -35,7 +36,7 @@ export default function signIn({ setSignTo }) {
           <input placeholder="Password" required onChange={onPwHandler} type="password"></input>
         </div>
         <S.BtnWrapper>
-          <button type="button" onClick={isComplete}>
+          <button onClick={isComplete}>
             로그인
           </button>
           <button
