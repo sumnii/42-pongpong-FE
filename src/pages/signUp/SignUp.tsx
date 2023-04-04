@@ -1,6 +1,9 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as S from "./style"
+
+type eventChangeType = React.ChangeEvent<HTMLInputElement>
+type eventClickType = React.MouseEvent<HTMLButtonElement>
 
 export default function signUp() {
   const navigate = useNavigate()
@@ -13,22 +16,22 @@ export default function signUp() {
   const [phoneAuthCheck, setPhoneAuthCheck] = useState("")
   const [formCheck, setFormCheck] = useState("")
 
-  function onIdHandler(event) {
+  function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value)
   }
 
-  function onPwHandler(event) {
+  function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value)
   }
 
-  function onPwCheckHandler(event) {
+  function onPwCheckHandler(event: eventChangeType) {
     setPwCheck("패스워드가 일치하지 않습니다.")
     if (pwInput == event.target.value) {
       setPwCheck("패스워드가 일치합니다.")
     }
   }
 
-  function onPhoneHandler(event) {
+  function onPhoneHandler(event: eventChangeType) {
     setPhoneInput(event.target.value)
   }
 
@@ -40,7 +43,7 @@ export default function signUp() {
     }
   }
 
-  function onPhoneAuthHandler(event) {
+  function onPhoneAuthHandler(event: eventChangeType) {
     setPhoneAuthInput(event.target.value)
   }
 
@@ -57,7 +60,7 @@ export default function signUp() {
     }
   }
 
-  function isComplete(event) {
+  function isComplete(event: eventClickType) {
     event.preventDefault()
     if (idInput && pwCheck === "패스워드가 일치합니다." && phoneAuthCheck === "인증완료") {
       navigate("/")

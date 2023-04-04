@@ -2,19 +2,26 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as S from "./style"
 
-export default function signIn({ setSignTo }) {
+type signProps = {
+	setSignTo: (sign: boolean) => void;
+}
+type eventChangeType = React.ChangeEvent<HTMLInputElement>
+type eventClickType = React.MouseEvent<HTMLButtonElement>
+
+
+export default function signIn({ setSignTo }: signProps) {
   const navigate = useNavigate()
   const [idInput, setIdInput] = useState("")
   const [pwInput, setPwInput] = useState("")
   const [formCheck, setFormCheck] = useState("")
 
-  function onIdHandler(event) {
+  function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value)
   }
-  function onPwHandler(event) {
+  function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value)
   }
-  function isComplete(event) {
+  function isComplete(event: eventClickType) {
     event.preventDefault()
     if (idInput && pwInput) {
       setSignTo(true)
