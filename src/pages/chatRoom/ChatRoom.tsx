@@ -1,9 +1,13 @@
-import { useParams } from "react-router-dom"
-import * as S from "./style"
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import * as S from "./style";
 
 export default function ChatRoom(props: { setPage: (page: "chat") => void }) {
-  const { roomId } = useParams()
-  props.setPage("chat")
+  const { roomId } = useParams();
+
+  useEffect(() => {
+    props.setPage("chat");
+  }, []);
 
   return (
     <S.PageLayout>
@@ -11,5 +15,5 @@ export default function ChatRoom(props: { setPage: (page: "chat") => void }) {
         <S.H2>{roomId}번 채팅방 입장완료</S.H2>
       </S.HeaderBox>
     </S.PageLayout>
-  )
+  );
 }

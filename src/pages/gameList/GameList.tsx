@@ -1,9 +1,13 @@
-import GameItem from "./GameItem"
-import * as S from "./style"
+import { useEffect } from "react";
+import GameItem from "./GameItem";
+import * as S from "./style";
 
 export default function GameList(props: { setPage: (page: "main") => void }) {
-  props.setPage("main")
-  let gameCnt = 0
+  useEffect(() => {
+    props.setPage("main");
+  }, []);
+
+  let gameCnt = 0;
   // 임시 더미데이터
   const gameData = [
     {
@@ -20,7 +24,7 @@ export default function GameList(props: { setPage: (page: "main") => void }) {
       player1Score: 2,
       player2Score: 2,
     },
-  ]
+  ];
 
   return (
     <S.PageLayout>
@@ -29,7 +33,7 @@ export default function GameList(props: { setPage: (page: "main") => void }) {
         <S.MatchMakingBtn
           onClick={() => {
             // TODO: 모달 띄우기
-            alert("매치메이킹 모달!")
+            alert("매치메이킹 모달!");
           }}
         >
           매치메이킹 등록
@@ -51,9 +55,9 @@ export default function GameList(props: { setPage: (page: "main") => void }) {
                 p2Score={game.player2Score}
               />
             </S.GameItem>
-          )
+          );
         })}
       </S.GameList>
     </S.PageLayout>
-  )
+  );
 }
