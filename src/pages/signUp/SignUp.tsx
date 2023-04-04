@@ -38,7 +38,16 @@ export default function signUp() {
 
   function sendPhoneAuthHandler() {
     if (phoneInput) {
-      // 휴대폰 인증 번호 발송
+      axios.post("http://localhost:81/auth/get/otp/signup",
+        {
+          phonenumber: phoneInput
+        }).then(function (res) {
+          console.log(res)
+          alert("인증번호를 보냈습니다.")
+        }).catch(function (err) {
+          console.log(err)
+          alert("휴대폰 번호를 확인해주세요.")
+        })
     } else {
       setFormCheck("휴대폰번호를 입력해주세요")
     }
