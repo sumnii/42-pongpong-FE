@@ -16,6 +16,7 @@ export default function signUp() {
   const [phoneAuthInput, setPhoneAuthInput] = useState("")
   const [phoneAuthCheck, setPhoneAuthCheck] = useState("")
   const [formCheck, setFormCheck] = useState("")
+  const [accessToken, setAccessToken] = useState("")
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value)
@@ -58,13 +59,18 @@ export default function signUp() {
   }
 
   function checkPhoneAuthHandler() {
-    const dummy = "123"
     if (phoneAuthInput) {
-      if (phoneAuthInput === dummy) {
-        setPhoneAuthCheck("인증완료")
-      } else {
-        setPhoneAuthCheck("인증번호가 일치하지 않습니다.")
-      }
+      axios.post("http://localhost:81/auth/check/otp/signup",
+        {
+          phonenumber: phoneInput,
+          otp: phoneAuthInput
+        }).then(function (res) {
+          setPhoneAuthCheck("인증완료")
+          setAccessToken(res.data.access_token)
+        }).catch(function (err) {
+          setPhoneAuthCheck("인증번호가 일치하지 않습니다.")
+          console.log(err)
+        })
     } else {
       setPhoneAuthCheck("인증번호을 입력해주세요.")
     }
@@ -94,7 +100,7 @@ export default function signUp() {
         console.log(err)
       })
   }
-  
+
   return (
     <S.SignInLayout>
       <h3>회원가입</h3>
