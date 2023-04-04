@@ -67,6 +67,7 @@ export default function signUp() {
         }).then(function (res) {
           setPhoneAuthCheck("인증완료")
           setAccessToken(res.data.access_token)
+          console.log(res)
         }).catch(function (err) {
           setPhoneAuthCheck("인증번호가 일치하지 않습니다.")
           console.log(err)
@@ -79,7 +80,23 @@ export default function signUp() {
   function isComplete(event: eventClickType) {
     event.preventDefault()
     if (idInput && pwCheck === "패스워드가 일치합니다." && phoneAuthCheck === "인증완료") {
-      navigate("/")
+      axios.post("http://localhost:81/user/create",
+        {
+          username: idInput,
+          password: pwInput,
+          phonenumber: phoneInput
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + accessToken
+          }
+        }).then(function (res) {
+          alert("회원가입 완료되었습니다.")
+          console.log(res)
+          navigate("/")
+        }).catch(function (err) {
+          console.log(err)
+        })
     } else {
       if (!idInput) setFormCheck("아이디를 입력해주세요.")
       else if (!pwCheck) setFormCheck("패스워드를 확인해주세요.")
