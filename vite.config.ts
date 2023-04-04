@@ -1,10 +1,17 @@
-import { defineConfig } from "vite"
-import react from "@vitejs/plugin-react"
-import tsConfigPaths from "vite-tsconfig-paths"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tsConfigPaths from "vite-tsconfig-paths";
+import { checker } from "vite-plugin-checker";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsConfigPaths()],
+  plugins: [
+    react(),
+    tsConfigPaths(),
+    checker({
+      typescript: true,
+    }),
+  ],
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: [
@@ -26,4 +33,5 @@ export default defineConfig({
   esbuild: {
     jsxInject: `import React from "react"`,
   },
-})
+  clearScreen: false,
+});
