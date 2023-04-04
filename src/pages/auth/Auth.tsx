@@ -11,13 +11,13 @@ import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 
 function Auth() {
-  const [profileUser, setProfileUser] = useState(0);
+  const [profileUser, setProfileUser] = useState("sumsong");
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
 
   return (
     <S.AppLayout>
       <S.LeftSideLayout>
-        <Profile userId={profileUser} />
+        <Profile username={profileUser} />
       </S.LeftSideLayout>
       <S.CenterLayout>
         <BrowserRouter>
