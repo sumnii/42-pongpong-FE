@@ -1,18 +1,18 @@
-import { useState } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Main from "@main/Main"
-import ChatList from "@chatList/ChatList"
-import GameList from "@gameList/GameList"
-import ChatRoom from "@chatRoom/ChatRoom"
-import GameRoom from "@gameRoom/GameRoom"
-import Profile from "@leftSide/profile/Profile"
-import ListTabBar from "@centerHeader/ListTabBar"
-import RightSide from "@rightSide/RightSide"
-import * as S from "./style"
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Main from "@main/Main";
+import ChatList from "@chatList/ChatList";
+import GameList from "@gameList/GameList";
+import ChatRoom from "@chatRoom/ChatRoom";
+import GameRoom from "@gameRoom/GameRoom";
+import Profile from "@leftSide/profile/Profile";
+import ListTabBar from "@centerHeader/ListTabBar";
+import RightSide from "@rightSide/RightSide";
+import * as S from "./style";
 
 function Auth() {
-  const [profileUser, setProfileUser] = useState(0)
-  const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main")
+  const [profileUser, setProfileUser] = useState(0);
+  const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
 
   return (
     <S.AppLayout>
@@ -20,8 +20,8 @@ function Auth() {
         <Profile userId={profileUser} />
       </S.LeftSideLayout>
       <S.CenterLayout>
-        <ListTabBar />
         <BrowserRouter>
+          <ListTabBar />
           <Routes>
             <Route path="/" element={<Main setPage={setInPageOf} />} />
             <Route path="/chat/list" element={<ChatList setPage={setInPageOf} />} />
@@ -36,7 +36,7 @@ function Auth() {
         <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} />
       </S.RightSideLayout>
     </S.AppLayout>
-  )
+  );
 }
 
-export default Auth
+export default Auth;
