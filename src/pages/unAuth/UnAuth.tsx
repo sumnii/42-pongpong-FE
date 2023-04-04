@@ -1,4 +1,3 @@
-import React from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import SignIn from "@signIn/SignIn"
 import SignUp from "@signUp/SignUp"
