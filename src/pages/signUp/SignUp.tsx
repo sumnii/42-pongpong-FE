@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as S from "./style"
+import axios from 'axios'
 
 type eventChangeType = React.ChangeEvent<HTMLInputElement>
 type eventClickType = React.MouseEvent<HTMLButtonElement>
@@ -72,22 +73,27 @@ export default function signUp() {
   }
 
   function onCheckIdHandler() {
-    const dummy = "호호"
-    if (idInput === dummy) {
-      setIdCheck("이미 존재하는 아이디입니다.")
-    } else {
-			setIdCheck("")
-		}
+    axios.get("http://localhost:81/auth/exist/" + idInput)
+      .then(function (res) {
+        const isDupl: boolean = res.data.status;
+        if (isDupl) {
+          setIdCheck("이미 존재하는 아이디입니다.")
+        } else {
+          setIdCheck("사용 가능한 아이디입니다.")
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
   }
-
+  
   return (
     <S.SignInLayout>
       <h3>회원가입</h3>
       <form>
         <div>
           <input placeholder="아이디" required onChange={onIdHandler}></input>
-					<button type="button" onClick={onCheckIdHandler}>중복확인</button>
-					<p>{idCheck}</p>
+          <button type="button" onClick={onCheckIdHandler}>중복확인</button>
+          <p>{idCheck}</p>
         </div>
         <div>
           <input placeholder="패스워드" required type="password" onChange={onPwHandler}></input>
