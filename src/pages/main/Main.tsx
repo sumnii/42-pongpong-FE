@@ -1,4 +1,4 @@
-import * as S from "./style"
+import * as S from "./style";
 
 export default function Main(props: { setPage: (page: "main" | "chat" | "game") => void }) {
   return (
@@ -14,5 +14,5 @@ export default function Main(props: { setPage: (page: "main" | "chat" | "game") 
         </S.Text>
       </S.TextBox>
     </S.MainLayout>
-  )
+  );
 }
