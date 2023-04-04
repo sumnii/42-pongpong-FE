@@ -1,4 +1,4 @@
-import * as S from "./style"
+import * as S from "./style";
 
 export default function Profile(props: { userId: number }) {
   const tmpUser = [
@@ -48,9 +48,9 @@ export default function Profile(props: { userId: number }) {
       },
       gameHistory: [],
     },
-  ]
+  ];
 
-  const user = tmpUser.filter((user) => user.id === props.userId)[0]
+  const user = tmpUser.filter((user) => user.id === props.userId)[0];
 
   return (
     <S.profileLayout>
@@ -84,8 +84,8 @@ export default function Profile(props: { userId: number }) {
                 {game.player1score} : {game.player2score}
               </S.score>
             </S.historyItem>
-          )
+          );
         })}
     </S.profileLayout>
-  )
+  );
 }
