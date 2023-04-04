@@ -25,41 +25,41 @@ export function ProfileData(props: userProps) {
   if (props) user = props.user;
 
   return (
-    <S.profileLayout>
+    <S.ProfileLayout>
       <h3>프로필</h3>
       {/* 로딩중 기본 이미지 삽입 */}
-      <S.tmpImg />
-      <S.infoWrapper>
-        <S.infoLabel>
+      <S.TmpImg />
+      <S.InfoWrapper>
+        <S.InfoLabel>
           닉네임
           <br />
           전적
           <br />
           히스토리
-        </S.infoLabel>
-        <S.infoValue>
+        </S.InfoLabel>
+        <S.InfoValue>
           {user ? user.username : ""}
           <br />
           {user ? `${user.win}승 ${user.lose}패` : ""}
           <br />
-        </S.infoValue>
-      </S.infoWrapper>
+        </S.InfoValue>
+      </S.InfoWrapper>
       {user &&
         user.gameHistory.map((game) => {
           return (
-            <S.historyItem key={game.id}>
-              <S.score>{game.type === "rank" ? "경쟁" : "일반"}전</S.score>
-              <S.players>
-                <S.player>{game.red}</S.player>
-                <S.versus>vs</S.versus>
-                <S.player>{game.blue}</S.player>
-              </S.players>
-              <S.score>
+            <S.HistoryItem key={game.id}>
+              <S.Score>{game.type === "rank" ? "경쟁" : "일반"}전</S.Score>
+              <S.Players>
+                <S.Player>{game.red}</S.Player>
+                <S.Versus>vs</S.Versus>
+                <S.Player>{game.blue}</S.Player>
+              </S.Players>
+              <S.Score>
                 {game.redScore} : {game.blueScore}
-              </S.score>
-            </S.historyItem>
+              </S.Score>
+            </S.HistoryItem>
           );
         })}
-    </S.profileLayout>
+    </S.ProfileLayout>
   );
 }
