@@ -1,28 +1,91 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as S from "./style"
+import axios from 'axios'
 
-export default function signIn({ setSignTo }) {
+type signProps = {
+  setSignTo: (sign: boolean) => void;
+}
+type eventChangeType = React.ChangeEvent<HTMLInputElement>
+type eventClickType = React.MouseEvent<HTMLButtonElement>
+type eventFormType = React.FormEvent<HTMLFormElement>
+
+export default function signIn({ setSignTo }: signProps) {
   const navigate = useNavigate()
   const [idInput, setIdInput] = useState("")
   const [pwInput, setPwInput] = useState("")
   const [formCheck, setFormCheck] = useState("")
+  const [accessToken, setAccessToken] = useState("")
+  const [showInput, setShowInput] = useState(false)
+  const [authInput, setAuthInput] = useState("")
 
-  function onIdHandler(event) {
+  function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value)
   }
-  function onPwHandler(event) {
+  function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value)
   }
-  function isComplete(event) {
+  function isComplete(event: eventClickType) {
     event.preventDefault()
     if (idInput && pwInput) {
-      setSignTo(true)
-      navigate("/")
+      authFirstHandler()
     } else {
       if (!idInput) setFormCheck("아이디를 입력해주세요.")
       else if (!pwInput) setFormCheck("패스워드를 입력해주세요.")
     }
+  }
+  function authFirstHandler() {
+    axios.post("http://localhost:81/auth/login",
+      {
+        username: idInput,
+        password: pwInput
+      }
+    ).then(function (res) {
+      const statusText: string = res.statusText
+      setAccessToken(res.data.access_token)
+      console.log(res)
+      setShowInput(true)
+    })
+      .catch(function (err) {
+        const statusText: string = err.response.statusText
+        console.log(err.response.statusText)
+        setFormCheck("아이디 또는 패스워드를 확인해주세요.")
+      })
+  }
+  function authSecondHandler(e: eventFormType) {
+    e.preventDefault()
+    axios.post("http://localhost:81/auth/check/otp/login",
+      {
+        otp: authInput
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken
+        }
+      }).then(function (res) {
+        console.log(res)
+        alert("로그인되었습니다")
+        setSignTo(true)
+      }).catch(function (err) {
+        console.log(err)
+        console.log(authInput)
+        alert("인증번호가 틀렸습니다. 다시 시도해주세요")
+      })
+  }
+  function onInputHandler(e: eventChangeType) {
+    setAuthInput(e.target.value)
+  }
+  function sendAuthHandler(e: eventClickType) {
+    axios.get("http://localhost:81/auth/get/otp/login",
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken
+        }
+      }).then(function (res) {
+        console.log(res)
+      }).catch(function (err) {
+        console.log(err)
+      })
   }
 
   return (
@@ -50,6 +113,14 @@ export default function signIn({ setSignTo }) {
         </S.BtnWrapper>
       </form>
       <span>{formCheck}</span>
+      {showInput &&
+        (<form onSubmit={authSecondHandler}>
+          <button type="button" onClick={sendAuthHandler}>휴대폰 인증번호 받기</button>
+          <span>인증번호를 입력하세요</span>
+          <input required onChange={onInputHandler}></input>
+          <button>확인</button>
+        </form>
+        )}
     </S.SignInLayout>
   )
 }

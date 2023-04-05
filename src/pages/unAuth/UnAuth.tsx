@@ -1,10 +1,13 @@
-import React from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import SignIn from "@signIn/SignIn"
 import SignUp from "@signUp/SignUp"
 import * as S from "./style"
 
-function unAuth({ setSign }) {
+type signProps = {
+	setSign: (sign: boolean) => void;
+}
+
+function unAuth({ setSign }: signProps) {
   return (
     <S.AppLayout>
       <BrowserRouter>
