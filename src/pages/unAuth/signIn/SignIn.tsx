@@ -47,7 +47,8 @@ export default function signIn({ setSignTo }: signProps) {
     ).then(function (res) {
       setAccessToken(res.data.access_token)
       console.log(res)
-      setShowInput(true)
+      // setShowInput(true) ------------< 2차 인증 건너뜀
+      setSignTo(true)
     })
       .catch(function (err) {
         console.log(err.response.statusText)
