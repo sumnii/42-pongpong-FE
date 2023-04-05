@@ -15,15 +15,8 @@ export default defineConfig({
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: [
-      { find: "@main", replacement: "src/pages/main" },
-      { find: "@chatList", replacement: "src/pages/chatList" },
-      { find: "@gameList", replacement: "src/pages/gameList" },
-      { find: "@chatRoom", replacement: "src/pages/chatRoom" },
-      { find: "@gameRoom", replacement: "src/pages/gameRoom" },
-      { find: "@signIn", replacement: "src/pages/signIn" },
-      { find: "@signUp", replacement: "src/pages/signUp" },
-      { find: "@auth", replacement: "src/pages/auth" },
       { find: "@unAuth", replacement: "src/pages/unAuth" },
+      { find: "@page", replacement: "src/pages/auth" },
       { find: "@leftSide", replacement: "src/components/leftSide" },
       { find: "@rightSide", replacement: "src/components/rightSide" },
       { find: "@centerHeader", replacement: "src/components/centerHeader" },
