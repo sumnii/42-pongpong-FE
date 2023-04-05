@@ -1,5 +1,5 @@
 import { StrictMode, useState } from "react";
-import Auth from "@auth/Auth";
+import Auth from "./pages/auth/Auth";
 import UnAuth from "@unAuth/UnAuth";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

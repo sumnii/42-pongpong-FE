@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "@main/Main";
-import ChatList from "@chatList/ChatList";
-import GameList from "@gameList/GameList";
-import ChatRoom from "@chatRoom/ChatRoom";
-import GameRoom from "@gameRoom/GameRoom";
+import Main from "@page/main/Main";
+import ChatList from "@page/chatList/ChatList";
+import GameList from "@page/gameList/GameList";
+import ChatRoom from "@page/chatRoom/ChatRoom";
+import GameRoom from "@page/gameRoom/GameRoom";
 import Profile from "@leftSide/profile/Profile";
 import ListTabBar from "@centerHeader/ListTabBar";
 import RightSide from "@rightSide/RightSide";
