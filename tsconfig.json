@@ -30,7 +30,8 @@
       "@leftSide/*": ["components/leftSide/*"],
       "@rightSide/*": ["components/rightSide/*"],
       "@centerHeader/*": ["components/centerHeader/*"],
-      "@style/*": ["style/*"]
+      "@style/*": ["style/*"],
+      "@api/*": ["api/*"]
     }
   },
   "include": ["src"],

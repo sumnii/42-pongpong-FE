@@ -1,8 +1,8 @@
-import * as S from "./style"
+import * as S from "./style";
 
 export default function UserList(props: {
-  listOf: "friend" | "dm" | "participant" | "player" | "observer"
-  setProfileUser: (userId: number) => void
+  listOf: "friend" | "dm" | "participant" | "player" | "observer";
+  setProfileUser: (userId: string) => void;
 }) {
   const tmpUser = [
     {
@@ -15,25 +15,25 @@ export default function UserList(props: {
       nickname: "아무개개",
       status: "오프라인",
     },
-  ]
+  ];
 
   return (
-    <S.userListLayout>
+    <S.UserListLayout>
       <h3>{props.listOf}</h3>
-      <S.userList>
+      <S.UserList>
         {tmpUser.map((user) => {
           return (
-            <S.userItem key={user.id} onClick={() => props.setProfileUser(user.id)}>
-              <S.tmpImg />
+            <S.UserItem key={user.id} onClick={() => props.setProfileUser(user.nickname)}>
+              <S.TmpImg />
               <span>
                 {user.nickname}
                 <br />
                 {user.status}
               </span>
-            </S.userItem>
-          )
+            </S.UserItem>
+          );
         })}
-      </S.userList>
-    </S.userListLayout>
-  )
+      </S.UserList>
+    </S.UserListLayout>
+  );
 }
