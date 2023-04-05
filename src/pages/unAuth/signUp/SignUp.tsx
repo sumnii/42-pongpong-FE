@@ -20,6 +20,9 @@ export default function signUp() {
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value)
+    if (idCheck) {
+      setIdCheck("")
+    }
   }
 
   function onPwHandler(event: eventChangeType) {
@@ -79,7 +82,9 @@ export default function signUp() {
 
   function isComplete(event: eventClickType) {
     event.preventDefault()
-    if (idInput && pwCheck === "패스워드가 일치합니다." && phoneAuthCheck === "인증완료") {
+    if (idCheck === "사용 가능한 아이디입니다."
+      && pwCheck === "패스워드가 일치합니다."
+      && phoneAuthCheck === "인증완료") {
       axios.post("http://localhost:81/user/create",
         {
           username: idInput,
@@ -98,24 +103,28 @@ export default function signUp() {
           console.log(err)
         })
     } else {
-      if (!idInput) setFormCheck("아이디를 입력해주세요.")
+      if (!idCheck) setFormCheck("아이디를 확인해주세요.")
       else if (!pwCheck) setFormCheck("패스워드를 확인해주세요.")
       else if (!phoneAuthCheck) setFormCheck("휴대폰 인증을 해주세요.")
     }
   }
 
   function onCheckIdHandler() {
-    axios.get("http://localhost:81/auth/exist/" + idInput)
-      .then(function (res) {
-        const isDupl: boolean = res.data.status;
-        if (isDupl) {
-          setIdCheck("이미 존재하는 아이디입니다.")
-        } else {
-          setIdCheck("사용 가능한 아이디입니다.")
-        }
-      }).catch(function (err) {
-        console.log(err)
-      })
+    if (!idInput) {
+      setIdCheck("아이디를 입력해주세요.")
+    } else {
+      axios.get("http://localhost:81/auth/exist/" + idInput)
+        .then(function (res) {
+          const isUsing: boolean = res.data.status;
+          if (isUsing) {
+            setIdCheck("이미 존재하는 아이디입니다.")
+          } else {
+            setIdCheck("사용 가능한 아이디입니다.")
+          }
+        }).catch(function (err) {
+          console.log(err)
+        })
+    }
   }
 
   return (
