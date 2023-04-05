@@ -22,6 +22,7 @@ export default defineConfig({
       { find: "@centerHeader", replacement: "src/components/centerHeader" },
       { find: "@style", replacement: "src/style" },
       { find: "@api", replacement: "src/api" },
+      { find: "@hooks", replacement: "src/hooks" },
     ],
   },
   esbuild: {

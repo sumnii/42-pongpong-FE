@@ -1,4 +1,9 @@
-import { createContext } from "react";
+import { createContext, Dispatch } from "react";
+import { AuthState, Action } from "./authReducer";
 
-export const UsernameContext = createContext(null);
-export const TokenContext = createContext(null);
+type AuthContextType = {
+  authState: AuthState;
+  authDispatch: Dispatch<Action>;
+};
+
+export const AuthContext = createContext<AuthContextType | null>(null);

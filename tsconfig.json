@@ -24,7 +24,8 @@
       "@rightSide/*": ["components/rightSide/*"],
       "@centerHeader/*": ["components/centerHeader/*"],
       "@style/*": ["style/*"],
-      "@api/*": ["api/*"]
+      "@api/*": ["api/*"],
+      "@hooks/*": ["hooks/*"]
     }
   },
   "include": ["src"],
