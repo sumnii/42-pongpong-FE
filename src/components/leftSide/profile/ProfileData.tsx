@@ -37,7 +37,7 @@ export function ProfileData(props: userProps) {
 
   return (
     <S.ProfileLayout>
-      <h3>프로필</h3>
+      <S.Title>프로필</S.Title>
       {/* 로딩중 기본 이미지 삽입 */}
       <S.TmpImg />
       <S.InfoWrapper>
@@ -47,8 +47,6 @@ export function ProfileData(props: userProps) {
           레이팅
           <br />
           전적
-          <br />
-          히스토리
         </S.InfoLabel>
         <S.InfoValue>
           {user && user.username}
@@ -56,30 +54,34 @@ export function ProfileData(props: userProps) {
           {user && user.rating}
           <br />
           {user && `${user.win}승 ${user.lose}패`}
-          <br />
         </S.InfoValue>
       </S.InfoWrapper>
-      {user &&
-        user.gameHistory.map((game) => {
-          return (
-            <S.HistoryItem key={game.uniqueId}>
-              <S.Score>
-                {game.type === "rank" ? "경쟁" : game.type === "normal" ? "일반" : "아케이드"}전
-              </S.Score>
-              <S.Players>
-                <S.Player>{game.red}</S.Player>
-                <S.Versus>vs</S.Versus>
-                <S.Player>{game.blue}</S.Player>
-              </S.Players>
-              <S.Score>
-                {game.redScore} : {game.blueScore}
-              </S.Score>
-            </S.HistoryItem>
-          );
-        })}
-      {user && user.relation === "myself" && <button onClick={handleLogout}>로그아웃</button>}
-      {user && user.relation === "friend" && <button>친구 삭제</button>}
-      {user && user.relation === "others" && <button>친구 추가</button>}
+      <S.InfoLabel>히스토리</S.InfoLabel>
+      <S.HistoryList>
+        {user &&
+          user.gameHistory.map((game) => {
+            return (
+              <S.HistoryItem key={game.uniqueId}>
+                <S.Score>
+                  {game.type === "rank" ? "경쟁" : game.type === "normal" ? "일반" : "아케이드"}전
+                </S.Score>
+                <S.Players>
+                  <S.Player>{game.red}</S.Player>
+                  <S.Versus>vs</S.Versus>
+                  <S.Player>{game.blue}</S.Player>
+                </S.Players>
+                <S.Score>
+                  {game.redScore} : {game.blueScore}
+                </S.Score>
+              </S.HistoryItem>
+            );
+          })}
+      </S.HistoryList>
+      <S.ButtonBox>
+        {user && user.relation === "myself" && <S.Button onClick={handleLogout}>로그아웃</S.Button>}
+        {user && user.relation === "friend" && <S.Button>친구 삭제</S.Button>}
+        {user && user.relation === "others" && <S.Button>친구 추가</S.Button>}
+      </S.ButtonBox>
     </S.ProfileLayout>
   );
 }

@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthContext } from "@hooks/AuthContext";
@@ -40,14 +40,12 @@ function App() {
   }, [authState]);
 
   return (
-    <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <AuthContext.Provider value={authContext}>
-          <main>{authState.isSignIn ? <Auth /> : <Unauth />}</main>;
-        </AuthContext.Provider>
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
-    </StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <AuthContext.Provider value={authContext}>
+        <main style={{ height: "100%" }}>{authState.isSignIn ? <Auth /> : <Unauth />}</main>;
+      </AuthContext.Provider>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
   );
 }
 
