@@ -37,7 +37,7 @@ function App() {
     axios.defaults.baseURL = "http://localhost:81";
     if (authState.token)
       axios.defaults.headers.common["Authorization"] = `Bearer ${authState.token}`;
-  }, [authContext]);
+  }, [authState]);
 
   return (
     <StrictMode>

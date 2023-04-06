@@ -6,9 +6,10 @@ interface userProps {
     rating: number;
     win: number;
     lose: number;
+    relation: "myself" | "friend" | "others";
     gameHistory: [
       {
-        id: number;
+        uniqueId: number;
         red: string;
         blue: string;
         redScore: number;
@@ -33,22 +34,28 @@ export function ProfileData(props: userProps) {
         <S.InfoLabel>
           닉네임
           <br />
+          레이팅
+          <br />
           전적
           <br />
           히스토리
         </S.InfoLabel>
         <S.InfoValue>
-          {user ? user.username : ""}
+          {user && user.username}
           <br />
-          {user ? `${user.win}승 ${user.lose}패` : ""}
+          {user && user.rating}
+          <br />
+          {user && `${user.win}승 ${user.lose}패`}
           <br />
         </S.InfoValue>
       </S.InfoWrapper>
       {user &&
         user.gameHistory.map((game) => {
           return (
-            <S.HistoryItem key={game.id}>
-              <S.Score>{game.type === "rank" ? "경쟁" : "일반"}전</S.Score>
+            <S.HistoryItem key={game.uniqueId}>
+              <S.Score>
+                {game.type === "rank" ? "경쟁" : game.type === "normal" ? "일반" : "아케이드"}전
+              </S.Score>
               <S.Players>
                 <S.Player>{game.red}</S.Player>
                 <S.Versus>vs</S.Versus>
