@@ -45,7 +45,7 @@ export default function signIn({ setSignTo }: signProps) {
         password: pwInput
       }
     ).then(function (res) {
-      setAccessToken(res.data.access_token)
+      setAccessToken(res.data.accessToken)
       console.log(res)
       // setShowInput(true) ------------< 2차 인증 건너뜀
       setSignTo(true)
