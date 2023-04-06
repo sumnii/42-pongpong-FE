@@ -21,9 +21,13 @@ export default function signIn({ setSignTo }: signProps) {
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value)
+    if (formCheck) setFormCheck("")
+    if (showInput) setShowInput(false)
   }
   function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value)
+    if (formCheck) setFormCheck("")
+    if (showInput) setShowInput(false)
   }
   function isComplete(event: eventClickType) {
     event.preventDefault()
@@ -41,13 +45,12 @@ export default function signIn({ setSignTo }: signProps) {
         password: pwInput
       }
     ).then(function (res) {
-      const statusText: string = res.statusText
-      setAccessToken(res.data.access_token)
+      setAccessToken(res.data.accessToken)
       console.log(res)
-      setShowInput(true)
+      // setShowInput(true) ------------< 2차 인증 건너뜀
+      setSignTo(true)
     })
       .catch(function (err) {
-        const statusText: string = err.response.statusText
         console.log(err.response.statusText)
         setFormCheck("아이디 또는 패스워드를 확인해주세요.")
       })
@@ -75,7 +78,7 @@ export default function signIn({ setSignTo }: signProps) {
   function onInputHandler(e: eventChangeType) {
     setAuthInput(e.target.value)
   }
-  function sendAuthHandler(e: eventClickType) {
+  function sendAuthHandler() {
     axios.get("http://localhost:81/auth/get/otp/login",
       {
         headers: {
