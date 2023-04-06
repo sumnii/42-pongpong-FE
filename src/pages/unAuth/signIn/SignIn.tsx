@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "@hooks/UserContext";
+import { AuthContext } from "@hooks/AuthContext";
 import * as S from "./style";
 import axios from "axios";
 
@@ -40,7 +40,7 @@ export default function signIn() {
   }
   function authFirstHandler() {
     axios
-      .post("http://localhost:81/auth/login", {
+      .post("/auth/login", {
         username: idInput,
         password: pwInput,
       })
@@ -56,7 +56,7 @@ export default function signIn() {
           });
       })
       .catch(function (err) {
-        console.log(err.response.statusText);
+        if (err.response) console.log(err.response);
         setFormCheck("아이디 또는 패스워드를 확인해주세요.");
       });
   }
@@ -64,7 +64,7 @@ export default function signIn() {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:81/auth/check/otp/login",
+        "/auth/check/otp/login",
         {
           otp: authInput,
         },
@@ -95,7 +95,7 @@ export default function signIn() {
   }
   function sendAuthHandler() {
     axios
-      .get("http://localhost:81/auth/get/otp/login", {
+      .get("/auth/get/otp/login", {
         headers: {
           Authorization: "Bearer " + accessToken,
         },

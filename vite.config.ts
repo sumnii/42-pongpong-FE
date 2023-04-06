@@ -15,7 +15,7 @@ export default defineConfig({
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: [
-      { find: "@unAuth", replacement: "src/pages/unAuth" },
+      { find: "@unauth", replacement: "src/pages/unauth" },
       { find: "@page", replacement: "src/pages/auth" },
       { find: "@leftSide", replacement: "src/components/leftSide" },
       { find: "@rightSide", replacement: "src/components/rightSide" },

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignIn from "@unAuth/signIn/SignIn";
-import SignUp from "@unAuth/signUp/SignUp";
+import SignIn from "pages/unauth/signIn/SignIn";
+import SignUp from "pages/unauth/signUp/SignUp";
 import * as S from "./style";
 
 function unAuth() {
