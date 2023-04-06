@@ -3,7 +3,7 @@ import SignIn from "@unauth/signIn/SignIn";
 import SignUp from "@unauth/signUp/SignUp";
 import * as S from "./style";
 
-function unAuth() {
+function Unauth() {
   return (
     <S.AppLayout>
       <BrowserRouter>
@@ -17,4 +17,4 @@ function unAuth() {
   );
 }
 
-export default unAuth;
+export default Unauth;

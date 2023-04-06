@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useReducer, useContext } from "react";
+import { StrictMode, useEffect, useReducer } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthContext } from "@hooks/AuthContext";
