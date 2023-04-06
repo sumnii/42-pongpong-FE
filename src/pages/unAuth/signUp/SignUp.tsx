@@ -14,7 +14,9 @@ export default function signUp() {
   const [pwCheck, setPwCheck] = useState("")
   const [phoneInput, setPhoneInput] = useState("")
   const [phoneAuthInput, setPhoneAuthInput] = useState("")
+  const [sendAuthBtn, setSendAuthBtn] = useState(false);
   const [phoneAuthCheck, setPhoneAuthCheck] = useState("")
+  const [checkAuthBtn, setCheckAuthBtn] = useState(false);
   const [formCheck, setFormCheck] = useState("")
   const [accessToken, setAccessToken] = useState("")
 
@@ -51,12 +53,13 @@ export default function signUp() {
         }).then(function (res) {
           console.log(res)
           alert("인증번호를 보냈습니다.")
+          setSendAuthBtn(true)
         }).catch(function (err) {
           console.log(err)
           alert("휴대폰 번호를 확인해주세요.")
         })
     } else {
-      setFormCheck("휴대폰번호를 입력해주세요")
+      setPhoneAuthCheck("휴대폰번호를 입력해주세요.")
     }
   }
 
@@ -72,7 +75,8 @@ export default function signUp() {
           otp: phoneAuthInput
         }).then(function (res) {
           setPhoneAuthCheck("인증완료")
-          setAccessToken(res.data.access_token)
+          setAccessToken(res.data.accessToken)
+          setCheckAuthBtn(true)
           console.log(res)
         }).catch(function (err) {
           setPhoneAuthCheck("인증번호가 일치하지 않습니다.")
@@ -106,9 +110,9 @@ export default function signUp() {
           console.log(err)
         })
     } else {
-      if (!idCheck) setFormCheck("아이디를 확인해주세요.")
-      else if (!pwCheck) setFormCheck("패스워드를 확인해주세요.")
-      else if (!phoneAuthCheck) setFormCheck("휴대폰 인증을 해주세요.")
+      if (!(idCheck === "사용 가능한 아이디입니다.")) setFormCheck("아이디를 확인해주세요.")
+      else if (!(pwCheck === "패스워드가 일치합니다.")) setFormCheck("패스워드를 확인해주세요.")
+      else if (!(phoneAuthCheck === "인증완료")) setFormCheck("휴대폰 인증을 해주세요.")
     }
   }
 
@@ -152,14 +156,14 @@ export default function signUp() {
           <p>{pwCheck}</p>
         </div>
         <div>
-          <input placeholder="휴대폰 번호" required onChange={onPhoneHandler}></input>
-          <button type="button" onClick={sendPhoneAuthHandler}>
-            인증번호 발송
+          <input placeholder="휴대폰 번호" required onChange={onPhoneHandler} disabled={sendAuthBtn}></input>
+          <button type="button" onClick={sendPhoneAuthHandler} disabled={sendAuthBtn}>
+            인증번호 받기
           </button>
         </div>
         <div>
-          <input placeholder="인증 번호" required onChange={onPhoneAuthHandler}></input>
-          <button type="button" onClick={checkPhoneAuthHandler}>
+          <input placeholder="인증 번호" required onChange={onPhoneAuthHandler} disabled={checkAuthBtn}></input>
+          <button type="button" onClick={checkPhoneAuthHandler} disabled={checkAuthBtn}>
             인증
           </button>
           <p>{phoneAuthCheck}</p>
