@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import styled from "@emotion/styled";
 
 export const SignInLayout = styled.div`
   height: 100%;
@@ -9,7 +9,7 @@ export const SignInLayout = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
-`
+`;
 
 export const BtnWrapper = styled.div`
   width: 100%;
@@ -17,4 +17,4 @@ export const BtnWrapper = styled.div`
 
   display: flex;
   justify-content: space-between;
-`
+`;
