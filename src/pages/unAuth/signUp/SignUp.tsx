@@ -27,6 +27,9 @@ export default function signUp() {
 
   function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value)
+    if (pwCheck) {
+      setPwCheck("")
+    }
   }
 
   function onPwCheckHandler(event: eventChangeType) {
