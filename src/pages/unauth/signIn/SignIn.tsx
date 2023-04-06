@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@hooks/AuthContext";
-import * as S from "./style";
-import axios from "axios";
+import * as S from "./style"
+import axios from 'axios'
+import AuthModal from './AuthModal'
+import Modal from './Modal'
 
 type eventChangeType = React.ChangeEvent<HTMLInputElement>;
 type eventClickType = React.MouseEvent<HTMLButtonElement>;
@@ -90,8 +92,8 @@ export default function signIn() {
         alert("인증번호가 틀렸습니다. 다시 시도해주세요");
       });
   }
-  function onInputHandler(e: eventChangeType) {
-    setAuthInput(e.target.value);
+  function onAuthHandler(e: eventChangeType) {
+    setAuthInput(e.target.value)
   }
   function sendAuthHandler() {
     axios
@@ -107,6 +109,7 @@ export default function signIn() {
         console.log(err);
       });
   }
+
 
   return (
     <S.SignInLayout>
@@ -131,16 +134,16 @@ export default function signIn() {
         </S.BtnWrapper>
       </form>
       <span>{formCheck}</span>
-      {showInput && (
-        <form onSubmit={authSecondHandler}>
-          <button type="button" onClick={sendAuthHandler}>
-            휴대폰 인증번호 받기
-          </button>
-          <span>인증번호를 입력하세요</span>
-          <input required onChange={onInputHandler}></input>
-          <button>확인</button>
-        </form>
-      )}
+      {
+        showInput &&
+        <Modal setView={() => setShowInput(false)}>
+          <AuthModal
+          sendFirst={sendAuthHandler}
+          sendSecond={authSecondHandler}
+          auth={onAuthHandler}
+          show={setShowInput} />
+        </Modal>
+      }
     </S.SignInLayout>
   );
 }
