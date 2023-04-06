@@ -18,13 +18,14 @@
     "typeRoots": ["./@types", "./node_modules/@types"],
     "baseUrl": "./src",
     "paths": {
-      "@unAuth/*": ["pages/unAuth/*"],
+      "@unauth/*": ["pages/unauth/*"],
       "@page/*": ["pages/auth/*"],
       "@leftSide/*": ["components/leftSide/*"],
       "@rightSide/*": ["components/rightSide/*"],
       "@centerHeader/*": ["components/centerHeader/*"],
       "@style/*": ["style/*"],
-      "@api/*": ["api/*"]
+      "@api/*": ["api/*"],
+      "@hooks/*": ["hooks/*"]
     }
   },
   "include": ["src"],

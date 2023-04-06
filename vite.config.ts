@@ -15,13 +15,14 @@ export default defineConfig({
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: [
-      { find: "@unAuth", replacement: "src/pages/unAuth" },
+      { find: "@unauth", replacement: "src/pages/unauth" },
       { find: "@page", replacement: "src/pages/auth" },
       { find: "@leftSide", replacement: "src/components/leftSide" },
       { find: "@rightSide", replacement: "src/components/rightSide" },
       { find: "@centerHeader", replacement: "src/components/centerHeader" },
       { find: "@style", replacement: "src/style" },
       { find: "@api", replacement: "src/api" },
+      { find: "@hooks", replacement: "src/hooks" },
     ],
   },
   esbuild: {

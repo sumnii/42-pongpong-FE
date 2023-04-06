@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import * as S from "./style";
 
 export default function Main(props: { setPage: (page: "main" | "chat" | "game") => void }) {
+  useEffect(() => {
+    props.setPage("main");
+  });
+
   return (
     <S.MainLayout>
       <S.H1>welcome to pongpong !</S.H1>
