@@ -22,12 +22,12 @@ const Unauth = loadable(() => {
   return import("@unauth/Unauth");
 });
 
+const initialState = {
+  isSignIn: false,
+};
+
 function App() {
-  const [authState, authDispatch] = useReducer(authReducer, {
-    isSignIn: false,
-    username: null,
-    token: null,
-  });
+  const [authState, authDispatch] = useReducer(authReducer, initialState);
 
   const authContext = { authState, authDispatch };
   // context 잘 설정되어 있는지 확인용 로그
