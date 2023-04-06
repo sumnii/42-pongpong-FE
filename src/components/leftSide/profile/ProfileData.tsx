@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import * as S from "./style";
+import { AuthContext } from "@hooks/AuthContext";
 
 interface userProps {
   user?: {
@@ -24,6 +26,14 @@ interface userProps {
 export function ProfileData(props: userProps) {
   let user;
   if (props) user = props.user;
+
+  const dispatch = useContext(AuthContext)?.authDispatch;
+  const handleLogout = () => {
+    if (dispatch)
+      dispatch({
+        type: "signOut",
+      });
+  };
 
   return (
     <S.ProfileLayout>
@@ -67,6 +77,9 @@ export function ProfileData(props: userProps) {
             </S.HistoryItem>
           );
         })}
+      {user && user.relation === "myself" && <button onClick={handleLogout}>로그아웃</button>}
+      {user && user.relation === "friend" && <button>친구 삭제</button>}
+      {user && user.relation === "others" && <button>친구 추가</button>}
     </S.ProfileLayout>
   );
 }
