@@ -15,8 +15,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const [isSignIn, setIsSignIn] = useState(false);
-
   const [authState, authDispatch] = useReducer(authReducer, {
     isSignIn: false,
     username: "",
@@ -24,13 +22,14 @@ function App() {
   });
 
   const authContext = { authState, authDispatch };
+  // context 잘 설정되어 있는지 확인용 로그
   console.log(authState);
 
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <AuthContext.Provider value={authContext}>
-          <main>{authState.isSignIn ? <Auth /> : <UnAuth setSign={setIsSignIn} />}</main>;
+          <main>{authState.isSignIn ? <Auth /> : <UnAuth />}</main>;
         </AuthContext.Provider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
