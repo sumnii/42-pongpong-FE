@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "@hooks/AuthContext";
 import * as S from "./style";
 import * as user from "api/user";
 import * as auth from "api/auth";
@@ -20,7 +21,8 @@ export default function signUp() {
   const [phoneAuthCheck, setPhoneAuthCheck] = useState("인증완료");
   const [checkAuthBtn, setCheckAuthBtn] = useState(true);
   const [formCheck, setFormCheck] = useState("");
-  const [accessToken, setAccessToken] = useState("");
+
+  const authDispatch = useContext(AuthContext)?.authDispatch;
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
@@ -74,7 +76,11 @@ export default function signUp() {
       const res = await auth.checkOtpSignUp(body);
       if (res && (res.status === 200 || res.status === 201)) {
         setPhoneAuthCheck("인증완료");
-        setAccessToken(res.data.accessToken);
+        authDispatch &&
+          authDispatch({
+            type: "getToken",
+            token: res.data.accessToken,
+          });
         setCheckAuthBtn(true);
         console.log(res);
       } else {
@@ -97,7 +103,6 @@ export default function signUp() {
         username: idInput,
         password: pwInput,
         phonenumber: phoneInput,
-        token: accessToken
       }
       const res = await user.create(userInfo)
       if (res && (res.status === 200 || res.status === 201)) {

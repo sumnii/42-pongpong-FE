@@ -16,7 +16,6 @@ export type userInfoType = {
   username: string;
   password: string;
   phonenumber: string;
-  token: string;
 };
 
 export async function create(userInfo: userInfoType) {
@@ -25,11 +24,6 @@ export async function create(userInfo: userInfoType) {
       username: userInfo.username,
       password: userInfo.password,
       phonenumber: userInfo.phonenumber,
-    },
-    {
-      headers : {
-        Authorization : "Bearer " + userInfo.token
-      }
     });
     return res;
   } catch (err: unknown) {
