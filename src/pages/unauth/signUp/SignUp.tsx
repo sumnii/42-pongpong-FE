@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
-import axios from "axios";
+import * as user from "api/user";
+import * as auth from "api/auth";
 
 type eventChangeType = React.ChangeEvent<HTMLInputElement>;
 type eventClickType = React.MouseEvent<HTMLButtonElement>;
@@ -44,81 +45,68 @@ export default function signUp() {
     setPhoneInput(event.target.value);
   }
 
-  function sendPhoneAuthHandler() {
+  function onPhoneAuthHandler(event: eventChangeType) {
+    setPhoneAuthInput(event.target.value);
+  }
+
+  async function sendPhoneAuthHandler() {
     if (phoneInput) {
-      axios
-        .post("/auth/get/otp/signup", {
-          phonenumber: phoneInput,
-        })
-        .then(function (res) {
-          console.log(res);
-          alert("인증번호를 보냈습니다.");
-          setSendAuthBtn(true);
-        })
-        .catch(function (err) {
-          console.log(err);
-          alert("휴대폰 번호를 확인해주세요.");
-        });
+      const res = await auth.getOtpSignUp(phoneInput);
+      if (res && (res.status === 200 || res.status === 201)) {
+        console.log(res);
+        alert("인증번호를 보냈습니다.");
+        setSendAuthBtn(true);
+      } else {
+        console.log(res);
+        alert("휴대폰 번호를 확인해주세요.");
+      }
     } else {
       setPhoneAuthCheck("휴대폰번호를 입력해주세요.");
     }
   }
 
-  function onPhoneAuthHandler(event: eventChangeType) {
-    setPhoneAuthInput(event.target.value);
-  }
-
-  function checkPhoneAuthHandler() {
+  async function checkPhoneAuthHandler() {
     if (phoneAuthInput) {
-      axios
-        .post("/auth/check/otp/signup", {
-          phonenumber: phoneInput,
-          otp: phoneAuthInput,
-        })
-        .then(function (res) {
-          setPhoneAuthCheck("인증완료");
-          setAccessToken(res.data.accessToken);
-          setCheckAuthBtn(true);
-          console.log(res);
-        })
-        .catch(function (err) {
-          setPhoneAuthCheck("인증번호가 일치하지 않습니다.");
-          console.log(err);
-        });
+      const body = {
+        phonenumber: phoneInput,
+        otp: phoneAuthInput
+      };
+      const res = await auth.checkOtpSignUp(body);
+      if (res && (res.status === 200 || res.status === 201)) {
+        setPhoneAuthCheck("인증완료");
+        setAccessToken(res.data.accessToken);
+        setCheckAuthBtn(true);
+        console.log(res);
+      } else {
+        setPhoneAuthCheck("인증번호가 일치하지 않습니다.");
+        console.log(res);
+      }
     } else {
       setPhoneAuthCheck("인증번호을 입력해주세요.");
     }
   }
 
-  function isComplete(event: eventClickType) {
+  async function isComplete(event: eventClickType) {
     event.preventDefault();
     if (
       idCheck === "사용 가능한 아이디입니다." &&
       pwCheck === "패스워드가 일치합니다." &&
       phoneAuthCheck === "인증완료"
     ) {
-      axios
-        .post(
-          "/user/create",
-          {
-            username: idInput,
-            password: pwInput,
-            phonenumber: phoneInput,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + accessToken,
-            },
-          },
-        )
-        .then(function (res) {
-          alert("회원가입 완료되었습니다.");
-          console.log(res);
-          navigate("/");
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+      const userInfo: user.userInfoType = {
+        username: idInput,
+        password: pwInput,
+        phonenumber: phoneInput,
+        token: accessToken
+      }
+      const res = await user.create(userInfo)
+      if (res && (res.status === 200 || res.status === 201)) {
+        alert("회원가입 완료되었습니다.");
+        console.log(res);
+        navigate("/");
+      } else {
+        console.log(res)
+      }
     } else {
       if (!(idCheck === "사용 가능한 아이디입니다.")) setFormCheck("아이디를 확인해주세요.");
       else if (!(pwCheck === "패스워드가 일치합니다.")) setFormCheck("패스워드를 확인해주세요.");
@@ -126,23 +114,18 @@ export default function signUp() {
     }
   }
 
-  function onCheckIdHandler() {
+  async function onCheckIdHandler() {
     if (!idInput) {
       setIdCheck("아이디를 입력해주세요.");
     } else {
-      axios
-        .get("/auth/exist/" + idInput)
-        .then(function (res) {
-          const isUsing: boolean = res.data.status;
-          if (isUsing) {
-            setIdCheck("이미 존재하는 아이디입니다.");
-          } else {
-            setIdCheck("사용 가능한 아이디입니다.");
-          }
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
+      const res = await auth.existUsername(idInput);
+      if (res && res.status === 200) {
+        const isUsing: boolean = res.data.status;
+        if (isUsing) setIdCheck("이미 존재하는 아이디입니다.");
+        else setIdCheck("사용 가능한 아이디입니다.");
+      } else {
+        console.log(res);
+      }
     }
   }
 
