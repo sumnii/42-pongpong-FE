@@ -23,16 +23,14 @@ export default function signUp() {
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
-    if (idCheck) {
-      setIdCheck("");
-    }
+    if (formCheck) setFormCheck("");
+    if (idCheck) setIdCheck("");
   }
 
   function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value);
-    if (pwCheck) {
-      setPwCheck("");
-    }
+    if (formCheck) setFormCheck("");
+    if (pwCheck) setPwCheck("");
   }
 
   function onPwCheckHandler(event: eventChangeType) {
