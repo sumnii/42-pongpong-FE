@@ -1,10 +1,14 @@
 export interface AuthState {
   isSignIn: boolean;
-  username: string | null;
-  token: string | null;
+  username?: string;
+  token?: string;
 }
 
-export type Action = { type: "signIn"; username: string; token: string } | { type: "signOut" };
+export interface Action {
+  type: "signIn" | "signOut";
+  username?: string;
+  token?: string;
+}
 
 export default function authReducer(authState: AuthState, action: Action) {
   switch (action.type) {
@@ -17,8 +21,6 @@ export default function authReducer(authState: AuthState, action: Action) {
     case "signOut":
       return {
         isSignIn: false,
-        username: null,
-        token: null,
       };
   }
 }

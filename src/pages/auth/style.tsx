@@ -11,7 +11,7 @@ export const LeftSideLayout = styled.div`
   height: 100%;
   width: 20%;
 
-  background-color: green;
+  border-right: 0.5px solid;
 `;
 
 export const CenterLayout = styled.div`

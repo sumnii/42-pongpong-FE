@@ -17,8 +17,7 @@ export const H1 = styled.h1`
 `;
 
 export const TextBold = styled.p`
-  ${font.body};
-  font-weight: 600;
+  ${font.bodyBold};
 `;
 
 export const TextBox = styled.div`
@@ -32,8 +31,9 @@ export const TextBox = styled.div`
 
 export const Text = styled.span`
   display: inline;
-  ${font.body};
   margin: 5px;
+
+  ${font.body};
   ${(props: { featured?: boolean }) => {
     return props.featured ? `color: ${blue}; font-weight: 600;` : "";
   }}

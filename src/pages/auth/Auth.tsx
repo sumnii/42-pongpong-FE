@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthContext } from "@hooks/AuthContext";
 import Main from "@page/main/Main";
 import ChatList from "@page/chatList/ChatList";
 import GameList from "@page/gameList/GameList";
@@ -11,7 +12,8 @@ import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 
 function Auth() {
-  const [profileUser, setProfileUser] = useState("sumsong");
+  const authState = useContext(AuthContext)?.authState;
+  const [profileUser, setProfileUser] = useState(authState?.username);
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
 
   return (
