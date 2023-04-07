@@ -14,7 +14,7 @@ export async function getOtpSignUp(phoneNumber: string) {
   }
 }
 
-export async function checkOtpSignUp(body: {phonenumber: string, otp: string}) {
+export async function checkOtpSignUp(body: { phonenumber: string; otp: string }) {
   try {
     const res = await axios.post(`/auth/check/otp/signup`, {
       phonenumber: body.phonenumber,
@@ -32,6 +32,47 @@ export async function checkOtpSignUp(body: {phonenumber: string, otp: string}) {
 export async function existUsername(username: string) {
   try {
     const res = await axios.get(`/auth/exist/${username}`);
+    return res;
+  } catch (err: unknown) {
+    if (err instanceof AxiosError && err.response) {
+      console.error(err.response);
+      return err.response;
+    }
+  }
+}
+
+export async function getOtpLogin() {
+  try {
+    const res = await axios.get(`/auth/get/otp/login`)
+    return res;
+  } catch (err: unknown) {
+    if (err instanceof AxiosError && err.response) {
+      console.error(err.response);
+      return err.response;
+    }
+  }
+}
+
+export async function checkOtpLogin(OTP: string) {
+  try {
+    const res = await axios.post(`/auth/check/otp/login`, {
+      otp: OTP,
+    });
+    return res;
+  } catch (err: unknown) {
+    if (err instanceof AxiosError && err.response) {
+      console.error(err.response);
+      return err.response;
+    }
+  }
+}
+
+export async function login(body: { username: string; password: string }) {
+  try {
+    const res = await axios.post(`/auth/login`, {
+      username: body.username,
+      password: body.password,
+    });
     return res;
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {

@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@hooks/AuthContext";
-import * as S from "./style"
-import axios from 'axios'
-import AuthModal from './AuthModal'
-import Modal from './Modal'
+import * as S from "./style";
+import AuthModal from './AuthModal';
+import Modal from './Modal';
+import * as auth from "api/auth";
 
 type eventChangeType = React.ChangeEvent<HTMLInputElement>;
 type eventClickType = React.MouseEvent<HTMLButtonElement>;
@@ -15,7 +15,6 @@ export default function signIn() {
   const [idInput, setIdInput] = useState("");
   const [pwInput, setPwInput] = useState("");
   const [formCheck, setFormCheck] = useState("");
-  const [accessToken, setAccessToken] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [authInput, setAuthInput] = useState("");
 
@@ -26,11 +25,17 @@ export default function signIn() {
     if (formCheck) setFormCheck("");
     if (showInput) setShowInput(false);
   }
+
   function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value);
     if (formCheck) setFormCheck("");
     if (showInput) setShowInput(false);
   }
+
+  function onAuthHandler(e: eventChangeType) {
+    setAuthInput(e.target.value)
+  }
+
   function isComplete(event: eventClickType) {
     event.preventDefault();
     if (idInput && pwInput) {
@@ -40,77 +45,54 @@ export default function signIn() {
       else if (!pwInput) setFormCheck("패스워드를 입력해주세요.");
     }
   }
-  function authFirstHandler() {
-    axios
-      .post("/auth/login", {
-        username: idInput,
-        password: pwInput,
-      })
-      .then(function (res) {
-        setAccessToken(res.data.accessToken);
-        console.log(res);
-        // setShowInput(true) ------------< 2차 인증 건너뜀
-        authDispatch &&
-          authDispatch({
-            type: "signIn",
-            username: idInput,
-            token: res.data.accessToken,
-          });
-      })
-      .catch(function (err) {
-        if (err.response) console.log(err.response);
-        setFormCheck("아이디 또는 패스워드를 확인해주세요.");
-      });
+
+  async function authFirstHandler() {
+    const body = {
+      username: idInput,
+      password: pwInput
+    }
+    const res = await auth.login(body);
+    if (res && (res.status === 200 || res.status === 201)) {
+      // setShowInput(true) //------------< 2차 인증 건너뜀
+      authDispatch &&
+        authDispatch({
+          type: "signIn",
+          username: idInput,
+          token: res.data.accessToken,
+        });
+    } else {
+      console.log(res)
+      setFormCheck("아이디 또는 패스워드를 확인해주세요.");
+    }
   }
-  function authSecondHandler(e: eventFormType) {
+
+  async function sendAuthHandler() {
+    const res = await auth.getOtpLogin();
+    if (res && (res.status === 200 || res.status === 201)) {
+      alert("인증번호가 전송되었습니다.");
+      console.log(res);
+    } else {
+      console.log(res)
+    }
+  }
+
+  async function authSecondHandler(e: eventFormType) {
     e.preventDefault();
-    axios
-      .post(
-        "/auth/check/otp/login",
-        {
-          otp: authInput,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + accessToken,
-          },
-        },
-      )
-      .then(function (res) {
-        console.log(res);
-        alert("로그인되었습니다");
-        authDispatch &&
-          authDispatch({
-            type: "signIn",
-            username: idInput,
-            token: res.data.accessToken,
-          });
-      })
-      .catch(function (err) {
-        console.log(err);
-        console.log(authInput);
-        alert("인증번호가 틀렸습니다. 다시 시도해주세요");
-      });
+    const res = await auth.checkOtpLogin(authInput);
+    if (res && (res.status === 200 || res.status === 201)) {
+      alert("로그인되었습니다");
+      authDispatch &&
+        authDispatch({
+          type: "signIn",
+          username: idInput,
+          token: res.data.accessToken,
+        });
+    } else {
+      console.log(res)
+      alert("인증번호가 틀렸습니다. 다시 시도해주세요");
+    }
   }
-  function onAuthHandler(e: eventChangeType) {
-    setAuthInput(e.target.value)
-  }
-  function sendAuthHandler() {
-    axios
-      .get("/auth/get/otp/login", {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-      })
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  }
-
-
+  // ------------------------------- TODO 함수명 수정하기
   return (
     <S.SignInLayout>
       <h1>hello pongpong</h1>
@@ -138,10 +120,10 @@ export default function signIn() {
         showInput &&
         <Modal setView={() => setShowInput(false)}>
           <AuthModal
-          sendFirst={sendAuthHandler}
-          sendSecond={authSecondHandler}
-          auth={onAuthHandler}
-          show={setShowInput} />
+            sendFirst={sendAuthHandler}
+            sendSecond={authSecondHandler}
+            auth={onAuthHandler}
+            show={setShowInput} />
         </Modal>
       }
     </S.SignInLayout>

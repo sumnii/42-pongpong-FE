@@ -119,7 +119,7 @@ export default function signUp() {
       setIdCheck("아이디를 입력해주세요.");
     } else {
       const res = await auth.existUsername(idInput);
-      if (res && res.status === 200) {
+      if (res && (res.status === 200 || res.status === 201)) {
         const isUsing: boolean = res.data.status;
         if (isUsing) setIdCheck("이미 존재하는 아이디입니다.");
         else setIdCheck("사용 가능한 아이디입니다.");
