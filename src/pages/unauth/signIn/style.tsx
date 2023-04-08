@@ -17,26 +17,7 @@ export const BtnWrapper = styled.div`
   width: 100%;
   margin: 10% 0;
   display: flex;
-  justify-content: space-around;
-`
-
-export const Backdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
-`
-
-export const Modal = styled.dialog`
-  width: 80%;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 1px rgba(0,0,0,.08);
-  padding: 0;
-  z-index: 1;
+  justify-content: center;
 `
 
 export const Button = styled.button`
@@ -45,7 +26,8 @@ export const Button = styled.button`
   border-radius: 5px;
   border: 1px solid lightgray;
   line-height: 1.5;
-  width: 40%;
+  width: 30%;
+  margin: 5px;
 `
 
 export const FormLogo = styled.div`
@@ -54,7 +36,7 @@ export const FormLogo = styled.div`
 `
 
 export const Input = styled.input`
-  width: 50%;
+  width: 55%;
   padding: 12px 18px 12px;
   border: 1.5px solid lightgray;
   border-radius: 8px;
@@ -65,10 +47,4 @@ export const Input = styled.input`
 export const Span = styled.span`
   color: red;
   font-size: 11px;
-`
-
-export const ModalButton = styled(Button)`
-  width: 50%;
-  margin: 12px 10px;
-
 `
