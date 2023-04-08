@@ -54,11 +54,11 @@ export default function signIn() {
     }
     const res = await auth.login(body);
     if (res && (res.status === 200 || res.status === 201)) {
-      setShowModal(true) //------------< 2차 인증 건너뜀
+      // setShowModal(true) //------------< 2차 인증 건너뜀
       authDispatch &&
         authDispatch({
-          type: "getToken",
-          // username: idInput,
+          type: "signIn",
+          username: idInput,
           token: res.data.accessToken,
         });
     } else {
