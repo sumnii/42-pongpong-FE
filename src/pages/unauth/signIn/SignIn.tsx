@@ -16,7 +16,7 @@ export default function signIn() {
   const [idInput, setIdInput] = useState("");
   const [pwInput, setPwInput] = useState("");
   const [formCheck, setFormCheck] = useState("");
-  const [showInput, setShowInput] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [authInput, setAuthInput] = useState("");
 
   const authDispatch = useContext(AuthContext)?.authDispatch;
@@ -24,13 +24,13 @@ export default function signIn() {
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
     if (formCheck) setFormCheck("");
-    if (showInput) setShowInput(false);
+    if (showModal) setShowModal(false);
   }
 
   function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value);
     if (formCheck) setFormCheck("");
-    if (showInput) setShowInput(false);
+    if (showModal) setShowModal(false);
   }
 
   function onAuthHandler(e: eventChangeType) {
@@ -54,7 +54,7 @@ export default function signIn() {
     }
     const res = await auth.login(body);
     if (res && (res.status === 200 || res.status === 201)) {
-      setShowInput(true) //------------< 2차 인증 건너뜀
+      setShowModal(true) //------------< 2차 인증 건너뜀
       authDispatch &&
         authDispatch({
           type: "getToken",
@@ -70,7 +70,6 @@ export default function signIn() {
   async function sendAuthHandler() {
     const res = await auth.getOtpLogin();
     if (res && (res.status === 200 || res.status === 201)) {
-      alert("인증번호가 전송되었습니다.");
       console.log(res);
     } else {
       console.log(res)
@@ -90,7 +89,6 @@ export default function signIn() {
         });
     } else {
       console.log(res)
-      alert("인증번호가 틀렸습니다. 다시 시도해주세요");
     }
   }
   // ------------------------------- TODO 함수명 수정하기
@@ -98,13 +96,13 @@ export default function signIn() {
     <S.SignInLayout>
       <div className="signInContainer">
         {
-          showInput &&
-          <Modal setView={() => setShowInput(false)}>
+          showModal &&
+          <Modal setView={() => setShowModal(false)}>
             <AuthModal
               sendFirst={sendAuthHandler}
               sendSecond={authSecondHandler}
               auth={onAuthHandler}
-              show={setShowInput} />
+            />
           </Modal>
         }
         <form>
