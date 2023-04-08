@@ -15,7 +15,7 @@ const queryClient = new QueryClient({
 });
 
 const Auth = loadable(() => {
-  return import("./pages/auth/Auth");
+  return import("@page/Auth");
 });
 
 const Unauth = loadable(() => {

@@ -1,11 +1,15 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
 import * as S from "./style";
 
 export default function ChatList(props: { setPage: (page: "main") => void }) {
+  const navigate = useNavigate();
   useEffect(() => {
+    if (!isAuth()) navigate("/");
     props.setPage("main");
-  }, []);
+  });
 
   const chatInfo = [
     { id: 1, subject: "채팅방 1번", owner: "숨송", participantsCnt: 2 },
