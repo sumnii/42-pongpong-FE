@@ -1,4 +1,4 @@
-import { setSocket } from "socket";
+import { setSocket } from "socket/socket";
 import cookie from "react-cookies";
 
 type Auth = {
@@ -18,7 +18,7 @@ export function setAuth(props: { username: string; token: string }) {
   };
   cookie.save("username", props.username, { path: "/", secure: true });
   cookie.save("token", props.token, { path: "/", secure: true });
-  // setSocket(props.token);
+  setSocket(props.token);
 }
 
 export function distroyAuth() {
