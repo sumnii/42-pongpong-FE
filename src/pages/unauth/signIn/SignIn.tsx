@@ -2,9 +2,10 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@hooks/AuthContext";
 import * as S from "./style";
-import AuthModal from './AuthModal';
-import Modal from './Modal';
+import AuthModal from './modal/AuthModal';
+import Modal from './modal/Modal';
 import * as auth from "api/auth";
+import { RiPingPongFill } from "react-icons/ri"
 
 type eventChangeType = React.ChangeEvent<HTMLInputElement>;
 type eventClickType = React.MouseEvent<HTMLButtonElement>;
@@ -53,11 +54,11 @@ export default function signIn() {
     }
     const res = await auth.login(body);
     if (res && (res.status === 200 || res.status === 201)) {
-      // setShowInput(true) //------------< 2차 인증 건너뜀
+      setShowInput(true) //------------< 2차 인증 건너뜀
       authDispatch &&
         authDispatch({
-          type: "signIn",
-          username: idInput,
+          type: "getToken",
+          // username: idInput,
           token: res.data.accessToken,
         });
     } else {
@@ -95,37 +96,44 @@ export default function signIn() {
   // ------------------------------- TODO 함수명 수정하기
   return (
     <S.SignInLayout>
-      <h1>hello pongpong</h1>
-      <form>
-        <div>
-          <input placeholder="ID" required onChange={onIdHandler}></input>
-        </div>
-        <div>
-          <input placeholder="Password" required onChange={onPwHandler} type="password"></input>
-        </div>
-        <S.BtnWrapper>
-          <button onClick={isComplete}>로그인</button>
-          <button
-            type="button"
-            onClick={() => {
-              navigate("/signUp");
-            }}
-          >
-            회원가입
-          </button>
-        </S.BtnWrapper>
-      </form>
-      <span>{formCheck}</span>
-      {
-        showInput &&
-        <Modal setView={() => setShowInput(false)}>
-          <AuthModal
-            sendFirst={sendAuthHandler}
-            sendSecond={authSecondHandler}
-            auth={onAuthHandler}
-            show={setShowInput} />
-        </Modal>
-      }
+      <div className="signInContainer">
+        {
+          showInput &&
+          <Modal setView={() => setShowInput(false)}>
+            <AuthModal
+              sendFirst={sendAuthHandler}
+              sendSecond={authSecondHandler}
+              auth={onAuthHandler}
+              show={setShowInput} />
+          </Modal>
+        }
+        <form>
+          <S.FormLogo>
+            <RiPingPongFill size={55} />
+          </S.FormLogo>
+          <div className="form-main">
+            <h1>hello pongpong</h1>
+            <div>
+              <S.Input placeholder="ID" onChange={onIdHandler}></S.Input>
+            </div>
+            <div>
+              <S.Input placeholder="Password" required onChange={onPwHandler} type="password"></S.Input>
+            </div>
+            <S.Span>{formCheck}</S.Span>
+            <S.BtnWrapper>
+              <S.Button onClick={isComplete}>로그인</S.Button>
+              <S.Button
+                type="button"
+                onClick={() => {
+                  navigate("/signUp");
+                }}
+              >
+                회원가입
+              </S.Button>
+            </S.BtnWrapper>
+          </div>
+        </form>
+      </div>
     </S.SignInLayout>
   );
 }

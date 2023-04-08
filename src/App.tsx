@@ -42,7 +42,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthContext.Provider value={authContext}>
-        <main style={{ height: "100%" }}>{authState.isSignIn ? <Auth /> : <Unauth />}</main>;
+        <main style={{ height: "100%" }}>{authState.isSignIn ? <Auth /> : <Unauth />}</main>
       </AuthContext.Provider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>
