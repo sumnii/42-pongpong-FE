@@ -2,6 +2,7 @@ import { useContext } from "react";
 import * as S from "./style";
 import { distroyAuth } from "userAuth";
 import { AuthContext } from "@hooks/AuthContext";
+import { disconnectSocket } from "socket/socket";
 
 interface userProps {
   user?: {
@@ -72,16 +73,16 @@ export function ProfileData(props: userProps) {
           })}
       </S.HistoryList>
       <S.ButtonBox>
-        {user && user.relation === "myself" && (
-          <S.Button
-            onClick={() => {
-              distroyAuth();
-              if (setSigned) setSigned(false);
-            }}
-          >
-            로그아웃
-          </S.Button>
-        )}
+        {!user || user.relation === "myself"}
+        <S.Button
+          onClick={() => {
+            distroyAuth();
+            disconnectSocket();
+            if (setSigned) setSigned(false);
+          }}
+        >
+          로그아웃
+        </S.Button>
         {user && user.relation === "friend" && <S.Button>친구 삭제</S.Button>}
         {user && user.relation === "others" && <S.Button>친구 추가</S.Button>}
       </S.ButtonBox>
