@@ -1,20 +1,48 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthContext } from "@hooks/AuthContext";
+import { getUsername } from "userAuth";
+import { getSocket } from "socket/socket";
 import Main from "@page/main/Main";
-import ChatList from "@page/chatList/ChatList";
-import GameList from "@page/gameList/GameList";
-import ChatRoom from "@page/chatRoom/ChatRoom";
-import GameRoom from "@page/gameRoom/GameRoom";
 import Profile from "@leftSide/profile/Profile";
 import ListTabBar from "@centerHeader/ListTabBar";
 import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
+import loadable from "@loadable/component";
+
+const ChatList = loadable(() => {
+  return import("@page/chat/chatList/ChatList");
+});
+const ChatRoom = loadable(() => {
+  return import("@page/chat/chatRoom/ChatRoom");
+});
+const GameList = loadable(() => {
+  return import("@page/game/gameList/GameList");
+});
+const GameRoom = loadable(() => {
+  return import("@page/game/gameRoom/GameRoom");
+});
 
 function Auth() {
-  const authState = useContext(AuthContext)?.authState;
-  const [profileUser, setProfileUser] = useState(authState?.username);
+  const [profileUser, setProfileUser] = useState(getUsername());
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
+
+  useEffect(() => {
+    const socket = getSocket();
+    // 페이지에서 확인하는 이벤트
+    console.log("in page", socket);
+    if (socket) {
+      // 서버에서 완성 전인 이벤트
+      // socket.on("updateFriend", (data) => {
+      //   console.log("friend", data);
+      // });
+      socket.on("updateChatRoomList", (data) => {
+        console.log("chatroom", data);
+      });
+      socket.on("updateMyChatRoomList", (data) => {
+        console.log("my chatroom", data);
+      });
+    }
+  });
 
   return (
     <S.AppLayout>
