@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthContext } from "@hooks/AuthContext";
 import Main from "@page/main/Main";
 import ChatList from "@page/chatList/ChatList";
 import GameList from "@page/gameList/GameList";
@@ -10,10 +9,10 @@ import Profile from "@leftSide/profile/Profile";
 import ListTabBar from "@centerHeader/ListTabBar";
 import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
+import { getUsername } from "userAuth";
 
 function Auth() {
-  const authState = useContext(AuthContext)?.authState;
-  const [profileUser, setProfileUser] = useState(authState?.username);
+  const [profileUser, setProfileUser] = useState(getUsername());
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
 
   return (

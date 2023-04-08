@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import * as S from "./style";
+import { distroyAuth } from "userAuth";
 import { AuthContext } from "@hooks/AuthContext";
 
 interface userProps {
@@ -26,14 +27,7 @@ interface userProps {
 export function ProfileData(props: userProps) {
   let user;
   if (props) user = props.user;
-
-  const dispatch = useContext(AuthContext)?.authDispatch;
-  const handleLogout = () => {
-    if (dispatch)
-      dispatch({
-        type: "signOut",
-      });
-  };
+  const setSigned = useContext(AuthContext);
 
   return (
     <S.ProfileLayout>
@@ -78,7 +72,16 @@ export function ProfileData(props: userProps) {
           })}
       </S.HistoryList>
       <S.ButtonBox>
-        {user && user.relation === "myself" && <S.Button onClick={handleLogout}>로그아웃</S.Button>}
+        {user && user.relation === "myself" && (
+          <S.Button
+            onClick={() => {
+              distroyAuth();
+              if (setSigned) setSigned(false);
+            }}
+          >
+            로그아웃
+          </S.Button>
+        )}
         {user && user.relation === "friend" && <S.Button>친구 삭제</S.Button>}
         {user && user.relation === "others" && <S.Button>친구 추가</S.Button>}
       </S.ButtonBox>

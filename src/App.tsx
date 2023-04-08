@@ -1,10 +1,10 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthContext } from "@hooks/AuthContext";
-import authReducer from "@hooks/authReducer";
+import { getToken, isAuth } from "userAuth";
 import loadable from "@loadable/component";
 import axios from "axios";
+import { AuthContext } from "@hooks/AuthContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,27 +22,18 @@ const Unauth = loadable(() => {
   return import("@unauth/Unauth");
 });
 
-const initialState = {
-  isSignIn: false,
-};
-
 function App() {
-  const [authState, authDispatch] = useReducer(authReducer, initialState);
-
-  const authContext = { authState, authDispatch };
-  // context 잘 설정되어 있는지 확인용 로그
-  console.log(authState);
+  const [isSignIn, setIsSignIn] = useState(isAuth());
 
   useEffect(() => {
     axios.defaults.baseURL = "http://localhost:81";
-    if (authState.token)
-      axios.defaults.headers.common["Authorization"] = `Bearer ${authState.token}`;
-  }, [authState]);
+    if (isSignIn) axios.defaults.headers.common["Authorization"] = `Bearer ${getToken()}`;
+  }, [isSignIn]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContext.Provider value={authContext}>
-        <main style={{ height: "100%" }}>{authState.isSignIn ? <Auth /> : <Unauth />}</main>
+      <AuthContext.Provider value={setIsSignIn}>
+        <main style={{ height: "100%" }}>{isSignIn ? <Auth /> : <Unauth />}</main>;
       </AuthContext.Provider>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>

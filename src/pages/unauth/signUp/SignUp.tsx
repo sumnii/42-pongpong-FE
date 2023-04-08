@@ -23,8 +23,6 @@ export default function signUp() {
   const [checkAuthBtn, setCheckAuthBtn] = useState(true);
   const [formCheck, setFormCheck] = useState("");
 
-  const authDispatch = useContext(AuthContext)?.authDispatch;
-
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
     if (formCheck) setFormCheck("");
@@ -73,16 +71,16 @@ export default function signUp() {
     if (phoneAuthInput) {
       const body = {
         phonenumber: phoneInput,
-        otp: phoneAuthInput
+        otp: phoneAuthInput,
       };
       const res = await auth.checkOtpSignUp(body);
       if (res && (res.status === 200 || res.status === 201)) {
         setPhoneAuthCheck("인증완료");
-        authDispatch &&
-          authDispatch({
-            type: "getToken",
-            token: res.data.accessToken,
-          });
+        // authDispatch &&
+        //   authDispatch({
+        //     type: "getToken",
+        //     token: res.data.accessToken,
+        //   });
         setCheckAuthBtn(true);
         console.log(res);
       } else {
@@ -105,8 +103,8 @@ export default function signUp() {
         username: idInput,
         password: pwInput,
         phonenumber: phoneInput,
-      }
-      const res = await user.create(userInfo)
+      };
+      const res = await user.create(userInfo);
       if (res && (res.status === 200 || res.status === 201)) {
         alert("회원가입 완료되었습니다.");
         console.log(res);
@@ -149,11 +147,18 @@ export default function signUp() {
                   중복확인
                 </S.Button>
               </S.BtnWrapper>
-              <S.Span color={idCheck === "사용 가능한 아이디입니다." ? "green" : "red"}>{idCheck}</S.Span>
+              <S.Span color={idCheck === "사용 가능한 아이디입니다." ? "green" : "red"}>
+                {idCheck}
+              </S.Span>
             </S.InputArea>
             <S.InputArea>
               <S.BtnWrapper>
-                <S.Input1 placeholder="패스워드" required type="password" onChange={onPwHandler}></S.Input1>
+                <S.Input1
+                  placeholder="패스워드"
+                  required
+                  type="password"
+                  onChange={onPwHandler}
+                ></S.Input1>
               </S.BtnWrapper>
             </S.InputArea>
             <S.InputArea>
@@ -165,7 +170,9 @@ export default function signUp() {
                   onChange={onPwCheckHandler}
                 ></S.Input1>
               </S.BtnWrapper>
-              <S.Span color={pwCheck === "패스워드가 일치합니다." ? "green" : "red"}>{pwCheck}</S.Span>
+              <S.Span color={pwCheck === "패스워드가 일치합니다." ? "green" : "red"}>
+                {pwCheck}
+              </S.Span>
             </S.InputArea>
             <S.InputArea>
               <S.BtnWrapper>
@@ -179,7 +186,9 @@ export default function signUp() {
                   인증번호 받기
                 </S.Button>
               </S.BtnWrapper>
-              <S.Span color={phoneCheck === "인증번호를 보냈습니다." ? "green" : "red"}>{phoneCheck}</S.Span>
+              <S.Span color={phoneCheck === "인증번호를 보냈습니다." ? "green" : "red"}>
+                {phoneCheck}
+              </S.Span>
             </S.InputArea>
             <S.InputArea>
               <S.BtnWrapper>
@@ -193,7 +202,9 @@ export default function signUp() {
                   인증
                 </S.Button>
               </S.BtnWrapper>
-              <S.Span color={phoneAuthCheck === "인증완료" ? "green" : "red"}>{phoneAuthCheck}</S.Span>
+              <S.Span color={phoneAuthCheck === "인증완료" ? "green" : "red"}>
+                {phoneAuthCheck}
+              </S.Span>
             </S.InputArea>
             <S.BtnWrapper>
               <S.Button1 onClick={isComplete}>확인</S.Button1>

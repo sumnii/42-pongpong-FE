@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setAuth } from "userAuth";
+import AuthModal from "./modal/AuthModal";
+import Modal from "./modal/Modal";
+import * as auth from "api/auth";
+import { RiPingPongFill } from "react-icons/ri";
 import { AuthContext } from "@hooks/AuthContext";
 import * as S from "./style";
-import AuthModal from './modal/AuthModal';
-import Modal from './modal/Modal';
-import * as auth from "api/auth";
-import { RiPingPongFill } from "react-icons/ri"
 
 type eventChangeType = React.ChangeEvent<HTMLInputElement>;
 type eventClickType = React.MouseEvent<HTMLButtonElement>;
@@ -18,8 +19,7 @@ export default function signIn() {
   const [formCheck, setFormCheck] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [authInput, setAuthInput] = useState("");
-
-  const authDispatch = useContext(AuthContext)?.authDispatch;
+  const setSigned = useContext(AuthContext);
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
@@ -34,7 +34,7 @@ export default function signIn() {
   }
 
   function onAuthHandler(e: eventChangeType) {
-    setAuthInput(e.target.value)
+    setAuthInput(e.target.value);
   }
 
   function isComplete(event: eventClickType) {
@@ -50,19 +50,18 @@ export default function signIn() {
   async function authFirstHandler() {
     const body = {
       username: idInput,
-      password: pwInput
-    }
+      password: pwInput,
+    };
     const res = await auth.login(body);
     if (res && (res.status === 200 || res.status === 201)) {
       // setShowModal(true) //------------< 2차 인증 건너뜀
-      authDispatch &&
-        authDispatch({
-          type: "signIn",
-          username: idInput,
-          token: res.data.accessToken,
-        });
+      if (setSigned) setSigned(true);
+      setAuth({
+        username: idInput,
+        token: res.data.accessToken,
+      });
     } else {
-      console.log(res)
+      console.log(res);
       setFormCheck("아이디 또는 패스워드를 확인해주세요.");
     }
   }
@@ -72,7 +71,7 @@ export default function signIn() {
     if (res && (res.status === 200 || res.status === 201)) {
       console.log(res);
     } else {
-      console.log(res)
+      console.log(res);
     }
   }
 
@@ -80,12 +79,17 @@ export default function signIn() {
     e.preventDefault();
     const res = await auth.checkOtpLogin(authInput);
     if (res && (res.status === 200 || res.status === 201)) {
-      authDispatch &&
-        authDispatch({
-          type: "signIn",
-          username: idInput,
-          token: res.data.accessToken,
-        });
+      if (setSigned) setSigned(true);
+      setAuth({
+        username: idInput,
+        token: res.data.accessToken,
+      });
+      // authDispatch &&
+      //   authDispatch({
+      //     type: "signIn",
+      //     username: idInput,
+      //     token: res.data.accessToken,
+      //   });
     } else {
       console.log(res);
     }
@@ -94,8 +98,7 @@ export default function signIn() {
   return (
     <S.SignInLayout>
       <div className="signInContainer">
-        {
-          showModal &&
+        {showModal && (
           <Modal setView={() => setShowModal(false)}>
             <AuthModal
               sendFirst={sendAuthHandler}
@@ -103,7 +106,7 @@ export default function signIn() {
               auth={onAuthHandler}
             />
           </Modal>
-        }
+        )}
         <form>
           <S.FormLogo>
             <RiPingPongFill size={55} />
@@ -114,7 +117,12 @@ export default function signIn() {
               <S.Input placeholder="ID" onChange={onIdHandler}></S.Input>
             </div>
             <div>
-              <S.Input placeholder="Password" required onChange={onPwHandler} type="password"></S.Input>
+              <S.Input
+                placeholder="Password"
+                required
+                onChange={onPwHandler}
+                type="password"
+              ></S.Input>
             </div>
             <S.Span>{formCheck}</S.Span>
             <S.BtnWrapper>

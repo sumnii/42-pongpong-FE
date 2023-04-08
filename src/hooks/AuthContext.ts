@@ -1,9 +1,5 @@
-import { createContext, Dispatch } from "react";
-import { AuthState, Action } from "./authReducer";
+import { createContext } from "react";
 
-type AuthContextType = {
-  authState: AuthState;
-  authDispatch: Dispatch<Action>;
-};
+type AuthContextType = React.Dispatch<React.SetStateAction<boolean>>;
 
 export const AuthContext = createContext<AuthContextType | null>(null);
