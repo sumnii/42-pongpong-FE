@@ -80,7 +80,6 @@ export default function signIn() {
     e.preventDefault();
     const res = await auth.checkOtpLogin(authInput);
     if (res && (res.status === 200 || res.status === 201)) {
-      alert("로그인되었습니다");
       authDispatch &&
         authDispatch({
           type: "signIn",
@@ -88,7 +87,7 @@ export default function signIn() {
           token: res.data.accessToken,
         });
     } else {
-      console.log(res)
+      console.log(res);
     }
   }
   // ------------------------------- TODO 함수명 수정하기

@@ -26,16 +26,16 @@ function AuthModal(props: modalProps) {
     if (noticeFail) setNoticeFail("");
   }
 
-  function postAuthHandler(e: React.FormEvent<HTMLFormElement>) {
+  async function postAuthHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (authInput) {
-      props.sendSecond(e);
-      setNoticeFail("인증번호가 틀렸습니다. 다시 시도해주세요");
+      await props.sendSecond(e);
+      setNoticeFail("인증번호를 확인해주세요.");
     } else {
       setNoticeFail("인증번호를 입력해주세요.");
     }
   }
-  
+
   return (
     <S.SignInLayout>
       <form onSubmit={postAuthHandler}>
