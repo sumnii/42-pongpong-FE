@@ -46,11 +46,11 @@ function Auth() {
 
   return (
     <S.AppLayout>
-      <S.LeftSideLayout>
-        <Profile username={profileUser} />
-      </S.LeftSideLayout>
-      <S.CenterLayout>
-        <BrowserRouter>
+      <BrowserRouter>
+        <S.LeftSideLayout>
+          <Profile username={profileUser} />
+        </S.LeftSideLayout>
+        <S.CenterLayout>
           <ListTabBar />
           <Routes>
             <Route path="/" element={<Main setPage={setInPageOf} />} />
@@ -60,11 +60,11 @@ function Auth() {
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
             {/* TODO: 경로 일치하지 않으면 404 NON FOUND 페이지 */}
           </Routes>
-        </BrowserRouter>
-      </S.CenterLayout>
-      <S.RightSideLayout>
-        <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} />
-      </S.RightSideLayout>
+        </S.CenterLayout>
+        <S.RightSideLayout>
+          <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} />
+        </S.RightSideLayout>
+      </BrowserRouter>
     </S.AppLayout>
   );
 }
