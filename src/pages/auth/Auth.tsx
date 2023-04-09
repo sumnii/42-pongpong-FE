@@ -8,6 +8,7 @@ import ListTabBar from "@centerHeader/ListTabBar";
 import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 import loadable from "@loadable/component";
+import NotFound from "pages/NotFound";
 
 const ChatList = loadable(() => {
   return import("@page/chat/chatList/ChatList");
@@ -58,6 +59,7 @@ function Auth() {
             <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />
             <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
+            <Route path={"*"} element={<NotFound />} />
             {/* TODO: 경로 일치하지 않으면 404 NON FOUND 페이지 */}
           </Routes>
         </S.CenterLayout>
