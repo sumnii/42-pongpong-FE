@@ -27,23 +27,23 @@ function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
 
-  useEffect(() => {
-    const socket = getSocket();
-    // 페이지에서 확인하는 이벤트
-    console.log("in page", socket);
-    if (socket) {
-      // 서버에서 완성 전인 이벤트
-      // socket.on("updateFriend", (data) => {
-      //   console.log("friend", data);
-      // });
-      socket.on("updateChatRoomList", (data) => {
-        console.log("chatroom", data);
-      });
-      socket.on("updateMyChatRoomList", (data) => {
-        console.log("my chatroom", data);
-      });
-    }
-  });
+  // useEffect(() => {
+  //   const socket = getSocket();
+  //   // 페이지에서 확인하는 이벤트
+  //   console.log("in page", socket);
+  //   if (socket) {
+  //     // 서버에서 완성 전인 이벤트
+  //     // socket.on("updateFriend", (data) => {
+  //     //   console.log("friend", data);
+  //     // });
+  //     socket.on("updateChatRoomList", (data) => {
+  //       console.log("chatroom", data);
+  //     });
+  //     socket.on("updateMyChatRoomList", (data) => {
+  //       console.log("my chatroom", data);
+  //     });
+  //   }
+  // });
 
   return (
     <S.AppLayout>

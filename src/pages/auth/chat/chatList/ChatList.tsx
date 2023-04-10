@@ -4,8 +4,8 @@ import { getAuth, isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
 import * as S from "./style";
 import { getSocket } from "socket/socket";
-import { ChatInfoType, MyChatInfoType } from "@page/chatContext";
 import CreateChatRoom from "../createChatRoom/CreateChatRoom";
+import { ChatInfoType, MyChatInfoType } from "@page/chatContext";
 
 export default function ChatList(props: { setPage: (page: "main") => void }) {
   const navigate = useNavigate();
