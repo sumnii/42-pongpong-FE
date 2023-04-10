@@ -1,18 +1,5 @@
-import { getUsername } from "userAuth";
-import UserList from "./userList/UserList";
-
-function MyProfileButton(props: { setProfileUser: (userId: string) => void }) {
-  const username = getUsername();
-  return (
-    <button
-      onClick={() => {
-        props.setProfileUser(username);
-      }}
-    >
-      내 프로필
-    </button>
-  );
-}
+import MyProfileBtn from "./MyProfileBtn";
+import UserList from "./UserList";
 
 function UserLists(props: {
   inPageOf: "main" | "chat" | "game";
@@ -44,7 +31,7 @@ export default function RightSide(props: {
 }) {
   return (
     <>
-      <MyProfileButton setProfileUser={props.setProfileUser} />
+      <MyProfileBtn setProfileUser={props.setProfileUser} />
       <UserLists inPageOf={props.inPageOf} setProfileUser={props.setProfileUser} />
     </>
   );
