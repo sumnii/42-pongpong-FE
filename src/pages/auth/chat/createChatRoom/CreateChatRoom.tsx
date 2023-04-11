@@ -13,7 +13,6 @@ export default function CreateChatRoom() {
     setShowModal(false);
   }
 
-  console.log(status);
   return (
     <>
       {showModal && (
