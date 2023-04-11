@@ -3,7 +3,7 @@ import { getProfile } from "@api/user";
 import { getUsername } from "userAuth";
 import * as S from "./style";
 
-export default function MyProfileBtn(props: { setProfileUser: (userId: string) => void }) {
+export default function MyProfile(props: { setProfileUser: (userId: string) => void }) {
   const username = getUsername();
   const profileQuery = useQuery({
     queryKey: ["user", username],
