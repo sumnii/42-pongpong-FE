@@ -15,17 +15,23 @@ export default function ChatList(props: { setPage: (page: "main") => void }) {
   useEffect(() => {
     if (!isAuth()) navigate("/");
     props.setPage("main");
+    const socket = getSocket();
+    if (socket) {
+      socket.on("updateChatRoomList", (data: []) => {
+        const tmp: ChatInfoType[] = [];
+        data.map((elem: ChatInfoType) => {
+          if (elem.status !== 'private') {
+            tmp.push(elem);
+          }
+        })
+        setChatInfo([...tmp]);
+      });
+      socket.on("updateMyChatRoomList", (data: []) => {
+        setMyChatInfo([...data]);
+      })
+    }
   }, []);
-  const socket = getSocket();
-  if (socket) {
-    socket.on("updateChatRoomList", (data: []) => {
-      setChatInfo([...data]);
-    });
-    socket.on("updateMyChatRoomList", (data: []) => {
-      setMyChatInfo([...data]);
-    })
-  }
-  
+
   return (
     <S.PageLayout>
       <S.HeaderBox>
