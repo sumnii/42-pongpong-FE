@@ -67,7 +67,6 @@ function Auth() {
             <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
             <Route path={"*"} element={<NotFound />} />
-            {/* TODO: 경로 일치하지 않으면 404 NON FOUND 페이지 */}
           </Routes>
         </S.CenterLayout>
         <S.RightSideLayout>
