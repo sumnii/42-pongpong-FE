@@ -27,7 +27,7 @@ export const Backdrop = styled.div`
 `
 
 export const Modal = styled.dialog`
-  width: 80%;
+  width: 40%;
   border: none;
   border-radius: 12px;
   box-shadow: 0 1px 3px 1px rgba(0,0,0,.08);
