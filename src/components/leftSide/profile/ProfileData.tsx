@@ -3,6 +3,7 @@ import * as S from "./style";
 import { distroyAuth } from "userAuth";
 import { AuthContext } from "@hooks/AuthContext";
 import { disconnectSocket } from "socket/socket";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface userProps {
   user?: {
@@ -29,6 +30,7 @@ export function ProfileData(props: userProps) {
   let user;
   if (props) user = props.user;
   const setSigned = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <S.ProfileLayout>
@@ -79,6 +81,7 @@ export function ProfileData(props: userProps) {
             distroyAuth();
             disconnectSocket();
             if (setSigned) setSigned(false);
+            navigate("/");
           }}
         >
           로그아웃
