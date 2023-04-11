@@ -11,7 +11,7 @@ function Unauth() {
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path={"*"} element={<NotFound />} />
+          <Route path="/*" element={<NotFound />} />
           {/* TODO: 경로 일치하지 않으면 404 NON FOUND 페이지 */}
         </Routes>
       </BrowserRouter>
