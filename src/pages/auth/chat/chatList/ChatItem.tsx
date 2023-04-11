@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import JoinChatRoom from "../joinChatRoom/JoinChatRoom"
 import * as S from "./style"
 
 interface ChatItemProps {
@@ -10,7 +10,6 @@ interface ChatItemProps {
 }
 
 export default function ChatItem(props: ChatItemProps) {
-  const navigate = useNavigate()
 
   return (
     <>
@@ -21,13 +20,7 @@ export default function ChatItem(props: ChatItemProps) {
       {props.head ? (
         <S.EntryBtn head />
       ) : (
-        <S.EntryBtn
-          onClick={() => {
-            navigate(`/chat/${props.no}`)
-          }}
-        >
-          참가
-        </S.EntryBtn>
+        <JoinChatRoom no={props.no} />
       )}
     </>
   )

@@ -30,7 +30,7 @@ export default function ChatList(props: { setPage: (page: "main") => void }) {
         setMyChatInfo([...data]);
       })
     }
-  }, []);
+  }, [chatInfo]);
 
   return (
     <S.PageLayout>
