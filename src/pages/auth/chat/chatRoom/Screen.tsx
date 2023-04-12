@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSocket } from "socket/socket";
 import * as S from './style';
 
@@ -20,7 +20,6 @@ export default function Screen() {
         const res: dataType = data;
         const arr: dataType[] = [...screen, res];
         setScreen(arr);
-        console.log(data);
       })
     }
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
@@ -28,13 +27,12 @@ export default function Screen() {
 
   return (
     <>
-      <h3> 여기 </h3>
       <S.Screen ref={scrollRef}>
         {screen.map((i: dataType) => {
           return (
-            <h1 key={i.from + (keyCnt++)}>
-              {i.from}  : {i.content}
-            </h1>
+            <S.H2 key={i.from + (keyCnt++)}>
+              {i.from} : {i.content}
+            </S.H2>
           );
         })}
       </S.Screen>

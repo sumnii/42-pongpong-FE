@@ -3,7 +3,7 @@ import { isAuth } from "userAuth";
 import { useEffect } from "react";
 import * as S from "./style";
 import Send from "./Send";
-import ChatScreen from "./ChatScreen";
+import Screen from "./Screen";
 import Exit from "./Exit";
 
 export default function ChatRoom(props: { setPage: (page: "chat") => void }) {
@@ -20,8 +20,10 @@ export default function ChatRoom(props: { setPage: (page: "chat") => void }) {
         <S.H2>{roomId}번 채팅방 입장완료</S.H2>
         <Exit room={Number(roomId)} />
       </S.HeaderBox>
-      <ChatScreen />
-      <Send room={Number(roomId)} />
+      <S.MainBox>
+        <Screen />
+        <Send room={Number(roomId)} />
+      </S.MainBox>
     </S.PageLayout>
   );
 }

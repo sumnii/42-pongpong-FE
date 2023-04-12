@@ -66,7 +66,7 @@ function Auth() {
             <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />
             <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
-            <Route path={"*"} element={<NotFound />} />
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </S.CenterLayout>
         <S.RightSideLayout>
