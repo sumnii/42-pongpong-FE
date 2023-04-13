@@ -89,7 +89,7 @@ type JoinEvntType = {
   detail: string;
 };
 
-export const joinChatRoom = (room: string | number, navigate: NavigateFunction) => {
+export const joinChatRoom = (room: string | number, navigate: NavigateFunction): void => {
   const socket = getSocket();
   if (socket) {
     socket.emit("joinChatRoom", {
@@ -101,7 +101,35 @@ export const joinChatRoom = (room: string | number, navigate: NavigateFunction) 
         navigate(`/chat/${room}`);
       } else if (res.status === "warning") {
         alert(res.detail);
-      } else if (res.status === "error" ) {
+      } else if (res.status === "error") {
+        console.log(res.detail);
+      }
+    });
+  }
+};
+
+export const joinPasswdChatRoom = (
+  room: string | number,
+  pass: string,
+  navigate: NavigateFunction,
+  setState: Dispatch<SetStateAction<string>>,
+  setClose: () => void,
+): void => {
+  const socket = getSocket();
+  if (socket) {
+    socket.emit("joinChatRoom", {
+      roomId: room,
+      password: pass,
+    });
+    socket.on("joinChatRoomResult", (data) => {
+      const res: JoinEvntType = data;
+      console.log(res);
+      if (res.status === "approved") {
+        navigate(`/chat/${room}`);
+        setClose();
+      } else if (res.status === "warning") {
+        setState(res.detail);
+      } else if (res.status === "error") {
         console.log(res.detail);
       }
     });

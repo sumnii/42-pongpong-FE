@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { getSocket } from "socket/socket";
 import * as S from "./style";
 import { useState } from "react";
-import ChatRoomModal from "./modal/ChatRoomModal";
 import { joinChatRoom } from "ws/chat";
+import Modal from "./modal/Modal";
+import PassWdModal from "./modal/PassWdModal";
 
 type PropsType = {
   no: string | number;
@@ -32,8 +32,16 @@ export default function JoinChatRoom(props: PropsType) {
   }
   return (
     <>
-      {showModal && <ChatRoomModal close={closeModalHandler} />}
-      <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
+      {showModal && (
+        <Modal setView={closeModalHandler}>
+          <PassWdModal close={closeModalHandler} no={props.no} navigateFn={navigate} />
+        </Modal>
+      )}
+      <S.EntryBtn
+        onClick={
+          props.status !== "protected" ? joinHandler : props.myChat ? joinHandler : showModalHandler
+        }
+      >
         참가
       </S.EntryBtn>
     </>
