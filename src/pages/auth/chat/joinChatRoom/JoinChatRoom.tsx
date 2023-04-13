@@ -1,33 +1,41 @@
-import { useNavigate } from 'react-router-dom'
-import { getSocket } from 'socket/socket';
-import * as S from './style'
+import { useNavigate } from "react-router-dom";
+import { getSocket } from "socket/socket";
+import * as S from "./style";
+import { useState } from "react";
+import ChatRoomModal from "./modal/ChatRoomModal";
+import { joinChatRoom } from "ws/chat";
 
-interface dataType {
-  status: string,
-  detail: string
+type PropsType = {
+  no: string | number;
+  status?: string;
+  myChat?: boolean;
 };
 
-export default function JoinChatRoom(props: { no: string | number }) {
+export default function JoinChatRoom(props: PropsType) {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const showModalHandler = () => {
+    setShowModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
 
   function joinHandler() {
-    const socket = getSocket();
-    if (socket) {
-      socket.emit('joinChatRoom', {
-        "roomId": props.no,
-      });
-      socket.on('joinChatRoomResult', data => {
-        const res: dataType = data;
-        if (res.status === 'approved')
-          navigate(`/chat/${props.no}`);
-        else
-          alert(res.detail);
-      })
+    if (props.myChat) {
+      navigate(`/chat/${props.no}`);
+    } else {
+      joinChatRoom(props.no, navigate);
     }
   }
   return (
-    <S.EntryBtn onClick={joinHandler}>
-      참가
-    </S.EntryBtn>
-  )
+    <>
+      {showModal && <ChatRoomModal close={closeModalHandler} />}
+      <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
+        참가
+      </S.EntryBtn>
+    </>
+  );
 }

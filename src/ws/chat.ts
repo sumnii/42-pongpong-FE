@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { NavigateFunction } from "react-router-dom";
 import { getSocket } from "socket/socket";
 
 export type ChatListType = {
@@ -6,7 +7,6 @@ export type ChatListType = {
   roomId: number;
   status: string;
   title: string;
-  icon?: boolean;
   joining: number;
 };
 
@@ -16,11 +16,7 @@ export const updateChatRoomList = (setState: Dispatch<SetStateAction<ChatListTyp
   socket.on("updateChatRoomList", (data: []) => {
     data.map((elem: ChatListType) => {
       if (elem.status !== "private") {
-        if (elem.status === "protected") {
-          tmp.push({ ...elem, icon: true });
-        } else {
-          tmp.push(elem);
-        }
+        tmp.push(elem);
       }
     });
     setState([...tmp]);
@@ -30,9 +26,7 @@ export const updateChatRoomList = (setState: Dispatch<SetStateAction<ChatListTyp
   });
 };
 
-export const updateMyChatRoomList = (
-  setState: Dispatch<SetStateAction<ChatListType[]>>,
-): void => {
+export const updateMyChatRoomList = (setState: Dispatch<SetStateAction<ChatListType[]>>): void => {
   const socket = getSocket();
   if (socket) {
     socket.on("updateMyChatRoomList", (data: []) => {
@@ -86,6 +80,30 @@ export const onChat = (
     socket.on("chat", (data) => {
       const res: ChatEvntType = data;
       setState([...state, res]);
+    });
+  }
+};
+
+type JoinEvntType = {
+  status: string;
+  detail: string;
+};
+
+export const joinChatRoom = (room: string | number, navigate: NavigateFunction) => {
+  const socket = getSocket();
+  if (socket) {
+    socket.emit("joinChatRoom", {
+      roomId: room,
+    });
+    socket.on("joinChatRoomResult", (data) => {
+      const res: JoinEvntType = data;
+      if (res.status === "approved") {
+        navigate(`/chat/${room}`);
+      } else if (res.status === "warning") {
+        alert(res.detail);
+      } else if (res.status === "error" ) {
+        console.log(res.detail);
+      }
     });
   }
 };
