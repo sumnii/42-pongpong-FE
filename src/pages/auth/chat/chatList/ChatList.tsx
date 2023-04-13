@@ -38,6 +38,7 @@ export default function ChatList(props: propsType) {
                 subject={room.title}
                 owner={getAuth().username}
                 participantsCnt={12}
+                icon={room.icon}
               />
             </S.ChatItem>
           );

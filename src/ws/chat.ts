@@ -5,6 +5,7 @@ export type ChatListType = {
   roomId: number;
   status: string;
   title: string;
+  icon?: boolean;
 };
 
 export const updateChatRoomList = (setState: Dispatch<SetStateAction<ChatListType[]>>): void => {
@@ -13,7 +14,11 @@ export const updateChatRoomList = (setState: Dispatch<SetStateAction<ChatListTyp
   socket.on("updateChatRoomList", (data: []) => {
     data.map((elem: ChatListType) => {
       if (elem.status !== "private") {
-        tmp.push(elem);
+        if (elem.status === "protected") {
+          tmp.push({ ...elem, icon: true });
+        } else {
+          tmp.push(elem);
+        }
       }
     });
     setState([...tmp]);
