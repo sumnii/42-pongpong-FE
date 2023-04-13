@@ -21,6 +21,8 @@ export function getSocket(): Socket {
 }
 
 export function disconnectSocket() {
-  socket.disconnect();
-  console.log("disconnect", socket);
+  if (socket) {
+    socket.disconnect();
+    console.log("disconnect", socket);
+  }
 }
