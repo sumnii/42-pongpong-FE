@@ -135,3 +135,42 @@ export const joinPasswdChatRoom = (
     });
   }
 };
+
+type CreateEvntType = {
+  status: string;
+  detail: string;
+};
+
+export const createChatRoom = (
+  statusInput: string,
+  titleInput: string,
+  pwInput: string,
+  setNotice: Dispatch<SetStateAction<string>>,
+  closeModal: () => void,
+): void => {
+  const socket = getSocket();
+  if (socket) {
+    if (pwInput) {
+      socket.emit("createChatRoom", {
+        status: statusInput,
+        title: titleInput,
+        password: pwInput,
+      });
+    } else {
+      socket.emit("createChatRoom", {
+        status: statusInput,
+        title: titleInput,
+      });
+    }
+    socket.on("createChatRoomResult", (data) => {
+      const res: CreateEvntType = data;
+      if (res.status === "approved") {
+        closeModal();
+      } else if (res.status === "warning") {
+        setNotice(res.detail);
+      } else if (res.status === "error") {
+        console.log(data);
+      }
+    });
+  }
+};
