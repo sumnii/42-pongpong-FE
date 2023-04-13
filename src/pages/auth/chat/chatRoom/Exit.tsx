@@ -6,7 +6,7 @@ interface dataType {
   detail: string
 }
 
-export default function Exit(props: { room: string | number }) {
+export default function Exit(props: { room: number }) {
   const navigate = useNavigate();
   function exitHandler() {
     const socket = getSocket();

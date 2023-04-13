@@ -10,6 +10,8 @@ import loadable from "@loadable/component";
 import NotFound from "pages/NotFound";
 import {
   ChatListType,
+  ChatUserListType,
+  updateChatRoom,
   updateChatRoomList,
   updateMyChatRoomList,
 } from "ws/chat";
@@ -32,11 +34,17 @@ function Auth() {
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
   const [chatList, setChatList] = useState<ChatListType[]>([]);
   const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
+  const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
+  const [roomId, setRoomId] = useState<number>(0);
 
   useEffect(() => {
     updateChatRoomList(setChatList);
     updateMyChatRoomList(setMyChatList);
   }, [chatList, myChatList]);
+
+  useEffect(() => {
+    updateChatRoom(setChatUserList);
+  }, [roomId, chatUserList]);
 
   return (
     <S.AppLayout>
@@ -55,13 +63,16 @@ function Auth() {
               }
             />
             <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />
-            <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
+            <Route
+              path="/chat/:roomId"
+              element={<ChatRoom setPage={setInPageOf} setRoom={setRoomId} />}
+            />
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </S.CenterLayout>
         <S.RightSideLayout>
-          <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} />
+          <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} userList={chatUserList} />
         </S.RightSideLayout>
       </BrowserRouter>
     </S.AppLayout>

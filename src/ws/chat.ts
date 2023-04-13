@@ -174,3 +174,35 @@ export const createChatRoom = (
     });
   }
 };
+
+export type ChatUserListType = {
+  userList: [
+    {
+      username: string;
+      owner: boolean;
+      admin: boolean;
+      login: boolean;
+    },
+  ];
+  banList: [
+    {
+      username: string;
+    },
+  ];
+};
+
+export const updateChatRoom = (
+  setState: Dispatch<SetStateAction<ChatUserListType | null>>,
+): void => {
+  const socket = getSocket();
+  if (socket) {
+    // socket.emit("updateChatRoom", { 
+    //   roomId: room, /// 서버에 roomId에 대한 updateChatRoom 으로 요청하기
+    // });
+    socket.on("updateChatRoom", (data) => {
+      const res: ChatUserListType | null = data;
+      console.log(res);
+      setState(res);
+    });
+  }
+};

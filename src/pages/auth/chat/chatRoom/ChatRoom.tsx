@@ -1,18 +1,26 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import * as S from "./style";
 import Send from "./Send";
 import Screen from "./Screen";
 import Exit from "./Exit";
 
-export default function ChatRoom(props: { setPage: (page: "chat") => void }) {
+type PropsType = {
+  setPage: (page: "chat") => void;
+  setRoom: Dispatch<SetStateAction<number>>
+};
+
+export default function ChatRoom(props: PropsType) {
   const { roomId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAuth()) navigate("/");
     props.setPage("chat");
   });
+  useEffect(() => {
+    props.setRoom(Number(roomId));
+  }, [])
 
   return (
     <S.PageLayout>

@@ -1,6 +1,5 @@
 import * as S from "./style";
 import React, { useState } from "react";
-import { getSocket } from "socket/socket";
 import { createChatRoom } from "ws/chat";
 
 type modalProps = {
