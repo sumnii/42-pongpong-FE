@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getUsername } from "userAuth";
-import { getSocket } from "socket/socket";
 import Main from "@page/main/Main";
 import Profile from "@leftSide/profile/Profile";
 import ListTabBar from "@centerHeader/ListTabBar";
@@ -9,7 +8,12 @@ import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 import loadable from "@loadable/component";
 import NotFound from "pages/NotFound";
-import { ChatListType, MyChatListType } from "ws/chat";
+import {
+  ChatListType,
+  MyChatListType,
+  updateChatRoomList,
+  updateMyChatRoomList,
+} from "ws/chat";
 
 const ChatList = loadable(() => {
   return import("@page/chat/chatList/ChatList");
@@ -31,22 +35,10 @@ function Auth() {
   const [myChatList, setMyChatList] = useState<MyChatListType[]>([]);
 
   useEffect(() => {
-    const socket = getSocket();
-    if (socket) {
-      socket.on("updateChatRoomList", (data: []) => {
-        const tmp: ChatListType[] = [];
-        data.map((elem: ChatListType) => {
-          if (elem.status !== "private") {
-            tmp.push(elem);
-          }
-        });
-        setChatList([...tmp]);
-      });
-      socket.on("updateMyChatRoomList", (data: []) => {
-        setMyChatList([...data]);
-      });
-    }
+    updateChatRoomList(setChatList);
+    updateMyChatRoomList(setMyChatList);
   }, [chatList, myChatList]);
+
   return (
     <S.AppLayout>
       <BrowserRouter>

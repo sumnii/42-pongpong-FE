@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { getSocket } from "socket/socket";
-import { BsSend } from 'react-icons/bs'
-import * as S from './style';
+import { BsSend } from "react-icons/bs";
+import * as S from "./style";
+import { emitChat } from "ws/chat";
 
 export default function Send(props: { room: string | number }) {
   const [chatInput, setChatInput] = useState("");
   const [disableBtn, setDisableBtn] = useState(true);
 
   useEffect(() => {
-    if (chatInput)
+    if (chatInput) {
       setDisableBtn(false);
-    else
+    } else {
       setDisableBtn(true);
-  }, [chatInput])
+    }
+  }, [chatInput]);
 
   function chatInputHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setChatInput(e.target.value);
@@ -21,17 +22,7 @@ export default function Send(props: { room: string | number }) {
   function ChattingHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (chatInput) {
-      const socket = getSocket();
-      if (socket) {
-        socket.emit('chat', {
-          "roomId": props.room,
-          "content": chatInput
-        });
-        setChatInput("");
-        socket.on('chatResult', data => {
-          // console.log(data);
-        })
-      }
+      emitChat(props.room, chatInput, setChatInput);
     }
   }
   return (
@@ -43,5 +34,5 @@ export default function Send(props: { room: string | number }) {
         </S.SendBtn>
       </S.Wrapper>
     </S.Form>
-  )
+  );
 }

@@ -12,6 +12,9 @@ export function setSocket(token: string): Socket {
   });
   // 로그인 시 소켓 연결 확인용 로그
   console.log("init", socket);
+  socket.on("error", (data) => {
+    console.log(data);
+  });
   return socket;
 }
 

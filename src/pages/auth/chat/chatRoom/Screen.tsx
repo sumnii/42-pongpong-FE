@@ -1,36 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import { getSocket } from "socket/socket";
-import * as S from './style';
-
-interface dataType {
-  status: "plain" | "notice"
-  from: string
-  content: string
-}
+import * as S from "./style";
+import { ChatEvntType, onChat } from "ws/chat";
 
 export default function Screen() {
-  const [screen, setScreen] = useState<dataType[]>([]);
+  const [screen, setScreen] = useState<ChatEvntType[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   let keyCnt = 0;
 
   useEffect(() => {
-    const socket = getSocket();
-    if (socket) {
-      socket.on('chat', data => {
-        const res: dataType = data;
-        const arr: dataType[] = [...screen, res];
-        setScreen(arr);
-      })
-    }
+    onChat(screen, setScreen);
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
   }, [screen]);
 
   return (
     <>
       <S.Screen ref={scrollRef}>
-        {screen.map((i: dataType) => {
+        {screen.map((i: ChatEvntType) => {
           return (
-            <S.H2 key={i.from + (keyCnt++)}>
+            <S.H2 key={i.from + keyCnt++}>
               {i.from} : {i.content}
             </S.H2>
           );
