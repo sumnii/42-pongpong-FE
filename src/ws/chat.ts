@@ -2,10 +2,12 @@ import { Dispatch, SetStateAction } from "react";
 import { getSocket } from "socket/socket";
 
 export type ChatListType = {
+  owner: string;
   roomId: number;
   status: string;
   title: string;
   icon?: boolean;
+  joining: number;
 };
 
 export const updateChatRoomList = (setState: Dispatch<SetStateAction<ChatListType[]>>): void => {
@@ -28,13 +30,8 @@ export const updateChatRoomList = (setState: Dispatch<SetStateAction<ChatListTyp
   });
 };
 
-export type MyChatListType = {
-  roomId: number;
-  title: string;
-};
-
 export const updateMyChatRoomList = (
-  setState: Dispatch<SetStateAction<MyChatListType[]>>,
+  setState: Dispatch<SetStateAction<ChatListType[]>>,
 ): void => {
   const socket = getSocket();
   if (socket) {

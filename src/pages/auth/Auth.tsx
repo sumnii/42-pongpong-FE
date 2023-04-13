@@ -10,7 +10,6 @@ import loadable from "@loadable/component";
 import NotFound from "pages/NotFound";
 import {
   ChatListType,
-  MyChatListType,
   updateChatRoomList,
   updateMyChatRoomList,
 } from "ws/chat";
@@ -32,7 +31,7 @@ function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
   const [chatList, setChatList] = useState<ChatListType[]>([]);
-  const [myChatList, setMyChatList] = useState<MyChatListType[]>([]);
+  const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
 
   useEffect(() => {
     updateChatRoomList(setChatList);

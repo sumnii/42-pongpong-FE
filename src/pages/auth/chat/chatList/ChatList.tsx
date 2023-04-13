@@ -4,12 +4,12 @@ import { getAuth, isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
 import * as S from "./style";
 import CreateChatRoom from "../createChatRoom/CreateChatRoom";
-import { ChatListType, MyChatListType } from "ws/chat";
+import { ChatListType } from "ws/chat";
 
 type propsType = {
   setPage: (page: "main") => void;
   chatRoom: ChatListType[];
-  myChatRoom: MyChatListType[];
+  myChatRoom: ChatListType[];
 };
 
 export default function ChatList(props: propsType) {
@@ -36,9 +36,9 @@ export default function ChatList(props: propsType) {
               <ChatItem
                 no={room.roomId}
                 subject={room.title}
-                owner={getAuth().username}
-                participantsCnt={12}
-                icon={room.icon}
+                owner={room.owner}
+                participantsCnt={room.joining}
+                status={room.status}
               />
             </S.ChatItem>
           );
@@ -57,8 +57,10 @@ export default function ChatList(props: propsType) {
             <ChatItem
               no={room.roomId}
               subject={room.title}
-              owner={getAuth().username}
-              participantsCnt={12}
+              owner={room.owner}
+              participantsCnt={room.joining}
+              status={room.status}
+              myChat
             />
           </S.ChatItem>
         );
