@@ -8,7 +8,7 @@ interface ChatItemProps {
   participantsCnt: string | number;
   status?: string;
   head?: boolean;
-  myChat?: boolean;
+  room?: string | number | undefined;
 }
 
 export default function ChatItem(props: ChatItemProps) {
@@ -23,10 +23,8 @@ export default function ChatItem(props: ChatItemProps) {
       <S.ParticipantsCnt>{props.participantsCnt}</S.ParticipantsCnt>
       {props.head ? (
         <S.EntryBtn head />
-      ) : props.myChat ? (
-        <JoinChatRoom no={props.no} status={props.status} />
       ) : (
-        <JoinChatRoom no={props.no} status={props.status} />
+        <JoinChatRoom no={props.no} status={props.status} roomId={props.room} />
       )}
     </>
   );

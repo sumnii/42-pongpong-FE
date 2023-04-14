@@ -89,7 +89,11 @@ type JoinEvntType = {
   detail: string;
 };
 
-export const joinChatRoom = (room: string | number, navigate: NavigateFunction): void => {
+export const joinChatRoom = (
+  no: string | number,
+  room: string | number | undefined,
+  navigate: NavigateFunction,
+): void => {
   const socket = getSocket();
   if (socket) {
     socket.emit("joinChatRoom", {
@@ -196,7 +200,7 @@ export const updateChatRoom = (
 ): void => {
   const socket = getSocket();
   if (socket) {
-    // socket.emit("updateChatRoom", { 
+    // socket.emit("updateChatRoom", {
     //   roomId: room, /// 서버에 roomId에 대한 updateChatRoom 으로 요청하기
     // });
     socket.on("updateChatRoom", (data) => {
@@ -208,22 +212,20 @@ export const updateChatRoom = (
 };
 
 type exitEvntType = {
-  status: 'error' | 'approved'
-  detail: string
-}
+  status: "error" | "approved";
+  detail: string;
+};
 
 export const exitChatRoom = (room: number, navigate: NavigateFunction) => {
   const socket = getSocket();
-    if (socket) {
-      socket.emit('exitChatRoom', {
-        "roomId": room
-      });
-      socket.on('exitChatRoomResult', (data) => {
-        const res: exitEvntType = data;
-        if (res.status === 'approved')
-          navigate('/chat/list');
-        else if (res.status === 'error')
-          console.log(res.detail);
-      })
-    }
-}
+  if (socket) {
+    socket.emit("exitChatRoom", {
+      roomId: room,
+    });
+    socket.on("exitChatRoomResult", (data) => {
+      const res: exitEvntType = data;
+      if (res.status === "approved") navigate("/chat/list");
+      else if (res.status === "error") console.log(res.detail);
+    });
+  }
+};

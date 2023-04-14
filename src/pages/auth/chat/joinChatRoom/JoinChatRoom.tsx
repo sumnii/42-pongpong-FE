@@ -8,7 +8,7 @@ import PassWdModal from "./modal/PassWdModal";
 type PropsType = {
   no: string | number;
   status?: string;
-  myChat?: boolean;
+  roomId: string | number | undefined;
 };
 
 export default function JoinChatRoom(props: PropsType) {
@@ -24,24 +24,21 @@ export default function JoinChatRoom(props: PropsType) {
   };
 
   function joinHandler() {
-    if (props.myChat) {
-      navigate(`/chat/${props.no}`);
-    } else {
-      joinChatRoom(props.no, navigate);
-    }
+    joinChatRoom(props.no, props.roomId, navigate);
   }
   return (
     <>
       {showModal && (
         <Modal setView={closeModalHandler}>
-          <PassWdModal close={closeModalHandler} no={props.no} navigateFn={navigate} />
+          <PassWdModal
+            close={closeModalHandler}
+            no={props.no}
+            navigateFn={navigate}
+            room={props.roomId}
+          />
         </Modal>
       )}
-      <S.EntryBtn
-        onClick={
-          props.status !== "protected" ? joinHandler : props.myChat ? joinHandler : showModalHandler
-        }
-      >
+      <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
         참가
       </S.EntryBtn>
     </>

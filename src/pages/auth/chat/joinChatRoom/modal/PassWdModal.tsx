@@ -7,6 +7,7 @@ type modalProps = {
   no: string | number;
   close: () => void;
   navigateFn: NavigateFunction;
+  room: string | number | undefined;
 };
 
 function PassWdModal(props: modalProps) {

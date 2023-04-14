@@ -14,6 +14,8 @@ type propsType = {
 
 export default function ChatList(props: propsType) {
   const navigate = useNavigate();
+  let no1 = 1;
+  let no2 = 1;
 
   useEffect(() => {
     if (!isAuth()) navigate("/");
@@ -32,13 +34,14 @@ export default function ChatList(props: propsType) {
         </S.ChatItem>
         {props.chatRoom.map((room) => {
           return (
-            <S.ChatItem key={room.roomId}>
+            <S.ChatItem key={no1}>
               <ChatItem
-                no={room.roomId}
+                no={no1++}
                 subject={room.title}
                 owner={room.owner}
                 participantsCnt={room.joining}
                 status={room.status}
+                room={room.roomId}
               />
             </S.ChatItem>
           );
@@ -53,14 +56,14 @@ export default function ChatList(props: propsType) {
       </S.ChatItem>
       {props.myChatRoom.map((room) => {
         return (
-          <S.ChatItem key={room.roomId}>
+          <S.ChatItem key={no2}>
             <ChatItem
-              no={room.roomId}
+              no={no2++}
               subject={room.title}
               owner={room.owner}
               participantsCnt={room.joining}
               status={room.status}
-              myChat
+              room={room.roomId}
             />
           </S.ChatItem>
         );
