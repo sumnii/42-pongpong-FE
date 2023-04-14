@@ -1,39 +1,43 @@
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { isAuth } from "userAuth";
+import { getAuth, isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
 import * as S from "./style";
+import CreateChatRoom from "../createChatRoom/CreateChatRoom";
+import { ChatListType, MyChatListType } from "ws/chat";
 
-export default function ChatList(props: { setPage: (page: "main") => void }) {
+type propsType = {
+  setPage: (page: "main") => void;
+  chatRoom: ChatListType[];
+  myChatRoom: MyChatListType[];
+};
+
+export default function ChatList(props: propsType) {
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isAuth()) navigate("/");
     props.setPage("main");
-  });
-
-  const chatInfo = [
-    { id: 1, subject: "채팅방 1번", owner: "숨송", participantsCnt: 2 },
-    { id: 2, subject: "채팅방 2번", owner: "아무개", participantsCnt: 4 },
-  ];
-  let roomCnt = 0;
+  }, []);
 
   return (
     <S.PageLayout>
       <S.HeaderBox>
         <S.H2>참여 가능한 채팅방</S.H2>
+        <CreateChatRoom />
       </S.HeaderBox>
       <S.ChatList>
         <S.ChatItem head>
           <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
         </S.ChatItem>
-        {chatInfo.map((room) => {
+        {props.chatRoom.map((room) => {
           return (
-            <S.ChatItem key={room.id}>
+            <S.ChatItem key={room.roomId}>
               <ChatItem
-                no={(roomCnt += 1)}
-                subject={room.subject}
-                owner={room.owner}
-                participantsCnt={room.participantsCnt}
+                no={room.roomId}
+                subject={room.title}
+                owner={getAuth().username}
+                participantsCnt={12}
               />
             </S.ChatItem>
           );
@@ -43,7 +47,21 @@ export default function ChatList(props: { setPage: (page: "main") => void }) {
       <S.HeaderBox>
         <S.H2>참여중인 채팅방</S.H2>
       </S.HeaderBox>
-      <S.ChatList>{/* 참여중 채팅방 구현 예정 */}</S.ChatList>
+      <S.ChatItem head>
+        <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
+      </S.ChatItem>
+      {props.myChatRoom.map((room) => {
+        return (
+          <S.ChatItem key={room.roomId}>
+            <ChatItem
+              no={room.roomId}
+              subject={room.title}
+              owner={getAuth().username}
+              participantsCnt={12}
+            />
+          </S.ChatItem>
+        );
+      })}
     </S.PageLayout>
   );
 }

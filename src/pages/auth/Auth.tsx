@@ -9,6 +9,7 @@ import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 import loadable from "@loadable/component";
 import NotFound from "pages/NotFound";
+import { ChatListType, MyChatListType } from "ws/chat";
 
 const ChatList = loadable(() => {
   return import("@page/chat/chatList/ChatList");
@@ -26,25 +27,26 @@ const GameRoom = loadable(() => {
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
+  const [chatList, setChatList] = useState<ChatListType[]>([]);
+  const [myChatList, setMyChatList] = useState<MyChatListType[]>([]);
 
   useEffect(() => {
     const socket = getSocket();
-    // 페이지에서 확인하는 이벤트
-    console.log("in page", socket);
     if (socket) {
-      // 서버에서 완성 전인 이벤트
-      // socket.on("updateFriend", (data) => {
-      //   console.log("friend", data);
-      // });
-      socket.on("updateChatRoomList", (data) => {
-        console.log("chatroom", data);
+      socket.on("updateChatRoomList", (data: []) => {
+        const tmp: ChatListType[] = [];
+        data.map((elem: ChatListType) => {
+          if (elem.status !== "private") {
+            tmp.push(elem);
+          }
+        });
+        setChatList([...tmp]);
       });
-      socket.on("updateMyChatRoomList", (data) => {
-        console.log("my chatroom", data);
+      socket.on("updateMyChatRoomList", (data: []) => {
+        setMyChatList([...data]);
       });
     }
-  });
-
+  }, [chatList, myChatList]);
   return (
     <S.AppLayout>
       <BrowserRouter>
@@ -55,7 +57,12 @@ function Auth() {
           <ListTabBar />
           <Routes>
             <Route path="/" element={<Main setPage={setInPageOf} />} />
-            <Route path="/chat/list" element={<ChatList setPage={setInPageOf} />} />
+            <Route
+              path="/chat/list"
+              element={
+                <ChatList setPage={setInPageOf} chatRoom={chatList} myChatRoom={myChatList} />
+              }
+            />
             <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />
             <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
