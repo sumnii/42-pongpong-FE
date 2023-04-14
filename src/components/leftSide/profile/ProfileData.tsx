@@ -56,6 +56,8 @@ export function ProfileData(props: userProps) {
       <S.InfoLabel>히스토리</S.InfoLabel>
       <S.HistoryList>
         {user &&
+          user.gameHistory &&
+          // gameHistory 준비중
           user.gameHistory.map((game) => {
             return (
               <S.HistoryItem key={game.uniqueId}>
