@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import { ChatEvntType, onChat } from "socket/chat";
 
-export default function Screen() {
+export default function Screen(props: { room: number }) {
   const [screen, setScreen] = useState<ChatEvntType[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   let keyCnt = 0;
 
   useEffect(() => {
-    onChat(screen, setScreen);
+    onChat(props.room, screen, setScreen);
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
   }, [screen]);
 

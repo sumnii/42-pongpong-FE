@@ -66,12 +66,14 @@ export const emitChat = (
 };
 
 export type ChatEvntType = {
+  roomId: number;
   status: "plain" | "notice";
   from: string;
   content: string;
 };
 
 export const onChat = (
+  room: number,
   state: ChatEvntType[],
   setState: Dispatch<SetStateAction<ChatEvntType[]>>,
 ): void => {
@@ -79,7 +81,9 @@ export const onChat = (
   if (socket) {
     socket.on("chat", (data) => {
       const res: ChatEvntType = data;
-      setState([...state, res]);
+      console.log(res);
+      if (res.roomId === room)
+        setState([...state, res]);
     });
   }
 };

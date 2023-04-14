@@ -29,7 +29,7 @@ export default function ChatRoom(props: PropsType) {
         <Exit room={Number(roomId)} />
       </S.HeaderBox>
       <S.MainBox>
-        <Screen />
+        <Screen room={Number(roomId)}/>
         <Send room={Number(roomId)} />
       </S.MainBox>
     </S.PageLayout>
