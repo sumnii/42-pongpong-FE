@@ -87,6 +87,7 @@ export const onChat = (
 type JoinEvntType = {
   status: string;
   detail: string;
+  roomId: number;
 };
 
 export const joinChatRoom = (
@@ -103,7 +104,7 @@ export const joinChatRoom = (
       const res: JoinEvntType = data;
       console.log(data);
       if (res.status === "approved") {
-        setRoom(room);
+        setRoom(() => res.roomId);
         navigate(`/chat/${room}`);
       } else if (res.status === "warning") {
         alert(res.detail);
@@ -132,7 +133,7 @@ export const joinPasswdChatRoom = (
       const res: JoinEvntType = data;
       console.log(res);
       if (res.status === "approved") {
-        setRoom(room);
+        setRoom(() => res.roomId);
         navigate(`/chat/${room}`);
         setClose();
       } else if (res.status === "warning") {
@@ -210,9 +211,9 @@ export const updateChatRoom = (
     //   roomId: room, /// 서버에 roomId에 대한 updateChatRoom 으로 요청하기
     // });
     socket.on("updateChatRoom", (data) => {
-      const res: ChatUserListType | null = data;
-      console.log("updateChatRoom", data, room);
-      if (data.roomId === room) {
+      const res: ChatUserListType = data;
+      if (res.roomId === room) {
+        console.log("updateChatRoom", data, room);
         setState(res);
       }
     });
