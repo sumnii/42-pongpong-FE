@@ -55,7 +55,9 @@ export function ProfileData(props: userProps) {
       </S.InfoWrapper>
       <S.InfoLabel>히스토리</S.InfoLabel>
       <S.HistoryList>
-        {/*{user &&
+        {user &&
+          user.gameHistory &&
+          // gameHistory 준비중
           user.gameHistory.map((game) => {
             return (
               <S.HistoryItem key={game.uniqueId}>
@@ -72,7 +74,7 @@ export function ProfileData(props: userProps) {
                 </S.Score>
               </S.HistoryItem>
             );
-          })}*/}
+          })}
       </S.HistoryList>
       <S.ButtonBox>
         {!user || user.relation === "myself"}
