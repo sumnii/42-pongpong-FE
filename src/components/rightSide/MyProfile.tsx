@@ -6,7 +6,7 @@ import * as S from "./style";
 export default function MyProfile(props: { setProfileUser: (userId: string) => void }) {
   const username = getUsername();
   const profileQuery = useQuery({
-    queryKey: ["user", username],
+    queryKey: ["profile", username],
     queryFn: () => {
       return getProfile(username);
     },
@@ -16,12 +16,12 @@ export default function MyProfile(props: { setProfileUser: (userId: string) => v
 
   return (
     <S.MyProfileLayout>
-      <S.UserItem onClick={() => props.setProfileUser(profileQuery?.data.username)}>
+      <S.UserItem onClick={() => props.setProfileUser(profileQuery.data?.username)}>
         <S.TmpImg />
         <span>
-          {profileQuery?.data?.username}
+          {profileQuery.data?.username}
           <br />
-          {profileQuery?.data?.status}
+          {profileQuery.data?.status}
         </span>
       </S.UserItem>
     </S.MyProfileLayout>
