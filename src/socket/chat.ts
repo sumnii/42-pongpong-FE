@@ -19,7 +19,7 @@ export const updateChatRoomList = (setState: Dispatch<SetStateAction<ChatListTyp
         tmp.push(elem);
       }
     });
-    setState([...tmp]);
+    setState(tmp);
   });
   socket.on("error", (data) => {
     console.log(data);
@@ -30,7 +30,7 @@ export const updateMyChatRoomList = (setState: Dispatch<SetStateAction<ChatListT
   const socket = getSocket();
   if (socket) {
     socket.on("updateMyChatRoomList", (data: []) => {
-      setState([...data]);
+      setState(data);
     });
   }
   socket.on("error", (data) => {
