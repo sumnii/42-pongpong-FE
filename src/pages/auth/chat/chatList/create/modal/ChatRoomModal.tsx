@@ -18,6 +18,7 @@ function ChatRoomModal(props: modalProps) {
   function setStatusHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     setStatus(e.target.value);
     if (notice) setNotice("");
+    if (pwInput) setPwInput("");
   }
 
   function setTitleHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -67,6 +68,7 @@ function ChatRoomModal(props: modalProps) {
             placeholder="비밀번호"
             onChange={setPwHandler}
             disabled={status !== "protected"}
+            value={pwInput}
           />
         </S.BtnWrapper>
         <S.Span color="red">{notice}</S.Span>
