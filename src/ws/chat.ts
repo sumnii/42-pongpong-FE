@@ -206,3 +206,24 @@ export const updateChatRoom = (
     });
   }
 };
+
+type exitEvntType = {
+  status: 'error' | 'approved'
+  detail: string
+}
+
+export const exitChatRoom = (room: number, navigate: NavigateFunction) => {
+  const socket = getSocket();
+    if (socket) {
+      socket.emit('exitChatRoom', {
+        "roomId": room
+      });
+      socket.on('exitChatRoomResult', (data) => {
+        const res: exitEvntType = data;
+        if (res.status === 'approved')
+          navigate('/chat/list');
+        else if (res.status === 'error')
+          console.log(res.detail);
+      })
+    }
+}
