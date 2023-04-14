@@ -148,6 +148,7 @@ export const joinPasswdChatRoom = (
 type CreateEvntType = {
   status: string;
   detail: string;
+  roomId: number;
 };
 
 export const createChatRoom = (
@@ -156,6 +157,8 @@ export const createChatRoom = (
   pwInput: string,
   setNotice: Dispatch<SetStateAction<string>>,
   closeModal: () => void,
+  navigate: NavigateFunction,
+  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -175,6 +178,11 @@ export const createChatRoom = (
       const res: CreateEvntType = data;
       if (res.status === "approved") {
         closeModal();
+        if (statusInput !== "protected") {
+          joinChatRoom(res.roomId, navigate, setRoom);
+        } else {
+          joinPasswdChatRoom(res.roomId, pwInput, navigate, setNotice, closeModal, setRoom);
+        }
       } else if (res.status === "warning") {
         setNotice(res.detail);
       } else if (res.status === "error") {
@@ -212,8 +220,9 @@ export const updateChatRoom = (
     // });
     socket.on("updateChatRoom", (data) => {
       const res: ChatUserListType = data;
+      console.log("updateChatRoom", data, room);
       if (res.roomId === room) {
-        console.log("updateChatRoom", data, room);
+        console.log("----------updateChatRoom---------", data, room);
         setState(res);
       }
     });

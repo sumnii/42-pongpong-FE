@@ -27,7 +27,7 @@ export default function ChatList(props: propsType) {
     <S.PageLayout>
       <S.HeaderBox>
         <S.H2>참여 가능한 채팅방</S.H2>
-        <CreateChatRoom />
+        <CreateChatRoom setRoom={props.setRoom}/>
       </S.HeaderBox>
       <S.ChatList>
         <S.ChatItem head>
