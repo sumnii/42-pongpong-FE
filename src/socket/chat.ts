@@ -113,7 +113,7 @@ export const joinChatRoom = (
 };
 
 export const joinPasswdChatRoom = (
-  room: string | number,
+  room: string | number | undefined,
   pass: string,
   navigate: NavigateFunction,
   setState: Dispatch<SetStateAction<string>>,

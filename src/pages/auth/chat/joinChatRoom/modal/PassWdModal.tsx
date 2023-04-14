@@ -22,7 +22,7 @@ function PassWdModal(props: modalProps) {
   function checkPwHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isComplete()) {
-      joinPasswdChatRoom(props.no, pwInput, props.navigateFn, setNotice, props.close);
+      joinPasswdChatRoom(props.room, pwInput, props.navigateFn, setNotice, props.close);
     } else {
       setNotice("비밀번호를 입력해주세요.");
     }
