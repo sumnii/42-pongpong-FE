@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import JoinChatRoom from "../joinChatRoom/JoinChatRoom";
+import JoinChatRoom from "./join/JoinBtn";
 import * as S from "./style";
 import { RiLockPasswordLine } from "react-icons/ri";
 interface ChatItemProps {
