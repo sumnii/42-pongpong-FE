@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import * as S from "./style";
-import { emitChat } from "ws/chat";
+import { emitChat } from "socket/chat";
 
 export default function Send(props: { room: string | number }) {
   const [chatInput, setChatInput] = useState("");

@@ -4,7 +4,7 @@ import { getAuth, isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
 import * as S from "./style";
 import CreateChatRoom from "../createChatRoom/CreateChatRoom";
-import { ChatListType } from "ws/chat";
+import { ChatListType } from "socket/chat";
 
 type propsType = {
   setPage: (page: "main") => void;

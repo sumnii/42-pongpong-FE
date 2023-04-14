@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { exitChatRoom } from "ws/chat";
+import { exitChatRoom } from "socket/chat";
 
 export default function Exit(props: { room: number }) {
   const navigate = useNavigate();

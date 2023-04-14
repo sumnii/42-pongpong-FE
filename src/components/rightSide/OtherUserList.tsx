@@ -1,4 +1,4 @@
-import { ChatUserListType } from "ws/chat";
+import { ChatUserListType } from "socket/chat";
 import UserList from "./UserList";
 
 export default function OtherUserList(props: {

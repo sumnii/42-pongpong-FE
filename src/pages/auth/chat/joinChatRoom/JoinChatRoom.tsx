@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
 import { useState } from "react";
-import { joinChatRoom } from "ws/chat";
+import { joinChatRoom } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
 

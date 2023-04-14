@@ -1,7 +1,7 @@
 import * as S from "./style";
 import React, { useState } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { joinPasswdChatRoom } from "ws/chat";
+import { joinPasswdChatRoom } from "socket/chat";
 
 type modalProps = {
   no: string | number;

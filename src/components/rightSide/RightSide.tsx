@@ -1,4 +1,4 @@
-import { ChatUserListType } from "ws/chat";
+import { ChatUserListType } from "socket/chat";
 import MyProfile from "./MyProfile";
 import OtherUserList from "./OtherUserList";
 

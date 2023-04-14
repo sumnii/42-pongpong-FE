@@ -14,7 +14,7 @@ import {
   updateChatRoom,
   updateChatRoomList,
   updateMyChatRoomList,
-} from "ws/chat";
+} from "socket/chat";
 
 const ChatList = loadable(() => {
   return import("@page/chat/chatList/ChatList");

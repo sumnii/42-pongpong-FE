@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as S from "./style";
-import { ChatEvntType, onChat } from "ws/chat";
+import { ChatEvntType, onChat } from "socket/chat";
 
 export default function Screen() {
   const [screen, setScreen] = useState<ChatEvntType[]>([]);
