@@ -21,7 +21,7 @@ export default function MyProfile(props: { setProfileUser: (userId: string) => v
         <span>
           {profileQuery.data?.username}
           <br />
-          {profileQuery.data?.status}
+          온라인
         </span>
       </S.UserItem>
     </S.MyProfileLayout>
