@@ -77,17 +77,18 @@ export function ProfileData(props: userProps) {
           })}
       </S.HistoryList>
       <S.ButtonBox>
-        {!user || user.relation === "myself"}
-        <S.Button
-          onClick={() => {
-            distroyAuth();
-            disconnectSocket();
-            if (setSigned) setSigned(false);
-            navigate("/");
-          }}
-        >
-          로그아웃
-        </S.Button>
+        {(!user || user.relation === "myself") && (
+          <S.Button
+            onClick={() => {
+              distroyAuth();
+              disconnectSocket();
+              if (setSigned) setSigned(false);
+              navigate("/");
+            }}
+          >
+            로그아웃
+          </S.Button>
+        )}
         {user && user.relation === "friend" && <S.Button>친구 삭제</S.Button>}
         {user && user.relation === "others" && <S.Button>친구 추가</S.Button>}
       </S.ButtonBox>
