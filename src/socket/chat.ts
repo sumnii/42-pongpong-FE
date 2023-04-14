@@ -103,13 +103,15 @@ export const joinChatRoom = (
     socket.on("joinChatRoomResult", (data) => {
       const res: JoinEvntType = data;
       console.log(data);
-      if (res.status === "approved") {
-        setRoom(() => res.roomId);
-        navigate(`/chat/${room}`);
-      } else if (res.status === "warning") {
-        alert(res.detail);
-      } else if (res.status === "error") {
-        console.log(res.detail);
+      if (res.roomId === room) {
+        if (res.status === "approved") {
+          setRoom(() => res.roomId);
+          navigate(`/chat/${room}`);
+        } else if (res.status === "warning") {
+          alert(res.detail);
+        } else if (res.status === "error") {
+          console.log(res.detail);
+        }
       }
     });
   }
@@ -132,14 +134,16 @@ export const joinPasswdChatRoom = (
     socket.on("joinChatRoomResult", (data) => {
       const res: JoinEvntType = data;
       console.log(res);
-      if (res.status === "approved") {
-        setRoom(() => res.roomId);
-        navigate(`/chat/${room}`);
-        setClose();
-      } else if (res.status === "warning") {
-        setState(res.detail);
-      } else if (res.status === "error") {
-        console.log(res.detail);
+      if (res.roomId === room) {
+        if (res.status === "approved") {
+          setRoom(() => res.roomId);
+          navigate(`/chat/${room}`);
+          setClose();
+        } else if (res.status === "warning") {
+          setState(res.detail);
+        } else if (res.status === "error") {
+          console.log(res.detail);
+        }
       }
     });
   }
@@ -232,6 +236,7 @@ export const updateChatRoom = (
 type exitEvntType = {
   status: "error" | "approved";
   detail: string;
+  roomId: number;
 };
 
 export const exitChatRoom = (room: number, navigate: NavigateFunction) => {
@@ -242,8 +247,14 @@ export const exitChatRoom = (room: number, navigate: NavigateFunction) => {
     });
     socket.on("exitChatRoomResult", (data) => {
       const res: exitEvntType = data;
-      if (res.status === "approved") navigate("/chat/list");
-      else if (res.status === "error") console.log(res.detail);
+      console.log(data);
+      if (res.roomId === room) {
+        if (res.status === "approved") {
+          navigate("/chat/list");
+        } else if (res.status === "error") {
+          console.log(res.detail);
+        }
+      }
     });
   }
 };
