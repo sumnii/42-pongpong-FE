@@ -1,34 +1,31 @@
-import { useNavigate } from "react-router-dom"
-import * as S from "./style"
-
+import JoinChatRoom from "../joinChatRoom/JoinChatRoom";
+import * as S from "./style";
+import { RiLockPasswordLine } from "react-icons/ri";
 interface ChatItemProps {
-  no: string | number
-  subject: string
-  owner: string
-  participantsCnt: string | number
-  head?: boolean
+  no: string | number;
+  subject: string;
+  owner: string;
+  participantsCnt: string | number;
+  status?: string;
+  head?: boolean;
+  room?: string | number | undefined;
 }
 
 export default function ChatItem(props: ChatItemProps) {
-  const navigate = useNavigate()
-
   return (
     <>
       <S.No>{props.no}</S.No>
-      <S.Subject>{props.subject}</S.Subject>
+      <S.Subject>
+        {props.status === "protected" && <RiLockPasswordLine />}
+        {props.subject}
+      </S.Subject>
       <S.Owner>{props.owner}</S.Owner>
       <S.ParticipantsCnt>{props.participantsCnt}</S.ParticipantsCnt>
       {props.head ? (
         <S.EntryBtn head />
       ) : (
-        <S.EntryBtn
-          onClick={() => {
-            navigate(`/chat/${props.no}`)
-          }}
-        >
-          참가
-        </S.EntryBtn>
+        <JoinChatRoom no={props.no} status={props.status} roomId={props.room} />
       )}
     </>
-  )
+  );
 }
