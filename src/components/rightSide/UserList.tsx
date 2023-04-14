@@ -56,7 +56,7 @@ export default function UserList(props: {
             <span>
               {profileQuery?.data?.username}
               <br />
-              {profileQuery?.data?.status}
+              {profileQuery?.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
             </span>
           </S.UserItem>
         )}
