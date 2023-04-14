@@ -8,7 +8,7 @@ import Exit from "./Exit";
 
 type PropsType = {
   setPage: (page: "chat") => void;
-  setRoom: Dispatch<SetStateAction<number>>
+  //setRoom: Dispatch<SetStateAction<number>>;
 };
 
 export default function ChatRoom(props: PropsType) {
@@ -18,9 +18,9 @@ export default function ChatRoom(props: PropsType) {
     if (!isAuth()) navigate("/");
     props.setPage("chat");
   });
-  useEffect(() => {
-    props.setRoom(Number(roomId));
-  }, [])
+  //useEffect(() => {
+  //  props.setRoom(Number(roomId));
+  //});
 
   return (
     <S.PageLayout>

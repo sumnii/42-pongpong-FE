@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { joinChatRoom } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
@@ -8,7 +8,8 @@ import PassWdModal from "./modal/PassWdModal";
 type PropsType = {
   no: string | number;
   status?: string;
-  roomId: string | number | undefined;
+  roomId: number | undefined;
+  setRoom: Dispatch<SetStateAction<number | undefined>>
 };
 
 export default function JoinChatRoom(props: PropsType) {
@@ -24,7 +25,7 @@ export default function JoinChatRoom(props: PropsType) {
   };
 
   function joinHandler() {
-    joinChatRoom(props.no, props.roomId, navigate);
+    joinChatRoom(props.roomId, navigate, props.setRoom);
   }
   return (
     <>
@@ -35,6 +36,7 @@ export default function JoinChatRoom(props: PropsType) {
             no={props.no}
             navigateFn={navigate}
             room={props.roomId}
+            setRoom={props.setRoom}
           />
         </Modal>
       )}

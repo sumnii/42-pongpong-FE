@@ -1,5 +1,5 @@
 import * as S from "./style";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { joinPasswdChatRoom } from "socket/chat";
 
@@ -7,7 +7,8 @@ type modalProps = {
   no: string | number;
   close: () => void;
   navigateFn: NavigateFunction;
-  room: string | number | undefined;
+  room: number | undefined;
+  setRoom: Dispatch<SetStateAction<number | undefined>>;
 };
 
 function PassWdModal(props: modalProps) {
@@ -22,7 +23,14 @@ function PassWdModal(props: modalProps) {
   function checkPwHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isComplete()) {
-      joinPasswdChatRoom(props.room, pwInput, props.navigateFn, setNotice, props.close);
+      joinPasswdChatRoom(
+        props.room,
+        pwInput,
+        props.navigateFn,
+        setNotice,
+        props.close,
+        props.setRoom,
+      );
     } else {
       setNotice("비밀번호를 입력해주세요.");
     }

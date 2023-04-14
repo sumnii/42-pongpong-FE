@@ -90,9 +90,9 @@ type JoinEvntType = {
 };
 
 export const joinChatRoom = (
-  no: string | number,
-  room: string | number | undefined,
+  room: number | undefined,
   navigate: NavigateFunction,
+  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -101,7 +101,9 @@ export const joinChatRoom = (
     });
     socket.on("joinChatRoomResult", (data) => {
       const res: JoinEvntType = data;
+      console.log(data);
       if (res.status === "approved") {
+        setRoom(room);
         navigate(`/chat/${room}`);
       } else if (res.status === "warning") {
         alert(res.detail);
@@ -113,11 +115,12 @@ export const joinChatRoom = (
 };
 
 export const joinPasswdChatRoom = (
-  room: string | number | undefined,
+  room: number | undefined,
   pass: string,
   navigate: NavigateFunction,
   setState: Dispatch<SetStateAction<string>>,
   setClose: () => void,
+  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -129,6 +132,7 @@ export const joinPasswdChatRoom = (
       const res: JoinEvntType = data;
       console.log(res);
       if (res.status === "approved") {
+        setRoom(room);
         navigate(`/chat/${room}`);
         setClose();
       } else if (res.status === "warning") {
@@ -180,6 +184,7 @@ export const createChatRoom = (
 };
 
 export type ChatUserListType = {
+  roomId: number;
   userList: [
     {
       username: string;
@@ -196,6 +201,7 @@ export type ChatUserListType = {
 };
 
 export const updateChatRoom = (
+  room: number | undefined,
   setState: Dispatch<SetStateAction<ChatUserListType | null>>,
 ): void => {
   const socket = getSocket();
@@ -205,8 +211,10 @@ export const updateChatRoom = (
     // });
     socket.on("updateChatRoom", (data) => {
       const res: ChatUserListType | null = data;
-      console.log(res);
-      setState(res);
+      console.log("updateChatRoom", data, room);
+      if (data.roomId === room) {
+        setState(res);
+      }
     });
   }
 };
