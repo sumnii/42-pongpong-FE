@@ -32,7 +32,6 @@ const GameRoom = loadable(() => {
 
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
-  const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
   const [chatList, setChatList] = useState<ChatListType[]>([]);
   const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
@@ -57,26 +56,21 @@ function Auth() {
           <S.CenterLayout>
             <ListTabBar />
             <Routes>
-              <Route path="/" element={<Main setPage={setInPageOf} />} />
+              <Route path="/" element={<Main />} />
               <Route
                 path="/chat/list"
                 element={
-                  <ChatList
-                    setPage={setInPageOf}
-                    chatRoom={chatList}
-                    myChatRoom={myChatList}
-                    setRoom={setRoomId}
-                  />
+                  <ChatList chatRoom={chatList} myChatRoom={myChatList} setRoom={setRoomId} />
                 }
               />
-              <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />
-              <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
-              <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
+              <Route path="/game/list" element={<GameList />} />
+              <Route path="/chat/:roomId" element={<ChatRoom />} />
+              <Route path="/game/:gameId" element={<GameRoom />} />
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </S.CenterLayout>
           <S.RightSideLayout>
-            <RightSide inPageOf={inPageOf} userList={chatUserList} />
+            <RightSide userList={chatUserList} />
           </S.RightSideLayout>
         </ProfileContext.Provider>
       </BrowserRouter>

@@ -1,15 +1,11 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
 import GameItem from "./GameItem";
 import * as S from "./style";
 
-export default function GameList(props: { setPage: (page: "main") => void }) {
+export default function GameList() {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuth()) navigate("/");
-    props.setPage("main");
-  });
+  if (!isAuth()) navigate("/");
 
   let gameCnt = 0;
   // 임시 더미데이터

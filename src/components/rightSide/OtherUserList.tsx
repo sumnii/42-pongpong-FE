@@ -2,17 +2,23 @@ import { useLocation } from "react-router-dom";
 import { ChatUserListType } from "socket/chat";
 import UserList from "./UserList";
 
-export default function OtherUserList(props: {
-  inPageOf: "main" | "chat" | "game";
-  chatUsers: ChatUserListType | null;
-}) {
+export default function OtherUserList(props: { chatUsers: ChatUserListType | null }) {
   const path = useLocation().pathname;
-  let match;
+  let page: "main" | "chat" | "game" = "main";
   let roomId: number;
-  if (props.inPageOf !== "main") match = path.match(/\/\w+\/(\d+)/);
-  if (match && match !== undefined) roomId = Number(match[1]);
+  let match;
 
-  switch (props.inPageOf) {
+  if ((match = path.match(/\/$/)) || (match = path.match(/\/(game|chat)\/list/))) {
+    page = "main";
+  } else if ((match = path.match(/\/chat\/(\d+)/))) {
+    page = "chat";
+    roomId = Number(match[1]);
+  } else if ((match = path.match(/\/game\/(\d+)/))) {
+    page = "game";
+    roomId = Number(match[1]);
+  }
+
+  switch (page) {
     case "main":
       return (
         <>
