@@ -1,4 +1,5 @@
-import JoinChatRoom from "../joinChatRoom/JoinChatRoom";
+import { Dispatch, SetStateAction } from "react";
+import JoinChatRoom from "./join/JoinBtn";
 import * as S from "./style";
 import { RiLockPasswordLine } from "react-icons/ri";
 interface ChatItemProps {
@@ -8,7 +9,8 @@ interface ChatItemProps {
   participantsCnt: string | number;
   status?: string;
   head?: boolean;
-  room?: string | number | undefined;
+  room?: number | undefined;
+  setRoom: Dispatch<SetStateAction<number | undefined>>;
 }
 
 export default function ChatItem(props: ChatItemProps) {
@@ -24,7 +26,12 @@ export default function ChatItem(props: ChatItemProps) {
       {props.head ? (
         <S.EntryBtn head />
       ) : (
-        <JoinChatRoom no={props.no} status={props.status} roomId={props.room} />
+        <JoinChatRoom
+          no={props.no}
+          status={props.status}
+          roomId={props.room}
+          setRoom={props.setRoom}
+        />
       )}
     </>
   );

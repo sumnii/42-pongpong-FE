@@ -35,16 +35,16 @@ function Auth() {
   const [chatList, setChatList] = useState<ChatListType[]>([]);
   const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
-  const [roomId, setRoomId] = useState<number>(0);
+  const [roomId, setRoomId] = useState<number | undefined>(0);
 
   useEffect(() => {
     updateChatRoomList(setChatList);
     updateMyChatRoomList(setMyChatList);
-  }, [chatList, myChatList]);
+  }, );
 
   useEffect(() => {
-    updateChatRoom(setChatUserList);
-  }, [roomId, chatUserList]);
+    updateChatRoom(roomId, setChatUserList);
+  }, );
 
   return (
     <S.AppLayout>
@@ -59,14 +59,16 @@ function Auth() {
             <Route
               path="/chat/list"
               element={
-                <ChatList setPage={setInPageOf} chatRoom={chatList} myChatRoom={myChatList} />
+                <ChatList
+                  setPage={setInPageOf}
+                  chatRoom={chatList}
+                  myChatRoom={myChatList}
+                  setRoom={setRoomId}
+                />
               }
             />
             <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />
-            <Route
-              path="/chat/:roomId"
-              element={<ChatRoom setPage={setInPageOf} setRoom={setRoomId} />}
-            />
+            <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>

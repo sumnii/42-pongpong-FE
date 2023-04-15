@@ -1,12 +1,15 @@
 import * as S from "./style";
-import React, { useState } from "react";
-import { createChatRoom } from "socket/chat";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createChatRoom, joinChatRoom } from "socket/chat";
 
 type modalProps = {
   close: () => void;
+  setRoom: Dispatch<SetStateAction<number | undefined>>;
 };
 
 function ChatRoomModal(props: modalProps) {
+  const navigate = useNavigate();
   const [titleInput, setTitleInput] = useState("");
   const [status, setStatus] = useState("");
   const [pwInput, setPwInput] = useState("");
@@ -15,6 +18,7 @@ function ChatRoomModal(props: modalProps) {
   function setStatusHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     setStatus(e.target.value);
     if (notice) setNotice("");
+    if (pwInput) setPwInput("");
   }
 
   function setTitleHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -30,7 +34,7 @@ function ChatRoomModal(props: modalProps) {
   function createChatRoomHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (isComplete()) {
-      createChatRoom(status, titleInput, pwInput, setNotice, props.close);
+      createChatRoom(status, titleInput, pwInput, setNotice, props.close, navigate, props.setRoom);
     } else {
       setNotice("필수 항목을 입력해주세요.");
     }
@@ -49,7 +53,7 @@ function ChatRoomModal(props: modalProps) {
       <form>
         <h1>새로운 채팅방 만들기</h1>
         <S.BtnWrapper>
-          <S.Input placeholder="채팅방 이름" onChange={setTitleHandler} />
+          <S.Input placeholder="채팅방 이름" onChange={setTitleHandler} autoFocus/>
         </S.BtnWrapper>
         <S.BtnWrapper>
           <select onChange={setStatusHandler}>
@@ -64,6 +68,7 @@ function ChatRoomModal(props: modalProps) {
             placeholder="비밀번호"
             onChange={setPwHandler}
             disabled={status !== "protected"}
+            value={pwInput}
           />
         </S.BtnWrapper>
         <S.Span color="red">{notice}</S.Span>

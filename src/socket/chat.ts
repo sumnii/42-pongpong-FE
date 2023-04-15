@@ -91,12 +91,13 @@ export const onChat = (
 type JoinEvntType = {
   status: string;
   detail: string;
+  roomId: number;
 };
 
 export const joinChatRoom = (
-  no: string | number,
-  room: string | number | undefined,
+  room: number | undefined,
   navigate: NavigateFunction,
+  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -105,23 +106,28 @@ export const joinChatRoom = (
     });
     socket.on("joinChatRoomResult", (data) => {
       const res: JoinEvntType = data;
-      if (res.status === "approved") {
-        navigate(`/chat/${room}`);
-      } else if (res.status === "warning") {
-        alert(res.detail);
-      } else if (res.status === "error") {
-        console.log(res.detail);
+      console.log(data);
+      if (res.roomId === room) {
+        if (res.status === "approved") {
+          setRoom(() => res.roomId);
+          navigate(`/chat/${room}`);
+        } else if (res.status === "warning") {
+          alert(res.detail);
+        } else if (res.status === "error") {
+          console.log(res.detail);
+        }
       }
     });
   }
 };
 
 export const joinPasswdChatRoom = (
-  room: string | number,
+  room: number | undefined,
   pass: string,
   navigate: NavigateFunction,
   setState: Dispatch<SetStateAction<string>>,
   setClose: () => void,
+  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -132,13 +138,16 @@ export const joinPasswdChatRoom = (
     socket.on("joinChatRoomResult", (data) => {
       const res: JoinEvntType = data;
       console.log(res);
-      if (res.status === "approved") {
-        navigate(`/chat/${room}`);
-        setClose();
-      } else if (res.status === "warning") {
-        setState(res.detail);
-      } else if (res.status === "error") {
-        console.log(res.detail);
+      if (res.roomId === room) {
+        if (res.status === "approved") {
+          setRoom(() => res.roomId);
+          navigate(`/chat/${room}`);
+          setClose();
+        } else if (res.status === "warning") {
+          setState(res.detail);
+        } else if (res.status === "error") {
+          console.log(res.detail);
+        }
       }
     });
   }
@@ -147,6 +156,7 @@ export const joinPasswdChatRoom = (
 type CreateEvntType = {
   status: string;
   detail: string;
+  roomId: number;
 };
 
 export const createChatRoom = (
@@ -155,6 +165,8 @@ export const createChatRoom = (
   pwInput: string,
   setNotice: Dispatch<SetStateAction<string>>,
   closeModal: () => void,
+  navigate: NavigateFunction,
+  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -174,6 +186,11 @@ export const createChatRoom = (
       const res: CreateEvntType = data;
       if (res.status === "approved") {
         closeModal();
+        if (statusInput !== "protected") {
+          joinChatRoom(res.roomId, navigate, setRoom);
+        } else {
+          joinPasswdChatRoom(res.roomId, pwInput, navigate, setNotice, closeModal, setRoom);
+        }
       } else if (res.status === "warning") {
         setNotice(res.detail);
       } else if (res.status === "error") {
@@ -184,6 +201,7 @@ export const createChatRoom = (
 };
 
 export type ChatUserListType = {
+  roomId: number;
   userList: [
     {
       username: string;
@@ -200,6 +218,7 @@ export type ChatUserListType = {
 };
 
 export const updateChatRoom = (
+  room: number | undefined,
   setState: Dispatch<SetStateAction<ChatUserListType | null>>,
 ): void => {
   const socket = getSocket();
@@ -208,9 +227,12 @@ export const updateChatRoom = (
     //   roomId: room, /// 서버에 roomId에 대한 updateChatRoom 으로 요청하기
     // });
     socket.on("updateChatRoom", (data) => {
-      const res: ChatUserListType | null = data;
-      console.log(res);
-      setState(res);
+      const res: ChatUserListType = data;
+      console.log("updateChatRoom", data, room);
+      if (res.roomId === room) {
+        console.log("----------updateChatRoom---------", data, room);
+        setState(res);
+      }
     });
   }
 };
@@ -218,6 +240,7 @@ export const updateChatRoom = (
 type exitEvntType = {
   status: "error" | "approved";
   detail: string;
+  roomId: number;
 };
 
 export const exitChatRoom = (room: number, navigate: NavigateFunction) => {
@@ -228,8 +251,14 @@ export const exitChatRoom = (room: number, navigate: NavigateFunction) => {
     });
     socket.on("exitChatRoomResult", (data) => {
       const res: exitEvntType = data;
-      if (res.status === "approved") navigate("/chat/list");
-      else if (res.status === "error") console.log(res.detail);
+      console.log(data);
+      if (res.roomId === room) {
+        if (res.status === "approved") {
+          navigate("/chat/list");
+        } else if (res.status === "error") {
+          console.log(res.detail);
+        }
+      }
     });
   }
 };
