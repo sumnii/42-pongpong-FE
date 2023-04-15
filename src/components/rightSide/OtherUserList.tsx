@@ -4,7 +4,7 @@ import UserList from "./UserList";
 export default function OtherUserList(props: {
   inPageOf: "main" | "chat" | "game";
   setProfileUser: (userId: string) => void;
-  chatUsers: ChatUserListType | null
+  chatUsers: ChatUserListType | null;
 }) {
   switch (props.inPageOf) {
     case "main":
@@ -15,7 +15,20 @@ export default function OtherUserList(props: {
         </>
       );
     case "chat":
-      return <UserList listOf={"participant"} setProfileUser={props.setProfileUser} chatUserList={props.chatUsers}/>;
+      return (
+        <>
+          <UserList
+            listOf={"participant"}
+            setProfileUser={props.setProfileUser}
+            chatUserList={props.chatUsers}
+          />
+          <UserList
+            listOf={"banned"}
+            setProfileUser={props.setProfileUser}
+            chatUserList={props.chatUsers}
+          />
+        </>
+      );
     case "game":
       return (
         <>

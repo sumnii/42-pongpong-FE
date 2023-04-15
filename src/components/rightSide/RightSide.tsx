@@ -10,7 +10,11 @@ export default function RightSide(props: {
   return (
     <>
       <MyProfile setProfileUser={props.setProfileUser} />
-      <OtherUserList inPageOf={props.inPageOf} setProfileUser={props.setProfileUser} chatUsers={props.userList}/>
+      <OtherUserList
+        inPageOf={props.inPageOf}
+        setProfileUser={props.setProfileUser}
+        chatUsers={props.userList}
+      />
     </>
   );
 }

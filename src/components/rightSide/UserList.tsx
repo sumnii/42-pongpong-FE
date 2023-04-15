@@ -5,7 +5,7 @@ import { ChatUserListType } from "socket/chat";
 import { useRef, useState } from "react";
 
 export default function UserList(props: {
-  listOf: "friend" | "dm" | "participant" | "player" | "observer";
+  listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer";
   setProfileUser: (userId: string) => void;
   chatUserList?: ChatUserListType | null;
 }) {
@@ -38,8 +38,8 @@ export default function UserList(props: {
         {props.listOf === "participant" &&
           props.chatUserList?.userList.map((user) => {
             return (
-              <S.UserItem key={cnt++} ref={userRef} >
-                <S.TmpImg id={user.username} onClick={onDropMenuHandler}/>
+              <S.UserItem key={cnt++} ref={userRef}>
+                <S.TmpImg id={user.username} onClick={onDropMenuHandler} />
                 <span>
                   {user.username}
                   <br />
