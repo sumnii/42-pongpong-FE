@@ -50,6 +50,8 @@ export const No = styled.span`
 
 export const Subject = styled.span`
   width: 60%;
+  display: flex;
+  align-items: center;
 `
 
 export const Owner = styled.span`

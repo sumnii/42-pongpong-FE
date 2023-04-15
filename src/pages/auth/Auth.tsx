@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getUsername } from "userAuth";
-import { getSocket } from "socket/socket";
 import Main from "@page/main/Main";
 import Profile from "@leftSide/profile/Profile";
 import ListTabBar from "@centerHeader/ListTabBar";
@@ -9,7 +8,13 @@ import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 import loadable from "@loadable/component";
 import NotFound from "pages/NotFound";
-import { ChatListType, MyChatListType } from "ws/chat";
+import {
+  ChatListType,
+  ChatUserListType,
+  updateChatRoom,
+  updateChatRoomList,
+  updateMyChatRoomList,
+} from "socket/chat";
 
 const ChatList = loadable(() => {
   return import("@page/chat/chatList/ChatList");
@@ -28,25 +33,19 @@ function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
   const [chatList, setChatList] = useState<ChatListType[]>([]);
-  const [myChatList, setMyChatList] = useState<MyChatListType[]>([]);
+  const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
+  const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
+  const [roomId, setRoomId] = useState<number | undefined>(0);
 
   useEffect(() => {
-    const socket = getSocket();
-    if (socket) {
-      socket.on("updateChatRoomList", (data: []) => {
-        const tmp: ChatListType[] = [];
-        data.map((elem: ChatListType) => {
-          if (elem.status !== "private") {
-            tmp.push(elem);
-          }
-        });
-        setChatList([...tmp]);
-      });
-      socket.on("updateMyChatRoomList", (data: []) => {
-        setMyChatList([...data]);
-      });
-    }
-  }, [chatList, myChatList]);
+    updateChatRoomList(setChatList);
+    updateMyChatRoomList(setMyChatList);
+  }, );
+
+  useEffect(() => {
+    updateChatRoom(roomId, setChatUserList);
+  }, );
+
   return (
     <S.AppLayout>
       <BrowserRouter>
@@ -60,17 +59,22 @@ function Auth() {
             <Route
               path="/chat/list"
               element={
-                <ChatList setPage={setInPageOf} chatRoom={chatList} myChatRoom={myChatList} />
+                <ChatList
+                  setPage={setInPageOf}
+                  chatRoom={chatList}
+                  myChatRoom={myChatList}
+                  setRoom={setRoomId}
+                />
               }
             />
             <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />
             <Route path="/chat/:roomId" element={<ChatRoom setPage={setInPageOf} />} />
             <Route path="/game/:gameId" element={<GameRoom setPage={setInPageOf} />} />
-            <Route path={"*"} element={<NotFound />} />
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </S.CenterLayout>
         <S.RightSideLayout>
-          <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} />
+          <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} userList={chatUserList} />
         </S.RightSideLayout>
       </BrowserRouter>
     </S.AppLayout>

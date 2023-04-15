@@ -114,7 +114,7 @@ export default function signIn() {
           <div className="form-main">
             <h1>hello pongpong</h1>
             <div>
-              <S.Input placeholder="ID" onChange={onIdHandler}></S.Input>
+              <S.Input placeholder="ID" onChange={onIdHandler} autoFocus></S.Input>
             </div>
             <div>
               <S.Input
