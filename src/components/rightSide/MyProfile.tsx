@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@api/user";
 import { getUsername } from "userAuth";
+import { useContext } from "react";
+import { ProfileContext } from "@hooks/ProfileContext";
 import * as S from "./style";
 
-export default function MyProfile(props: { setProfileUser: (userId: string) => void }) {
+export default function MyProfile() {
   const username = getUsername();
   const profileQuery = useQuery({
     queryKey: ["profile", username],
@@ -11,12 +13,17 @@ export default function MyProfile(props: { setProfileUser: (userId: string) => v
       return getProfile(username);
     },
   });
+  const setProfileUser = useContext(ProfileContext);
 
   if (profileQuery.isLoading) return <S.UserItem />;
 
   return (
     <S.MyProfileLayout>
-      <S.UserItem onClick={() => props.setProfileUser(profileQuery.data?.username)}>
+      <S.UserItem
+        onClick={() => {
+          setProfileUser && setProfileUser(profileQuery.data?.username);
+        }}
+      >
         <S.TmpImg />
         <span>
           {profileQuery.data?.username}

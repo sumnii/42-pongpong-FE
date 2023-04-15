@@ -4,7 +4,6 @@ import UserList from "./UserList";
 
 export default function OtherUserList(props: {
   inPageOf: "main" | "chat" | "game";
-  setProfileUser: (userId: string) => void;
   chatUsers: ChatUserListType | null;
 }) {
   const path = useLocation().pathname;
@@ -17,30 +16,22 @@ export default function OtherUserList(props: {
     case "main":
       return (
         <>
-          <UserList listOf={"friend"} setProfileUser={props.setProfileUser} />
-          <UserList listOf={"dm"} setProfileUser={props.setProfileUser} />
+          <UserList listOf={"friend"} />
+          <UserList listOf={"dm"} />
         </>
       );
     case "chat":
       return (
         <>
-          <UserList
-            listOf={"participant"}
-            setProfileUser={props.setProfileUser}
-            chatUserList={props.chatUsers}
-          />
-          <UserList
-            listOf={"banned"}
-            setProfileUser={props.setProfileUser}
-            chatUserList={props.chatUsers}
-          />
+          <UserList listOf={"participant"} chatUserList={props.chatUsers} />
+          <UserList listOf={"banned"} chatUserList={props.chatUsers} />
         </>
       );
     case "game":
       return (
         <>
-          <UserList listOf="player" setProfileUser={props.setProfileUser} />
-          <UserList listOf="observer" setProfileUser={props.setProfileUser} />
+          <UserList listOf="player" />
+          <UserList listOf="observer" />
         </>
       );
   }

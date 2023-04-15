@@ -2,13 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@api/user";
 import * as S from "./style";
 import { ChatUserListType } from "socket/chat";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { ProfileContext } from "@hooks/ProfileContext";
 
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer";
-  setProfileUser: (userId: string) => void;
   chatUserList?: ChatUserListType | null;
 }) {
+  const setProfileUser = useContext(ProfileContext);
   let cnt = 0;
   const [dropMenu, setDropMenu] = useState(false);
   const [id, setId] = useState("");
@@ -24,6 +25,10 @@ export default function UserList(props: {
 
   if (profileQuery.isLoading) return <S.UserListLayout></S.UserListLayout>;
   if (profileQuery.isError) console.log(profileQuery.error);
+
+  // friend, dm -> 메인/소켓
+  // participant, banned -> 채팅/소켓
+  // player, observer -> 게임/소켓
 
   const onDropMenuHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     setId(e.currentTarget.id);
@@ -51,7 +56,12 @@ export default function UserList(props: {
             );
           })}
         {props.listOf !== "participant" && (
-          <S.UserItem key={1} onClick={() => props.setProfileUser(profileQuery?.data.username)}>
+          <S.UserItem
+            key={1}
+            onClick={() => {
+              setProfileUser && setProfileUser(profileQuery?.data.username);
+            }}
+          >
             <S.TmpImg />
             <span>
               {profileQuery?.data?.username}
