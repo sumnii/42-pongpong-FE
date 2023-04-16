@@ -5,11 +5,18 @@ import { ChatUserListType } from "socket/chat";
 import UserInfo from "./UserInfo";
 import * as S from "./style";
 
+// friend, dm -> 메인/소켓
+// participant, banned -> 채팅/소켓
+// player, observer -> 게임/소켓
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer";
   chatUserList?: ChatUserListType | null;
 }) {
   const [isDrop, setIsDrop] = useState(false);
+
+  function handleDrop() {
+    setIsDrop(!isDrop);
+  }
 
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({
@@ -21,15 +28,6 @@ export default function UserList(props: {
 
   if (profileQuery.isLoading) return <S.UserListLayout></S.UserListLayout>;
   if (profileQuery.isError) console.log(profileQuery.error);
-
-  // friend, dm -> 메인/소켓
-  // participant, banned -> 채팅/소켓
-  // player, observer -> 게임/소켓
-
-  // 유저네임 받을 예정
-  function handleDrop() {
-    setIsDrop(!isDrop);
-  }
 
   return (
     <S.UserListLayout>
@@ -48,8 +46,20 @@ export default function UserList(props: {
               </S.UserItem>
             );
           })}
-        {props.listOf !== "participant" && (
-          // 이벤트에 대한 데이터. key 값에 username 넣을 예정
+        {
+          // TODO: 소켓 이벤트 데이터 연동 필요, key 값에 username
+          props.listOf === "banned" && (
+            <S.UserItem>
+              <UserInfo
+                username={profileQuery?.data?.username}
+                subLine="❌ 입장금지"
+                handleDrop={handleDrop}
+              />
+              {isDrop && <>hihi</>}
+            </S.UserItem>
+          )
+        }
+        {!["participant", "banned"].includes(props.listOf) && (
           <S.UserItem>
             <UserInfo
               username={profileQuery?.data?.username}

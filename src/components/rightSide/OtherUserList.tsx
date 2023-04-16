@@ -30,6 +30,7 @@ export default function OtherUserList(props: { chatUsers: ChatUserListType | nul
       return (
         <>
           <UserList listOf={"participant"} chatUserList={props.chatUsers} />
+          {/* TODO: 방장과 admin인지 확인 후 노출 */}
           <UserList listOf={"banned"} chatUserList={props.chatUsers} />
         </>
       );
