@@ -20,9 +20,9 @@ export default defineConfig({
       { find: "@leftSide", replacement: "src/components/leftSide" },
       { find: "@rightSide", replacement: "src/components/rightSide" },
       { find: "@centerHeader", replacement: "src/components/centerHeader" },
-      { find: "@style", replacement: "src/style" },
-      { find: "@api", replacement: "src/api" },
-      { find: "@hooks", replacement: "src/hooks" },
+      // { find: "@style", replacement: "src/style" },
+      // { find: "@api", replacement: "src/api" },
+      // { find: "@hooks", replacement: "src/hooks" },
     ],
   },
   esbuild: {

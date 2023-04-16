@@ -22,10 +22,10 @@
       "@page/*": ["pages/auth/*"],
       "@leftSide/*": ["components/leftSide/*"],
       "@rightSide/*": ["components/rightSide/*"],
-      "@centerHeader/*": ["components/centerHeader/*"],
-      "@style/*": ["style/*"],
-      "@api/*": ["api/*"],
-      "@hooks/*": ["hooks/*"]
+      "@centerHeader/*": ["components/centerHeader/*"]
+      // "@style/*": ["style/*"],
+      // "@api/*": ["api/*"],
+      // "@hooks/*": ["hooks/*"]
     }
   },
   "include": ["src"],
