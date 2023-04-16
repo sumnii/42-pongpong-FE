@@ -53,7 +53,8 @@ export default function UserList(props: {
             return (
               <S.UserItem key={user.username}>
                 <UserInfo
-                  username={user.username + (user.owner ? " 👑" : user.admin ? " 🎩" : "")}
+                  username={user.username}
+                  icon={user.owner ? "👑" : user.admin ? "🎩" : ""}
                   subLine={user.login ? "🔵 온라인" : "⚫️ 오프라인"}
                   handleDrop={() => {
                     handleDrop(user.username);
