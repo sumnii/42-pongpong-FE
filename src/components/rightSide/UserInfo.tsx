@@ -5,7 +5,7 @@ import * as S from "./style";
 export default function UserInfo(props: {
   username: string;
   subLine: string;
-  handleDrop: () => void;
+  handleDrop?: () => void;
 }) {
   const setProfileUser = useContext(ProfileContext);
 
@@ -21,7 +21,7 @@ export default function UserInfo(props: {
         <br />
         {props.subLine}
       </S.UserInfo>
-      <S.MoreIcon onClick={props.handleDrop} />
+      {props.handleDrop && <S.MoreIcon onClick={props.handleDrop} />}
     </>
   );
 }
