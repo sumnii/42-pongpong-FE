@@ -22,7 +22,6 @@ export default function UserList(props: {
   }
 
   const listener = (res: ChatUserListType) => {
-    console.log("updateChatRoom", res);
     setChatUserList(res);
   };
 

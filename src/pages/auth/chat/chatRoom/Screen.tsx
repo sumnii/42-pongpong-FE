@@ -8,10 +8,9 @@ export default function Screen(props: { room: number }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const socket = getSocket();
   let keyCnt = 0;
-
   const listener = (res: ChatEvntType) => {
     if (res.roomId === props.room) {
-      setScreen([...screen, res]);
+      setScreen(screen.concat(res));
     }
   };
 
