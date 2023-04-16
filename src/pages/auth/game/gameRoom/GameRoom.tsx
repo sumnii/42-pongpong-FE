@@ -1,15 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
-import { useEffect } from "react";
 import * as S from "./style";
 
-export default function GameRoom(props: { setPage: (page: "game") => void }) {
-  const { gameId } = useParams();
+export default function GameRoom() {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuth()) navigate("/");
-    props.setPage("game");
-  });
+  if (!isAuth()) navigate("/");
+  const { gameId } = useParams();
+  if (Number.isNaN(Number(gameId))) navigate("/404");
 
   return (
     <S.PageLayout>
