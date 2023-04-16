@@ -82,8 +82,7 @@ export const onChat = (
     socket.on("chat", (data) => {
       const res: ChatEvntType = data;
       console.log(res);
-      if (res.roomId === room)
-        setState([...state, res]);
+      if (res.roomId === room) setState([...state, res]);
     });
   }
 };
@@ -94,10 +93,7 @@ type JoinEvntType = {
   roomId: number;
 };
 
-export const joinChatRoom = (
-  room: number | undefined,
-  navigate: NavigateFunction,
-): void => {
+export const joinChatRoom = (room: number | undefined, navigate: NavigateFunction): void => {
   const socket = getSocket();
   if (socket) {
     socket.emit("joinChatRoom", {

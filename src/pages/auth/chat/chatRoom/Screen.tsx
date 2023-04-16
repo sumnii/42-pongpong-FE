@@ -1,16 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import * as S from "./style";
-import { ChatEvntType, onChat } from "socket/chat";
+import { ChatEvntType } from "socket/chat";
+import { getSocket } from "socket/socket";
 
 export default function Screen(props: { room: number }) {
   const [screen, setScreen] = useState<ChatEvntType[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const socket = getSocket();
   let keyCnt = 0;
 
+  const listener = (res: ChatEvntType) => {
+    console.log(res);
+    if (res.roomId === props.room) {
+      setScreen([...screen, res]);
+    }
+  }
+
   useEffect(() => {
-    onChat(props.room, screen, setScreen);
+    socket.on("chat", listener);
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
-  }, [screen]);
+    return () => {
+      socket.off("chat", listener);
+    }
+  });
 
   return (
     <>

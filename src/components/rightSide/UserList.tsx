@@ -27,7 +27,6 @@ export default function UserList(props: {
   };
 
   useEffect(() => {
-    // updateChatRoom(roomId, setChatUserList);
     socket.on("updateChatRoom", listener);
     return () => {
       socket.off("updateChatRoom", listener);
