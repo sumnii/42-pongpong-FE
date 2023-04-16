@@ -8,7 +8,6 @@ type modalProps = {
   close: () => void;
   navigateFn: NavigateFunction;
   room: number | undefined;
-  setRoom: Dispatch<SetStateAction<number | undefined>>;
 };
 
 function PassWdModal(props: modalProps) {
@@ -29,7 +28,6 @@ function PassWdModal(props: modalProps) {
         props.navigateFn,
         setNotice,
         props.close,
-        props.setRoom,
       );
     } else {
       setNotice("비밀번호를 입력해주세요.");

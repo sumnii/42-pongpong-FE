@@ -10,7 +10,6 @@ interface ChatItemProps {
   status?: string;
   head?: boolean;
   room?: number | undefined;
-  setRoom: Dispatch<SetStateAction<number | undefined>>;
 }
 
 export default function ChatItem(props: ChatItemProps) {
@@ -30,7 +29,6 @@ export default function ChatItem(props: ChatItemProps) {
           no={props.no}
           status={props.status}
           roomId={props.room}
-          setRoom={props.setRoom}
         />
       )}
     </>

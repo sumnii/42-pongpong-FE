@@ -10,8 +10,6 @@ import loadable from "@loadable/component";
 import NotFound from "pages/NotFound";
 import {
   ChatListType,
-  ChatUserListType,
-  updateChatRoom,
   updateChatRoomList,
   updateMyChatRoomList,
 } from "socket/chat";
@@ -34,17 +32,12 @@ function Auth() {
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
   const [chatList, setChatList] = useState<ChatListType[]>([]);
   const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
-  const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
-  const [roomId, setRoomId] = useState<number | undefined>(0);
 
   useEffect(() => {
     updateChatRoomList(setChatList);
     updateMyChatRoomList(setMyChatList);
   }, );
 
-  useEffect(() => {
-    updateChatRoom(roomId, setChatUserList);
-  }, );
 
   return (
     <S.AppLayout>
@@ -63,7 +56,6 @@ function Auth() {
                   setPage={setInPageOf}
                   chatRoom={chatList}
                   myChatRoom={myChatList}
-                  setRoom={setRoomId}
                 />
               }
             />
@@ -74,7 +66,7 @@ function Auth() {
           </Routes>
         </S.CenterLayout>
         <S.RightSideLayout>
-          <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} userList={chatUserList} />
+          <RightSide inPageOf={inPageOf} setProfileUser={setProfileUser} />
         </S.RightSideLayout>
       </BrowserRouter>
     </S.AppLayout>

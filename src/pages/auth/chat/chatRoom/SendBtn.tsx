@@ -3,7 +3,7 @@ import { BsSend } from "react-icons/bs";
 import * as S from "./style";
 import { emitChat } from "socket/chat";
 
-export default function Send(props: { room: string | number }) {
+export default function SendBtn(props: { room: string | number }) {
   const [chatInput, setChatInput] = useState("");
   const [disableBtn, setDisableBtn] = useState(true);
 

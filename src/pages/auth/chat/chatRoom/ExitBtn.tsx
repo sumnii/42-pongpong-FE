@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { exitChatRoom } from "socket/chat";
 
-export default function Exit(props: { room: number }) {
+export default function ExitBtn(props: { room: number }) {
   const navigate = useNavigate();
   function exitHandler() {
     exitChatRoom(props.room, navigate);

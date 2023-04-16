@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { joinChatRoom } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
@@ -9,13 +9,11 @@ type PropsType = {
   no: string | number;
   status?: string;
   roomId: number | undefined;
-  setRoom: Dispatch<SetStateAction<number | undefined>>;
 };
 
 export default function JoinChatRoom(props: PropsType) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const btnRef = useRef<HTMLButtonElement>(null);
 
   const showModalHandler = () => {
     setShowModal(true);
@@ -26,7 +24,7 @@ export default function JoinChatRoom(props: PropsType) {
   };
 
   function joinHandler(e: React.MouseEvent<HTMLButtonElement>) {
-    joinChatRoom(Number(e.currentTarget.id), navigate, props.setRoom);
+    joinChatRoom(props.roomId, navigate);
   }
   return (
     <>
@@ -36,14 +34,11 @@ export default function JoinChatRoom(props: PropsType) {
             close={closeModalHandler}
             no={props.no}
             navigateFn={navigate}
-            room={Number(btnRef.current?.id)}
-            setRoom={props.setRoom}
+            room={props.roomId}
           />
         </Modal>
       )}
       <S.EntryBtn
-        id={`${props.roomId}`}
-        ref={btnRef}
         onClick={props.status !== "protected" ? joinHandler : showModalHandler}
       >
         참가

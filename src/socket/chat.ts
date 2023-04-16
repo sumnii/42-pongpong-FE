@@ -97,7 +97,6 @@ type JoinEvntType = {
 export const joinChatRoom = (
   room: number | undefined,
   navigate: NavigateFunction,
-  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -109,7 +108,6 @@ export const joinChatRoom = (
       console.log(data);
       if (res.roomId === room) {
         if (res.status === "approved") {
-          setRoom(() => res.roomId);
           navigate(`/chat/${room}`);
         } else if (res.status === "warning") {
           alert(res.detail);
@@ -127,7 +125,6 @@ export const joinPasswdChatRoom = (
   navigate: NavigateFunction,
   setState: Dispatch<SetStateAction<string>>,
   setClose: () => void,
-  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -140,7 +137,6 @@ export const joinPasswdChatRoom = (
       console.log(res);
       if (res.roomId === room) {
         if (res.status === "approved") {
-          setRoom(() => res.roomId);
           navigate(`/chat/${room}`);
           setClose();
         } else if (res.status === "warning") {
@@ -166,7 +162,6 @@ export const createChatRoom = (
   setNotice: Dispatch<SetStateAction<string>>,
   closeModal: () => void,
   navigate: NavigateFunction,
-  setRoom: Dispatch<SetStateAction<number | undefined>>,
 ): void => {
   const socket = getSocket();
   if (socket) {
@@ -187,9 +182,9 @@ export const createChatRoom = (
       if (res.status === "approved") {
         closeModal();
         if (statusInput !== "protected") {
-          joinChatRoom(res.roomId, navigate, setRoom);
+          joinChatRoom(res.roomId, navigate);
         } else {
-          joinPasswdChatRoom(res.roomId, pwInput, navigate, setNotice, closeModal, setRoom);
+          joinPasswdChatRoom(res.roomId, pwInput, navigate, setNotice, closeModal);
         }
       } else if (res.status === "warning") {
         setNotice(res.detail);

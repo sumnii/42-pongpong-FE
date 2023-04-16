@@ -5,7 +5,6 @@ import { createChatRoom, joinChatRoom } from "socket/chat";
 
 type modalProps = {
   close: () => void;
-  setRoom: Dispatch<SetStateAction<number | undefined>>;
 };
 
 function ChatRoomModal(props: modalProps) {
@@ -34,7 +33,7 @@ function ChatRoomModal(props: modalProps) {
   function createChatRoomHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (isComplete()) {
-      createChatRoom(status, titleInput, pwInput, setNotice, props.close, navigate, props.setRoom);
+      createChatRoom(status, titleInput, pwInput, setNotice, props.close, navigate);
     } else {
       setNotice("필수 항목을 입력해주세요.");
     }
