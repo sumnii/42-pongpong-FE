@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ProfileContext } from "@hooks/ProfileContext";
+import { ProfileContext } from "hooks/ProfileContext";
 import * as S from "./style";
 
 export default function UserInfo(props: {

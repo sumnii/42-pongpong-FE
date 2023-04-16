@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getToken, isAuth } from "userAuth";
 import loadable from "@loadable/component";
 import axios from "axios";
-import { AuthContext } from "@hooks/AuthContext";
+import { AuthContext } from "hooks/AuthContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {

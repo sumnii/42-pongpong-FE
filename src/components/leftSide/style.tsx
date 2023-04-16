@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import * as font from "@style/font";
-import * as button from "@style/button";
+import * as font from "style/font";
+import * as button from "style/button";
 
 export const ProfileLayout = styled.div`
   display: flex;

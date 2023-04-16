@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "@api/user";
+import { getProfile } from "api/user";
 import { getUsername } from "userAuth";
 import UserInfo from "./UserInfo";
 import * as S from "./style";

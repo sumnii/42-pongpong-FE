@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import * as font from "@style/font";
-import { blue } from "@style/color";
+import * as font from "style/font";
+import { blue } from "style/color";
 
 export const MainLayout = styled.div`
   height: calc(100% - 40px);

@@ -1,5 +1,5 @@
 import * as S from "./style";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { joinPasswdChatRoom } from "socket/chat";
 
@@ -22,13 +22,7 @@ function PassWdModal(props: modalProps) {
   function checkPwHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isComplete()) {
-      joinPasswdChatRoom(
-        props.room,
-        pwInput,
-        props.navigateFn,
-        setNotice,
-        props.close,
-      );
+      joinPasswdChatRoom(props.room, pwInput, props.navigateFn, setNotice, props.close);
     } else {
       setNotice("비밀번호를 입력해주세요.");
     }

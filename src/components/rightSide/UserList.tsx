@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "@api/user";
+import { getProfile } from "api/user";
 import { getSocket } from "socket/socket";
 import { ChatUserListType } from "socket/chat";
 import UserInfo from "./UserInfo";

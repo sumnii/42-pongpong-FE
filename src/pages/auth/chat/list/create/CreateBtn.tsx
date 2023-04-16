@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import ChatRoomModal from "./modal/ChatRoomModal";
 import Modal from "./modal/Modal";
 
@@ -16,7 +16,7 @@ export default function CreateChatRoom() {
     <>
       {showModal && (
         <Modal setView={closeModalHandler}>
-          <ChatRoomModal close={closeModalHandler}/>
+          <ChatRoomModal close={closeModalHandler} />
         </Modal>
       )}
       <button onClick={showModalHandler}>새로만들기</button>

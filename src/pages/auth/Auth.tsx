@@ -3,26 +3,26 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getUsername } from "userAuth";
 import loadable from "@loadable/component";
 import Main from "@page/main/Main";
-import Profile from "@leftSide/profile/Profile";
+import Profile from "@leftSide/Profile";
 import ListTabBar from "@centerHeader/ListTabBar";
 import RightSide from "@rightSide/RightSide";
 import NotFound from "pages/NotFound";
-import { ProfileContext } from "@hooks/ProfileContext";
+import { ProfileContext } from "hooks/ProfileContext";
 import { ChatListType } from "socket/chat";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
 
 const ChatList = loadable(() => {
-  return import("@page/chat/chatList/ChatList");
+  return import("@page/chat/list/ChatList");
 });
 const ChatRoom = loadable(() => {
-  return import("@page/chat/chatRoom/ChatRoom");
+  return import("@page/chat/room/ChatRoom");
 });
 const GameList = loadable(() => {
-  return import("@page/game/gameList/GameList");
+  return import("@page/game/list/GameList");
 });
 const GameRoom = loadable(() => {
-  return import("@page/game/gameRoom/GameRoom");
+  return import("@page/game/room/GameRoom");
 });
 
 function Auth() {

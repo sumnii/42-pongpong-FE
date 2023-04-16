@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import * as S from "./style";
 import { distroyAuth } from "userAuth";
-import { AuthContext } from "@hooks/AuthContext";
+import { AuthContext } from "hooks/AuthContext";
 import { disconnectSocket } from "socket/socket";
 import { Navigate, useNavigate } from "react-router-dom";
 
