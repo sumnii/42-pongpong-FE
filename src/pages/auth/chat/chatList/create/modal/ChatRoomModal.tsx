@@ -1,7 +1,7 @@
 import * as S from "./style";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreateEvntType, createChatRoom, joinChatRoom } from "socket/chat";
+import { CreateEvntType } from "socket/chat";
 import { getSocket } from "socket/socket";
 
 type modalProps = {
@@ -33,7 +33,6 @@ function ChatRoomModal(props: modalProps) {
   }
 
   const listener = (res: CreateEvntType) => {
-    console.log(res);
     if (res.status === "approved") {
       props.close();
       socket.emit("joinChatRoom", {
@@ -42,7 +41,7 @@ function ChatRoomModal(props: modalProps) {
     } else if (res.status === "warning") {
       setNotice(res.detail);
     } else if (res.status === "error") {
-      console.log(res);
+      console.log(res); // 개발자가 알아야하는 error
     }
   };
 

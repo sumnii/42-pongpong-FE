@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
-import { useEffect, useRef, useState } from "react";
-import { JoinEvntType, joinChatRoom } from "socket/chat";
+import { useEffect, useState } from "react";
+import { JoinEvntType } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
-import { disconnectSocket, getSocket } from "socket/socket";
+import { getSocket } from "socket/socket";
 
 type PropsType = {
   no: string | number;
@@ -18,14 +18,13 @@ export default function JoinChatRoom(props: PropsType) {
   const socket = getSocket();
 
   const listner = (res: JoinEvntType) => {
-    console.log(res);
     if (res.roomId === props.roomId) {
       if (res.status === "approved") {
         navigate(`/chat/${res.roomId}`);
       } else if (res.status === "warning") {
         alert(res.detail);
       } else if (res.status === "error") {
-        console.log(res.detail);
+        console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
       }
     }
   };
@@ -45,7 +44,7 @@ export default function JoinChatRoom(props: PropsType) {
     setShowModal(false);
   };
 
-  function joinHandler(e: React.MouseEvent<HTMLButtonElement>) {
+  function joinHandler() {
     socket.emit("joinChatRoom", {
       roomId: props.roomId,
     });

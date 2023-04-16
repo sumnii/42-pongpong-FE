@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { exitChatRoom, exitEvntType } from "socket/chat";
+import { exitEvntType } from "socket/chat";
 import { getSocket } from "socket/socket";
 
 export default function ExitBtn(props: { room: number }) {
@@ -13,7 +13,7 @@ export default function ExitBtn(props: { room: number }) {
       if (res.status === "approved") {
         navigate("/chat/list");
       } else if (res.status === "error") {
-        console.log(res.detail);
+        console.log(res.detail); // 개발자가 알아야하는 error
       }
     }
   };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import * as S from "./style";
-import { emitChat, emitChatType } from "socket/chat";
+import { emitChatType } from "socket/chat";
 import { getSocket } from "socket/socket";
 
 export default function SendBtn(props: { room: string | number }) {
@@ -39,7 +39,6 @@ export default function SendBtn(props: { room: string | number }) {
     }
   }
   const listener = (res: emitChatType) => {
-    console.log(res);
     if (res.status === "warning") {
       alert(res.detail);
     }
