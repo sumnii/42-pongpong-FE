@@ -6,6 +6,7 @@ export default function GameRoom() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
   const { gameId } = useParams();
+  if (Number.isNaN(Number(gameId))) navigate("/404");
 
   return (
     <S.PageLayout>

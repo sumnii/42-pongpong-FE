@@ -9,6 +9,7 @@ export default function ChatRoom() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
   const { roomId } = useParams();
+  if (Number.isNaN(Number(roomId))) navigate("/404");
 
   return (
     <S.PageLayout>
