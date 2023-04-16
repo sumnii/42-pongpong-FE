@@ -145,7 +145,7 @@ export const joinPasswdChatRoom = (
   }
 };
 
-type CreateEvntType = {
+export type CreateEvntType = {
   status: string;
   detail: string;
   roomId: number;
@@ -175,18 +175,7 @@ export const createChatRoom = (
     }
     socket.on("createChatRoomResult", (data) => {
       const res: CreateEvntType = data;
-      if (res.status === "approved") {
-        closeModal();
-        if (statusInput !== "protected") {
-          joinChatRoom(res.roomId, navigate);
-        } else {
-          joinPasswdChatRoom(res.roomId, pwInput, navigate, setNotice, closeModal);
-        }
-      } else if (res.status === "warning") {
-        setNotice(res.detail);
-      } else if (res.status === "error") {
-        console.log(data);
-      }
+      
     });
   }
 };

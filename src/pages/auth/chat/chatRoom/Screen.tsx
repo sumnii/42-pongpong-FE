@@ -8,21 +8,21 @@ export default function Screen(props: { room: number }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const socket = getSocket();
   let keyCnt = 0;
-
   const listener = (res: ChatEvntType) => {
-    console.log(res);
+    console.log(res, res.roomId, props.room);
     if (res.roomId === props.room) {
-      setScreen([...screen, res]);
+      setScreen(screen.concat(res));
     }
   }
 
   useEffect(() => {
     socket.on("chat", listener);
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
+    console.log(socket.listeners("chat"))
     return () => {
       socket.off("chat", listener);
     }
-  });
+  }, [screen]);
 
   return (
     <>

@@ -20,10 +20,8 @@ export default function UserList(props: {
   const socket = getSocket();
 
   const listener = (res: ChatUserListType) => {
-    console.log("updateChatRoom", res);
-    if (res.roomId === roomId) {
+      console.log("updateChatRoom", res);
       setChatUserList(res);
-    }
   };
 
   useEffect(() => {
