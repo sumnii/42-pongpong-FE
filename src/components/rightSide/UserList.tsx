@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@api/user";
 import { getSocket } from "socket/socket";
@@ -12,17 +12,18 @@ import * as S from "./style";
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer";
 }) {
-  const [isDrop, setIsDrop] = useState(false);
+  const [droppedUser, setDroppedUser] = useState("");
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
   const socket = getSocket();
-  
-  function handleDrop() {
-    setIsDrop(!isDrop);
+
+  function handleDrop(username: string) {
+    if (droppedUser == username) setDroppedUser("");
+    else setDroppedUser(username);
   }
 
   const listener = (res: ChatUserListType) => {
-      console.log("updateChatRoom", res);
-      setChatUserList(res);
+    console.log("updateChatRoom", res);
+    setChatUserList(res);
   };
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export default function UserList(props: {
   if (profileQuery.isLoading) return <S.UserListLayout></S.UserListLayout>;
   if (profileQuery.isError) console.log(profileQuery.error);
 
+  // TODO : user list 받아와서 전체 값 통일하기
   return (
     <S.UserListLayout>
       <h3>{props.listOf}</h3>
@@ -54,9 +56,11 @@ export default function UserList(props: {
                 <UserInfo
                   username={user.username + (user.owner ? " 👑" : user.admin ? " 🎩" : "")}
                   subLine={user.login ? "🔵 온라인" : "⚫️ 오프라인"}
-                  handleDrop={handleDrop}
+                  handleDrop={() => {
+                    handleDrop(user.username);
+                  }}
                 />
-                {isDrop && <>hihi</>}
+                {droppedUser === user.username && <>hihi</>}
               </S.UserItem>
             );
           })}
@@ -65,22 +69,26 @@ export default function UserList(props: {
           props.listOf === "banned" && (
             <S.UserItem>
               <UserInfo
-                username={profileQuery?.data?.username}
+                username={profileQuery.data?.username}
                 subLine="❌ 입장금지"
-                handleDrop={handleDrop}
+                handleDrop={() => {
+                  handleDrop(profileQuery.data?.username);
+                }}
               />
-              {isDrop && <>hihi</>}
+              {droppedUser === profileQuery.data?.username && <>hihi</>}
             </S.UserItem>
           )
         }
         {!["participant", "banned"].includes(props.listOf) && (
           <S.UserItem>
             <UserInfo
-              username={profileQuery?.data?.username}
-              subLine={profileQuery?.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
-              handleDrop={handleDrop}
+              username={profileQuery.data?.username}
+              subLine={profileQuery.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
+              handleDrop={() => {
+                handleDrop(profileQuery.data?.username);
+              }}
             />
-            {isDrop && <>hihi</>}
+            {droppedUser === profileQuery.data?.username && <>hihi</>}
           </S.UserItem>
         )}
       </S.UserList>

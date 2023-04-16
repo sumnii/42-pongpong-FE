@@ -1,8 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { ChatUserListType } from "socket/chat";
 import UserList from "./UserList";
 
-export default function OtherUserList(props: { chatUsers: ChatUserListType | null }) {
+export default function OtherUserList() {
   const path = useLocation().pathname;
   const split = path.split("/");
   let page = split[1];
@@ -20,9 +19,9 @@ export default function OtherUserList(props: { chatUsers: ChatUserListType | nul
     case "chat":
       return (
         <>
-          <UserList listOf={"participant"} chatUserList={props.chatUsers} />
+          <UserList listOf={"participant"} />
           {/* TODO: 방장과 admin인지 확인 후 노출 */}
-          <UserList listOf={"banned"} chatUserList={props.chatUsers} />
+          <UserList listOf={"banned"} />
         </>
       );
     case "game":
