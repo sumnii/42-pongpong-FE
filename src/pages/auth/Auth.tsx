@@ -30,8 +30,9 @@ function Auth() {
   const [chatList, setChatList] = useState<ChatListType[]>([]);
   const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
   const socket = getSocket();
+
   const chatRoomListener = (res: ChatListType[]) => {
-    let tmp: ChatListType[] = [];
+    const tmp: ChatListType[] = [];
     res.map((elem) => {
       if (elem.status !== "private") {
         tmp.push(elem);
@@ -42,7 +43,7 @@ function Auth() {
 
   const myChatRoomListener = (res: ChatListType[]) => {
     setMyChatList(res);
-  }
+  };
 
   useEffect(() => {
     socket.on("updateChatRoomList", chatRoomListener);
@@ -50,9 +51,9 @@ function Auth() {
     return () => {
       socket.off("updateChatRoomList", chatRoomListener);
       socket.off("updateMyChatRoomList", myChatRoomListener);
-    }
+    };
   });
-  
+
   return (
     <S.AppLayout>
       <BrowserRouter>
@@ -64,12 +65,7 @@ function Auth() {
             <ListTabBar />
             <Routes>
               <Route path="/" element={<Main />} />
-              <Route
-                path="/chat/list"
-                element={
-                  <ChatList setPage={setInPageOf} chat={chatList} myChat={myChatList}/>
-                }
-              />
+              <Route path="/chat/list" element={<ChatList chat={chatList} myChat={myChatList} />} />
               <Route path="/game/list" element={<GameList />} />
               <Route path="/chat/:roomId" element={<ChatRoom />} />
               <Route path="/game/:gameId" element={<GameRoom />} />

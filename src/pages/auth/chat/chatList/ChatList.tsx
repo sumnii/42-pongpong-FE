@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
@@ -25,13 +24,7 @@ export default function ChatList(props: propsType) {
       </S.HeaderBox>
       <S.ChatList>
         <S.ChatItem head>
-          <ChatItem
-            no={"No"}
-            subject={"방제"}
-            owner={"방장"}
-            participantsCnt={"인원"}
-            head
-          />
+          <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
         </S.ChatItem>
         {props.chat.map((room) => {
           return (
@@ -53,13 +46,7 @@ export default function ChatList(props: propsType) {
         <S.H2>참여중인 채팅방</S.H2>
       </S.HeaderBox>
       <S.ChatItem head>
-        <ChatItem
-          no={"No"}
-          subject={"방제"}
-          owner={"방장"}
-          participantsCnt={"인원"}
-          head
-        />
+        <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
       </S.ChatItem>
       {props.myChat.map((room) => {
         return (
