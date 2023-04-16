@@ -1,20 +1,16 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@api/user";
-import * as S from "./style";
 import { ChatUserListType } from "socket/chat";
-import { useContext, useRef, useState } from "react";
-import { ProfileContext } from "@hooks/ProfileContext";
+import UserInfo from "./UserInfo";
+import * as S from "./style";
 
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer";
   chatUserList?: ChatUserListType | null;
 }) {
-  const setProfileUser = useContext(ProfileContext);
-  let cnt = 0;
-  const [dropMenu, setDropMenu] = useState(false);
-  const [id, setId] = useState("");
-  const userRef = useRef<HTMLLIElement>(null);
-  // 테스트할 때는 회원가입된 다른 유저의 username을 아무개 대신 넣어주세요!
+  const [isDrop, setIsDrop] = useState(false);
+
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({
     queryKey: ["profile", "아무개"],
@@ -30,12 +26,11 @@ export default function UserList(props: {
   // participant, banned -> 채팅/소켓
   // player, observer -> 게임/소켓
 
-  const onDropMenuHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    setId(e.currentTarget.id);
-    console.log(e);
-    if (!dropMenu) setDropMenu(true);
-    else setDropMenu(false);
-  };
+  // 유저네임 받을 예정
+  function handleDrop() {
+    setIsDrop(!isDrop);
+  }
+
   return (
     <S.UserListLayout>
       <h3>{props.listOf}</h3>
@@ -43,31 +38,25 @@ export default function UserList(props: {
         {props.listOf === "participant" &&
           props.chatUserList?.userList.map((user) => {
             return (
-              <S.UserItem key={cnt++} ref={userRef}>
-                <S.TmpImg id={user.username} onClick={onDropMenuHandler} />
-                <span>
-                  {user.username}
-                  <br />
-                  {user.owner && "방장"}
-                  {user.admin && "관리자"}
-                </span>
-                {dropMenu && user.username === id && <>hihi</>}
+              <S.UserItem key={user.username}>
+                <UserInfo
+                  username={user.username + (user.owner ? " 👑" : user.admin ? " 🎩" : "")}
+                  subLine={user.login ? "🔵 온라인" : "⚫️ 오프라인"}
+                  handleDrop={handleDrop}
+                />
+                {isDrop && <>hihi</>}
               </S.UserItem>
             );
           })}
         {props.listOf !== "participant" && (
-          <S.UserItem
-            key={1}
-            onClick={() => {
-              setProfileUser && setProfileUser(profileQuery?.data.username);
-            }}
-          >
-            <S.TmpImg />
-            <span>
-              {profileQuery?.data?.username}
-              <br />
-              {profileQuery?.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
-            </span>
+          // 이벤트에 대한 데이터. key 값에 username 넣을 예정
+          <S.UserItem>
+            <UserInfo
+              username={profileQuery?.data?.username}
+              subLine={profileQuery?.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
+              handleDrop={handleDrop}
+            />
+            {isDrop && <>hihi</>}
           </S.UserItem>
         )}
       </S.UserList>
