@@ -1,26 +1,21 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, isAuth } from "userAuth";
+import { isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
 import * as S from "./style";
 import CreateChatRoom from "./create/CreateBtn";
 import { ChatListType } from "socket/chat";
 
 type propsType = {
-  setPage: (page: "main") => void;
   chat: ChatListType[];
   myChat: ChatListType[];
 };
 
 export default function ChatList(props: propsType) {
   const navigate = useNavigate();
+  if (!isAuth()) navigate("/");
   let no1 = 1;
   let no2 = 1;
-
-  useEffect(() => {
-    if (!isAuth()) navigate("/");
-    props.setPage("main");
-  }, []);
 
   return (
     <S.PageLayout>

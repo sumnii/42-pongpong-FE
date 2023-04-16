@@ -1,22 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
-import { Dispatch, SetStateAction, useEffect } from "react";
 import * as S from "./style";
 import Screen from "./Screen";
 import ExitBtn from "./ExitBtn";
 import SendBtn from "./SendBtn";
 
-type PropsType = {
-  setPage: (page: "chat") => void;
-};
-
-export default function ChatRoom(props: PropsType) {
-  const { roomId } = useParams();
+export default function ChatRoom() {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuth()) navigate("/");
-    props.setPage("chat");
-  });
+  if (!isAuth()) navigate("/");
+  const { roomId } = useParams();
+  if (Number.isNaN(Number(roomId))) navigate("/404");
 
   return (
     <S.PageLayout>

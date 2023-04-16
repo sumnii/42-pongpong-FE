@@ -1,14 +1,11 @@
 import MyProfile from "./MyProfile";
 import OtherUserList from "./OtherUserList";
 
-export default function RightSide(props: {
-  inPageOf: "main" | "chat" | "game";
-  setProfileUser: (userId: string) => void;
-}) {
+export default function RightSide() {
   return (
     <>
-      <MyProfile setProfileUser={props.setProfileUser} />
-      <OtherUserList inPageOf={props.inPageOf} setProfileUser={props.setProfileUser}/>
+      <MyProfile />
+      <OtherUserList />
     </>
   );
 }

@@ -1,14 +1,10 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
 import * as S from "./style";
 
-export default function Main(props: { setPage: (page: "main" | "chat" | "game") => void }) {
+export default function Main() {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuth()) navigate("/");
-    props.setPage("main");
-  });
+  if (!isAuth()) navigate("/");
 
   return (
     <S.MainLayout>

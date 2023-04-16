@@ -1,25 +1,38 @@
+import { useLocation } from "react-router-dom";
+import { ChatUserListType } from "socket/chat";
 import UserList from "./UserList";
 
-export default function OtherUserList(props: {
-  inPageOf: "main" | "chat" | "game";
-  setProfileUser: (userId: string) => void;
-}) {
-  switch (props.inPageOf) {
+export default function OtherUserList(props: { chatUsers: ChatUserListType | null }) {
+  const path = useLocation().pathname;
+  const split = path.split("/");
+  let page = split[1];
+  const roomId = split[2];
+  if (roomId === undefined || roomId === "list") page = "main";
+
+  switch (page) {
     case "main":
       return (
         <>
-          <UserList listOf={"friend"} setProfileUser={props.setProfileUser} />
-          <UserList listOf={"dm"} setProfileUser={props.setProfileUser} />
+          <UserList listOf={"friend"} />
+          <UserList listOf={"dm"} />
         </>
       );
     case "chat":
-      return <UserList listOf={"participant"} setProfileUser={props.setProfileUser} />;
+      return (
+        <>
+          <UserList listOf={"participant"} chatUserList={props.chatUsers} />
+          {/* TODO: 방장과 admin인지 확인 후 노출 */}
+          <UserList listOf={"banned"} chatUserList={props.chatUsers} />
+        </>
+      );
     case "game":
       return (
         <>
-          <UserList listOf="player" setProfileUser={props.setProfileUser} />
-          <UserList listOf="observer" setProfileUser={props.setProfileUser} />
+          <UserList listOf="player" />
+          <UserList listOf="observer" />
         </>
       );
+    default:
+      return null;
   }
 }
