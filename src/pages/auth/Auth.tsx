@@ -8,11 +8,8 @@ import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 import loadable from "@loadable/component";
 import NotFound from "pages/NotFound";
-import {
-  ChatListType,
-  updateChatRoomList,
-  updateMyChatRoomList,
-} from "socket/chat";
+import { ChatListType } from "socket/chat";
+import { getSocket } from "socket/socket";
 
 const ChatList = loadable(() => {
   return import("@page/chat/chatList/ChatList");
@@ -32,13 +29,31 @@ function Auth() {
   const [inPageOf, setInPageOf] = useState<"main" | "chat" | "game">("main");
   const [chatList, setChatList] = useState<ChatListType[]>([]);
   const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
+  const socket = getSocket();
+
+  const chatRoomListener = (res: ChatListType[]) => {
+    let tmp: ChatListType[] = [];
+    res.map((elem) => {
+      if (elem.status !== "private") {
+        tmp.push(elem);
+      }
+    });
+    setChatList(tmp);
+  };
+
+  const myChatRoomListener = (res: ChatListType[]) => {
+    setMyChatList(res);
+  }
 
   useEffect(() => {
-    updateChatRoomList(setChatList);
-    updateMyChatRoomList(setMyChatList);
-  }, );
-
-
+    socket.on("updateChatRoomList", chatRoomListener);
+    socket.on("updateMyChatRoomList", myChatRoomListener);
+    return () => {
+      socket.off("updateChatRoomList", chatRoomListener);
+      socket.off("updateMyChatRoomList", myChatRoomListener);
+    }
+  });
+  
   return (
     <S.AppLayout>
       <BrowserRouter>
@@ -52,11 +67,7 @@ function Auth() {
             <Route
               path="/chat/list"
               element={
-                <ChatList
-                  setPage={setInPageOf}
-                  chatRoom={chatList}
-                  myChatRoom={myChatList}
-                />
+                <ChatList setPage={setInPageOf} chat={chatList} myChat={myChatList}/>
               }
             />
             <Route path="/game/list" element={<GameList setPage={setInPageOf} />} />

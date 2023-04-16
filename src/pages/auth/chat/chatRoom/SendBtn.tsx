@@ -7,6 +7,7 @@ import { getSocket } from "socket/socket";
 export default function SendBtn(props: { room: string | number }) {
   const [chatInput, setChatInput] = useState("");
   const [disableBtn, setDisableBtn] = useState(true);
+  const socket = getSocket();
 
   useEffect(() => {
     if (chatInput) {
@@ -16,21 +17,25 @@ export default function SendBtn(props: { room: string | number }) {
     }
   }, [chatInput]);
 
+  useEffect(() => {
+    socket.on("chatResult", listener);
+    return () => {
+      socket.off("chatResult", listener);
+    };
+  });
+
   function chatInputHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setChatInput(e.target.value);
   }
 
   function ChattingHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    const socket = getSocket();
-    if (chatInput && socket) {
+    if (chatInput) {
       socket.emit("chat", {
         roomId: props.room,
         content: chatInput,
       });
       setChatInput("");
-      socket.on("chatResult", listener);
-      socket.off("chatResult", listener);
     }
   }
   const listener = (res: emitChatType) => {

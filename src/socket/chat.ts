@@ -87,7 +87,7 @@ export const onChat = (
   }
 };
 
-type JoinEvntType = {
+export type JoinEvntType = {
   status: string;
   detail: string;
   roomId: number;
@@ -228,7 +228,7 @@ export const updateChatRoom = (
   }
 };
 
-type exitEvntType = {
+export type exitEvntType = {
   status: "error" | "approved";
   detail: string;
   roomId: number;
@@ -236,20 +236,20 @@ type exitEvntType = {
 
 export const exitChatRoom = (room: number, navigate: NavigateFunction) => {
   const socket = getSocket();
+  const listner = (res: exitEvntType) => {
+    if (res.roomId === room) {
+      if (res.status === "approved") {
+        navigate("/chat/list");
+      } else if (res.status === "error") {
+        console.log(res.detail);
+      }
+    }
+  };
   if (socket) {
     socket.emit("exitChatRoom", {
       roomId: room,
     });
-    socket.on("exitChatRoomResult", (data) => {
-      const res: exitEvntType = data;
-      console.log(data);
-      if (res.roomId === room) {
-        if (res.status === "approved") {
-          navigate("/chat/list");
-        } else if (res.status === "error") {
-          console.log(res.detail);
-        }
-      }
-    });
+    socket.on("exitChatRoomResult", listner);
+    socket.off("exitChatRoomResult", listner);
   }
 };

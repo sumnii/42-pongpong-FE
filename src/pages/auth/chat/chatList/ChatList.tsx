@@ -8,8 +8,8 @@ import { ChatListType } from "socket/chat";
 
 type propsType = {
   setPage: (page: "main") => void;
-  chatRoom: ChatListType[];
-  myChatRoom: ChatListType[];
+  chat: ChatListType[];
+  myChat: ChatListType[];
 };
 
 export default function ChatList(props: propsType) {
@@ -38,7 +38,7 @@ export default function ChatList(props: propsType) {
             head
           />
         </S.ChatItem>
-        {props.chatRoom.map((room) => {
+        {props.chat.map((room) => {
           return (
             <S.ChatItem key={no1}>
               <ChatItem
@@ -66,7 +66,7 @@ export default function ChatList(props: propsType) {
           head
         />
       </S.ChatItem>
-      {props.myChatRoom.map((room) => {
+      {props.myChat.map((room) => {
         return (
           <S.ChatItem key={no2}>
             <ChatItem

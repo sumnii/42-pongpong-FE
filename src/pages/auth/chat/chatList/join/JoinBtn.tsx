@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
-import { useRef, useState } from "react";
-import { joinChatRoom } from "socket/chat";
+import { useEffect, useRef, useState } from "react";
+import { JoinEvntType, joinChatRoom } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
+import { disconnectSocket, getSocket } from "socket/socket";
 
 type PropsType = {
   no: string | number;
@@ -14,6 +15,27 @@ type PropsType = {
 export default function JoinChatRoom(props: PropsType) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const socket = getSocket();
+
+  const listner = (res: JoinEvntType) => {
+    console.log(res);
+    if (res.roomId === props.roomId) {
+      if (res.status === "approved") {
+        navigate(`/chat/${res.roomId}`);
+      } else if (res.status === "warning") {
+        alert(res.detail);
+      } else if (res.status === "error") {
+        console.log(res.detail);
+      }
+    }
+  };
+
+  useEffect(() => {
+    socket.on("joinChatRoomResult", listner);
+    return () => {
+      socket.off("joinChatRoomResult", listner);
+    };
+  });
 
   const showModalHandler = () => {
     setShowModal(true);
@@ -24,7 +46,9 @@ export default function JoinChatRoom(props: PropsType) {
   };
 
   function joinHandler(e: React.MouseEvent<HTMLButtonElement>) {
-    joinChatRoom(props.roomId, navigate);
+    socket.emit("joinChatRoom", {
+      roomId: props.roomId,
+    });
   }
   return (
     <>
@@ -38,9 +62,7 @@ export default function JoinChatRoom(props: PropsType) {
           />
         </Modal>
       )}
-      <S.EntryBtn
-        onClick={props.status !== "protected" ? joinHandler : showModalHandler}
-      >
+      <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
         참가
       </S.EntryBtn>
     </>
