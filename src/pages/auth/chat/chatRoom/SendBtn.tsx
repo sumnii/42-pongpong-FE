@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import * as S from "./style";
-import { emitChat } from "socket/chat";
+import { emitChatType } from "socket/chat";
+import { getSocket } from "socket/socket";
 
-export default function Send(props: { room: string | number }) {
+export default function SendBtn(props: { room: string | number }) {
   const [chatInput, setChatInput] = useState("");
   const [disableBtn, setDisableBtn] = useState(true);
+  const socket = getSocket();
 
   useEffect(() => {
     if (chatInput) {
@@ -15,6 +17,13 @@ export default function Send(props: { room: string | number }) {
     }
   }, [chatInput]);
 
+  useEffect(() => {
+    socket.on("chatResult", listener);
+    return () => {
+      socket.off("chatResult", listener);
+    };
+  });
+
   function chatInputHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setChatInput(e.target.value);
   }
@@ -22,9 +31,19 @@ export default function Send(props: { room: string | number }) {
   function ChattingHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (chatInput) {
-      emitChat(props.room, chatInput, setChatInput);
+      socket.emit("chat", {
+        roomId: props.room,
+        content: chatInput,
+      });
+      setChatInput("");
     }
   }
+  const listener = (res: emitChatType) => {
+    if (res.status === "warning") {
+      alert(res.detail);
+    }
+  };
+
   return (
     <S.Form>
       <S.Wrapper>

@@ -1,11 +1,11 @@
 import * as S from "./style";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createChatRoom, joinChatRoom } from "socket/chat";
+import { CreateEvntType } from "socket/chat";
+import { getSocket } from "socket/socket";
 
 type modalProps = {
   close: () => void;
-  setRoom: Dispatch<SetStateAction<number | undefined>>;
 };
 
 function ChatRoomModal(props: modalProps) {
@@ -14,6 +14,7 @@ function ChatRoomModal(props: modalProps) {
   const [status, setStatus] = useState("");
   const [pwInput, setPwInput] = useState("");
   const [notice, setNotice] = useState("");
+  const socket = getSocket();
 
   function setStatusHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     setStatus(e.target.value);
@@ -31,10 +32,41 @@ function ChatRoomModal(props: modalProps) {
     if (notice) setNotice("");
   }
 
+  const listener = (res: CreateEvntType) => {
+    if (res.status === "approved") {
+      props.close();
+      socket.emit("joinChatRoom", {
+        roomId: res.roomId,
+      });
+    } else if (res.status === "warning") {
+      setNotice(res.detail);
+    } else if (res.status === "error") {
+      console.log(res); // 개발자가 알아야하는 error
+    }
+  };
+
+  useEffect(() => {
+    socket.on("createChatRoomResult", listener);
+    return () => {
+      socket.off("createChatRoomResult", listener);
+    };
+  });
+
   function createChatRoomHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (isComplete()) {
-      createChatRoom(status, titleInput, pwInput, setNotice, props.close, navigate, props.setRoom);
+      if (status === "protected") {
+        socket.emit("createChatRoom", {
+          status: status,
+          title: titleInput,
+          password: pwInput,
+        });
+      } else {
+        socket.emit("createChatRoom", {
+          status: status,
+          title: titleInput,
+        });
+      }
     } else {
       setNotice("필수 항목을 입력해주세요.");
     }
@@ -53,7 +85,7 @@ function ChatRoomModal(props: modalProps) {
       <form>
         <h1>새로운 채팅방 만들기</h1>
         <S.BtnWrapper>
-          <S.Input placeholder="채팅방 이름" onChange={setTitleHandler} autoFocus/>
+          <S.Input placeholder="채팅방 이름" onChange={setTitleHandler} autoFocus />
         </S.BtnWrapper>
         <S.BtnWrapper>
           <select onChange={setStatusHandler}>

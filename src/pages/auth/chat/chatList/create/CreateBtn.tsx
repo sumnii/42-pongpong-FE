@@ -2,11 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import ChatRoomModal from "./modal/ChatRoomModal";
 import Modal from "./modal/Modal";
 
-type propsType = {
-  setRoom: Dispatch<SetStateAction<number | undefined>>;
-};
-
-export default function CreateChatRoom(props: propsType) {
+export default function CreateChatRoom() {
   const [showModal, setShowModal] = useState(false);
 
   function showModalHandler() {
@@ -20,7 +16,7 @@ export default function CreateChatRoom(props: propsType) {
     <>
       {showModal && (
         <Modal setView={closeModalHandler}>
-          <ChatRoomModal close={closeModalHandler} setRoom={props.setRoom} />
+          <ChatRoomModal close={closeModalHandler}/>
         </Modal>
       )}
       <button onClick={showModalHandler}>새로만들기</button>
