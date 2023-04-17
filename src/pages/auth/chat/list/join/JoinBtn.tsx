@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { JoinEvntType } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
@@ -18,16 +18,20 @@ export default function JoinChatRoom(props: PropsType) {
   const [showModal, setShowModal] = useState(false);
   const socket = getSocket();
   const [notice, setNotice] = useState("");
+  const joinBtnRef = useRef<HTMLButtonElement>(null);
 
   const listner = (res: JoinEvntType) => {
-    if (res.status === "approved") {
-      navigate({
-        pathname: `/chat/${res.roomId}`,
-        search: `?${props.title}`});
-    } else if (res.status === "warning") {
-      setNotice(res.detail);
-    } else if (res.status === "error") {
-      console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
+    if (res.roomId === Number(joinBtnRef.current?.id)) {
+      if (res.status === "approved") {
+        navigate({
+          pathname: `/chat/${res.roomId}`,
+          search: `?${props.title}`
+        });
+      } else if (res.status === "warning") {
+        setNotice(res.detail);
+      } else if (res.status === "error") {
+        console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
+      }
     }
   };
 
@@ -64,7 +68,7 @@ export default function JoinChatRoom(props: PropsType) {
           />
         </Modal>
       )}
-      <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
+      <S.EntryBtn id={`${props.roomId}`} ref={joinBtnRef} onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
         참가
       </S.EntryBtn>
     </>
