@@ -4,7 +4,6 @@ import { getProfile } from "api/user";
 import { getSocket } from "socket/socket";
 import { ChatUserListType } from "socket/chat";
 import UserInfo from "./UserInfo";
-import UserDropMenu from "./UserDropMenu";
 import * as S from "../style";
 
 // friend, dm -> 메인/소켓
@@ -13,14 +12,8 @@ import * as S from "../style";
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
 }) {
-  const [droppedUser, setDroppedUser] = useState("");
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
   const socket = getSocket();
-
-  function handleDrop(username: string) {
-    if (droppedUser == username) setDroppedUser("");
-    else setDroppedUser(username);
-  }
 
   const listener = (res: ChatUserListType) => {
     setChatUserList(res);
@@ -54,14 +47,11 @@ export default function UserList(props: {
             return (
               <S.UserItem key={user.username}>
                 <UserInfo
+                  listOf={props.listOf}
                   username={user.username}
                   icon={user.owner ? "👑" : user.admin ? "🎩" : ""}
                   subLine={user.login ? "🔵 온라인" : "⚫️ 오프라인"}
-                  handleDrop={() => {
-                    handleDrop(user.username);
-                  }}
                 />
-                {droppedUser === user.username && <>hihi</>}
               </S.UserItem>
             );
           })}
@@ -70,30 +60,23 @@ export default function UserList(props: {
           props.listOf === "banned" && (
             <S.UserItem>
               <UserInfo
+                listOf={props.listOf}
                 username={profileQuery.data?.username}
                 subLine="❌ 입장금지"
-                handleDrop={() => {
-                  handleDrop(profileQuery.data?.username);
-                }}
               />
-              {droppedUser === profileQuery.data?.username && <>hihi</>}
             </S.UserItem>
           )
         }
         {!["participant", "banned"].includes(props.listOf) && (
           <S.UserItem>
             <UserInfo
+              listOf={props.listOf}
               username={profileQuery.data?.username}
               subLine={profileQuery.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
-              handleDrop={() => {
-                handleDrop(profileQuery.data?.username);
-              }}
             />
-            {droppedUser === profileQuery.data?.username && <>hihi</>}
           </S.UserItem>
         )}
       </S.UserList>
-      {/* <UserDropMenu /> */}
     </S.UserListLayout>
   );
 }
