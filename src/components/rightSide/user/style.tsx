@@ -44,9 +44,14 @@ export const NewInviteIcon = styled(VscBellDot)`
  */
 
 export const DropMenuLayout = styled.div`
+  position: absolute;
+  transform: translate(-3px, 77px);
+  right: 10px;
+
   width: 80px;
   border: 1px solid black;
   border-bottom: 0;
+  background-color: white;
 `;
 
 export const DropMenuItemBox = styled.div`
