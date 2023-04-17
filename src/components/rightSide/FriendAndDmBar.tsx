@@ -8,9 +8,7 @@ export default function FriendAndDmBar() {
   // TODO: dm 이벤트에 따라 set 함수 사용
 
   function handleClick(e) {
-    e.stopPropagation();
-    console.log(e.target);
-    // console.log(e.target.id);
+    if (e.target.id === "dm") setIsNewDm(false);
     if (e.target.id === isOpen) setIsOpen("");
     else setIsOpen(e.target.id);
   }

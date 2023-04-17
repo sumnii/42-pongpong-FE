@@ -4,18 +4,11 @@ import UserList from "./user/UserList";
 export default function OtherUserList() {
   const path = useLocation().pathname;
   const split = path.split("/");
-  let page = split[1];
+  const page = split[1];
   const roomId = split[2];
-  if (roomId === undefined || roomId === "list") page = "main";
+  if (roomId === undefined || roomId === "list") return null;
 
   switch (page) {
-    case "main":
-      return (
-        <>
-          {/* <UserList listOf={"friend"} /> */}
-          {/* <UserList listOf={"dm"} /> */}
-        </>
-      );
     case "chat":
       return (
         <>
