@@ -21,7 +21,7 @@ export default function JoinChatRoom(props: PropsType) {
   const joinBtnRef = useRef<HTMLButtonElement>(null);
 
   const listner = (res: JoinEvntType) => {
-    if (res.roomId === Number(joinBtnRef.current?.id)) {
+    if (res.roomId === props.roomId) {
       if (res.status === "approved") {
         navigate({
           pathname: `/chat/${res.roomId}`,
