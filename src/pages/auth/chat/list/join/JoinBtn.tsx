@@ -18,7 +18,6 @@ export default function JoinChatRoom(props: PropsType) {
   const [showModal, setShowModal] = useState(false);
   const socket = getSocket();
   const [notice, setNotice] = useState("");
-  const joinBtnRef = useRef<HTMLButtonElement>(null);
 
   const listner = (res: JoinEvntType) => {
     if (res.roomId === props.roomId) {
