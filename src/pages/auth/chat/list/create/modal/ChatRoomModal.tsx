@@ -1,6 +1,5 @@
 import * as S from "./style";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { CreateEvntType } from "socket/chat";
 import { getSocket } from "socket/socket";
 
@@ -9,7 +8,6 @@ type modalProps = {
 };
 
 function ChatRoomModal(props: modalProps) {
-  const navigate = useNavigate();
   const [titleInput, setTitleInput] = useState("");
   const [status, setStatus] = useState("");
   const [pwInput, setPwInput] = useState("");
@@ -35,9 +33,16 @@ function ChatRoomModal(props: modalProps) {
   const listener = (res: CreateEvntType) => {
     if (res.status === "approved") {
       props.close();
-      socket.emit("joinChatRoom", {
-        roomId: res.roomId,
-      });
+      if (status === "protected") {
+        socket.emit("joinChatRoom", {
+          roomId: res.roomId,
+          password: pwInput,
+        });
+      } else {
+        socket.emit("joinChatRoom", {
+          roomId: res.roomId,
+        });
+      }
     } else if (res.status === "warning") {
       setNotice(res.detail);
     } else if (res.status === "error") {
