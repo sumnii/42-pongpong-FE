@@ -17,7 +17,7 @@ export default function UserInfo(props: {
           setProfileUser && setProfileUser(props.username);
         }}
       />
-      <S.UserInfo
+      <S.UserInfoText
         onClick={() => {
           setProfileUser && setProfileUser(props.username);
         }}
@@ -25,8 +25,16 @@ export default function UserInfo(props: {
         {props.username} {props.icon}
         <br />
         {props.subLine}
-      </S.UserInfo>
-      {props.handleDrop && <S.MoreIcon onClick={props.handleDrop} />}
+      </S.UserInfoText>
+      {props.handleDrop && <S.KebabIcon onClick={props.handleDrop} />}
+      {/* TODO: props.handleDrop 대신 알림 모달창 띄우는 handler를 prop으로 받아 조건 변경 필요 */}
+      {props.handleDrop || (
+        <>
+          {/* TODO: 새 초대가 있는 경우/없는 경우 조건 추가 */}
+          <S.EmptyInviteIcon />
+          <S.NewInviteIcon />
+        </>
+      )}
     </>
   );
 }
