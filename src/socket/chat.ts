@@ -1,3 +1,7 @@
+export type ChatRoomListType = {
+  type : string;
+  list : ChatListType[];
+}
 
 export type ChatListType = {
   owner: string;
@@ -13,6 +17,7 @@ export type emitChatType = {
 };
 
 export type ChatEvntType = {
+  type: string;
   roomId: number;
   status: "plain" | "notice";
   from: string;
@@ -38,6 +43,7 @@ export type exitEvntType = {
 };
 
 export type ChatUserListType = {
+  type: string
   roomId: number;
   userList: [
     {

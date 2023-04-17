@@ -20,6 +20,7 @@ export default function JoinChatRoom(props: PropsType) {
   const [notice, setNotice] = useState("");
 
   const listner = (res: JoinEvntType) => {
+    console.log(res);
     if (res.roomId === props.roomId) {
       if (res.status === "approved") {
         navigate({

@@ -1,5 +1,6 @@
 import * as S from "./style";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CreateEvntType } from "socket/chat";
 import { getSocket } from "socket/socket";
 
@@ -12,6 +13,7 @@ function ChatRoomModal(props: modalProps) {
   const [status, setStatus] = useState("");
   const [pwInput, setPwInput] = useState("");
   const [notice, setNotice] = useState("");
+  const navigate = useNavigate();
   const socket = getSocket();
 
   function setStatusHandler(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -31,18 +33,24 @@ function ChatRoomModal(props: modalProps) {
   }
 
   const listener = (res: CreateEvntType) => {
+    console.log(res);
     if (res.status === "approved") {
       props.close();
-      if (status === "protected") {
-        socket.emit("joinChatRoom", {
-          roomId: res.roomId,
-          password: pwInput,
-        });
-      } else {
-        socket.emit("joinChatRoom", {
-          roomId: res.roomId,
-        });
-      }
+      //if (status === "protected") {
+      //  socket.emit("joinChatRoom", {
+      //    roomId: res.roomId,
+      //    password: pwInput,
+      //  });
+      //} else {
+      //  socket.emit("joinChatRoom", {
+      //    roomId: res.roomId,
+      //  });
+      //}
+      socket.emit("subscribe", {
+        type: "chatRoom",
+        roomId: res.roomId
+      })
+      navigate(`/chat/${res.roomId}`);
     } else if (res.status === "warning") {
       setNotice(res.detail);
     } else if (res.status === "error") {
@@ -52,8 +60,10 @@ function ChatRoomModal(props: modalProps) {
 
   useEffect(() => {
     socket.on("createChatRoomResult", listener);
+    socket.on("subscribeResult", (data) => console.log(data));
     return () => {
       socket.off("createChatRoomResult", listener);
+      socket.off("subscribeResult", (data) => console.log(data));
     };
   });
 
