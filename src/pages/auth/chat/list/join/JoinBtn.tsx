@@ -25,7 +25,7 @@ export default function JoinChatRoom(props: PropsType) {
       if (res.status === "approved") {
         navigate({
           pathname: `/chat/${res.roomId}`,
-          search: `?${props.title}`
+          search: `title=${props.title}`
         });
       } else if (res.status === "warning") {
         setNotice(res.detail);

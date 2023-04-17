@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { isAuth } from "userAuth";
 import * as S from "./style";
 import Screen from "./Screen";
@@ -10,11 +10,12 @@ export default function ChatRoom() {
   if (!isAuth()) navigate("/");
   const { roomId } = useParams();
   if (Number.isNaN(Number(roomId))) navigate("/404");
+  const [target, setTarget] = useSearchParams();
 
   return (
     <S.PageLayout>
       <S.HeaderBox>
-        <S.H2>{roomId}번 채팅방 입장완료</S.H2>
+        <S.H2> #{roomId} {target.get("title")} 채팅방 입장완료</S.H2>
         <ExitBtn room={Number(roomId)} />
       </S.HeaderBox>
       <S.MainBox>
