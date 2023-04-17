@@ -1,30 +1,33 @@
 import * as S from "./style";
-import React, { useState } from "react";
-import { NavigateFunction } from "react-router-dom";
-import { joinPasswdChatRoom } from "socket/chat";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { getSocket } from "socket/socket";
 
 type modalProps = {
   no: string | number;
   close: () => void;
-  navigateFn: NavigateFunction;
   room: number | undefined;
+  noti: string;
+  setNoti: Dispatch<SetStateAction<string>>
 };
 
 function PassWdModal(props: modalProps) {
   const [pwInput, setPwInput] = useState("");
-  const [notice, setNotice] = useState("");
+  const socket = getSocket();
 
   function setPwHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setPwInput(e.target.value);
-    if (notice) setNotice("");
+    if (props.noti) props.setNoti("");
   }
 
   function checkPwHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isComplete()) {
-      joinPasswdChatRoom(props.room, pwInput, props.navigateFn, setNotice, props.close);
+      socket.emit("joinChatRoom", {
+        roomId: props.room,
+        password: pwInput,
+      })
     } else {
-      setNotice("비밀번호를 입력해주세요.");
+      props.setNoti("비밀번호를 입력해주세요.");
     }
   }
 
@@ -42,7 +45,7 @@ function PassWdModal(props: modalProps) {
         <S.BtnWrapper>
           <S.Input onChange={setPwHandler} autoFocus type="password" />
         </S.BtnWrapper>
-        <S.Span color="red">{notice}</S.Span>
+        <S.Span color="red">{props.noti}</S.Span>
         <S.BtnWrapper>
           <S.ModalButton2 type="submit"> 확인 </S.ModalButton2>
           <S.ModalButton2 type="button" onClick={props.close}>

@@ -8,7 +8,6 @@ export default function ExitBtn(props: { room: number }) {
   const socket = getSocket();
 
   const listner = (res: exitEvntType) => {
-    console.log(res);
     if (res.roomId === props.room) {
       if (res.status === "approved") {
         navigate("/chat/list");

@@ -24,7 +24,7 @@ export default function ChatItem(props: ChatItemProps) {
       {props.head ? (
         <S.EntryBtn head />
       ) : (
-        <JoinChatRoom no={props.no} status={props.status} roomId={props.room} />
+        <JoinChatRoom no={props.no} status={props.status} roomId={props.room} title={props.subject}/>
       )}
     </>
   );

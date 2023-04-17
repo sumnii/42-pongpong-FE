@@ -1,6 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-import { NavigateFunction } from "react-router-dom";
-import { getSocket } from "socket/socket";
 
 export type ChatListType = {
   owner: string;
@@ -55,34 +52,4 @@ export type ChatUserListType = {
       username: string;
     },
   ];
-};
-
-export const joinPasswdChatRoom = (
-  room: number | undefined,
-  pass: string,
-  navigate: NavigateFunction,
-  setState: Dispatch<SetStateAction<string>>,
-  setClose: () => void,
-): void => {
-  const socket = getSocket();
-  if (socket) {
-    socket.emit("joinChatRoom", {
-      roomId: room,
-      password: pass,
-    });
-    socket.on("joinChatRoomResult", (data) => {
-      const res: JoinEvntType = data;
-      console.log(res);
-      if (res.roomId === room) {
-        if (res.status === "approved") {
-          navigate(`/chat/${room}`);
-          setClose();
-        } else if (res.status === "warning") {
-          setState(res.detail);
-        } else if (res.status === "error") {
-          console.log(res.detail);
-        }
-      }
-    });
-  }
 };

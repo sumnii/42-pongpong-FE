@@ -10,22 +10,24 @@ type PropsType = {
   no: string | number;
   status?: string;
   roomId: number | undefined;
+  title: string;
 };
 
 export default function JoinChatRoom(props: PropsType) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const socket = getSocket();
+  const [notice, setNotice] = useState("");
 
   const listner = (res: JoinEvntType) => {
-    if (res.roomId === props.roomId) {
-      if (res.status === "approved") {
-        navigate(`/chat/${res.roomId}`);
-      } else if (res.status === "warning") {
-        alert(res.detail);
-      } else if (res.status === "error") {
-        console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
-      }
+    if (res.status === "approved") {
+      navigate({
+        pathname: `/chat/${res.roomId}`,
+        search: `?${props.title}`});
+    } else if (res.status === "warning") {
+      setNotice(res.detail);
+    } else if (res.status === "error") {
+      console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
     }
   };
 
@@ -56,8 +58,9 @@ export default function JoinChatRoom(props: PropsType) {
           <PassWdModal
             close={closeModalHandler}
             no={props.no}
-            navigateFn={navigate}
             room={props.roomId}
+            noti={notice}
+            setNoti={setNotice}
           />
         </Modal>
       )}
