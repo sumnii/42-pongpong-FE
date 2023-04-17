@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import JoinChatRoom from "./join/JoinBtn";
 import * as S from "./style";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -25,11 +24,7 @@ export default function ChatItem(props: ChatItemProps) {
       {props.head ? (
         <S.EntryBtn head />
       ) : (
-        <JoinChatRoom
-          no={props.no}
-          status={props.status}
-          roomId={props.room}
-        />
+        <JoinChatRoom no={props.no} status={props.status} roomId={props.room} />
       )}
     </>
   );
