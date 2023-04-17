@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import UserList from "./UserList";
+import UserList from "./user/UserList";
 
 export default function OtherUserList() {
   const path = useLocation().pathname;
@@ -12,8 +12,8 @@ export default function OtherUserList() {
     case "main":
       return (
         <>
-          <UserList listOf={"friend"} />
-          <UserList listOf={"dm"} />
+          {/* <UserList listOf={"friend"} /> */}
+          {/* <UserList listOf={"dm"} /> */}
         </>
       );
     case "chat":

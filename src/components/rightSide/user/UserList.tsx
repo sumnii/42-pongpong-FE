@@ -3,15 +3,15 @@ import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { getSocket } from "socket/socket";
 import { ChatUserListType } from "socket/chat";
-import UserInfo from "./user/UserInfo";
-import UserDropMenu from "./user/UserDropMenu";
-import * as S from "./style";
+import UserInfo from "./UserInfo";
+import UserDropMenu from "./UserDropMenu";
+import * as S from "../style";
 
 // friend, dm -> 메인/소켓
 // participant, banned -> 채팅/소켓
 // player, observer -> 게임/소켓
 export default function UserList(props: {
-  listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer";
+  listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
 }) {
   const [droppedUser, setDroppedUser] = useState("");
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
@@ -93,7 +93,7 @@ export default function UserList(props: {
           </S.UserItem>
         )}
       </S.UserList>
-      <UserDropMenu />
+      {/* <UserDropMenu /> */}
     </S.UserListLayout>
   );
 }
