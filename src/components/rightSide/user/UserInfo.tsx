@@ -19,13 +19,15 @@ export default function UserInfo(props: {
   return (
     <>
       <S.TmpImg
+        me={props.listOf === undefined}
         onClick={() => {
-          setProfileUser && setProfileUser(props.username);
+          !props.listOf && setProfileUser && setProfileUser(props.username);
         }}
       />
       <S.UserInfoText
+        me={!props.listOf}
         onClick={() => {
-          setProfileUser && setProfileUser(props.username);
+          !props.listOf && setProfileUser && setProfileUser(props.username);
         }}
       >
         {props.username} {props.icon}
@@ -41,7 +43,9 @@ export default function UserInfo(props: {
           <S.NewInviteIcon />
         </>
       )}
-      {dropIsOpen && <UserDropMenu onClose={onDropClose} userOper={props.icon} />}
+      {dropIsOpen && (
+        <UserDropMenu onClose={onDropClose} user={props.username} userOper={props.icon} />
+      )}
     </>
   );
 }

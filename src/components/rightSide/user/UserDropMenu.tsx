@@ -1,7 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
+import { ProfileContext } from "hooks/ProfileContext";
+import { onProfile } from "./dropFunction";
 import * as S from "./style";
 
-export default function UserDropMenu(props: { onClose: () => void; userOper?: string }) {
+export default function UserDropMenu(props: {
+  onClose: () => void;
+  user: string;
+  userOper?: string;
+}) {
+  const setProfileUser = useContext(ProfileContext);
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
 
   useEffect(() => {
@@ -16,15 +23,17 @@ export default function UserDropMenu(props: { onClose: () => void; userOper?: st
     };
   }, [dropRef]);
 
-  // 케이스1 : page가 메인/게임방 내/채팅방 내 일반 유저일 때
-  // 케이스2 : page가 채팅방 + 방장일 때
-  // 케이스3 : page가 채팅방 + 부방장일 때
-
   return (
     <>
       <S.DropModalOverlay />
       <S.DropMenuLayout ref={dropRef}>
-        <S.DropMenuItemBox>프로필</S.DropMenuItemBox>
+        <S.DropMenuItemBox
+          onClick={() => {
+            setProfileUser && onProfile(props.user, setProfileUser, props.onClose);
+          }}
+        >
+          프로필
+        </S.DropMenuItemBox>
         <S.DropMenuItemBox>DM 보내기</S.DropMenuItemBox>
         <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
         {props.userOper === "🎩" ||
