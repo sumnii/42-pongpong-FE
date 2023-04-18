@@ -9,13 +9,16 @@ import * as S from "../style";
 
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
+  room?: number;
 }) {
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
   const socket = getSocket();
   const [myOper, setMyOper] = useState("participant");
 
   const listener = (res: ChatUserListType) => {
-    setChatUserList(res);
+    if (res.roomId === props.room) {
+      setChatUserList(res);
+    }
   };
 
   useEffect(() => {

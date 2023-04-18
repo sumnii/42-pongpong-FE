@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { ProfileContext } from "hooks/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
+import useNotiModal from "hooks/useNotiModal";
 import * as S from "./style";
 import useDropModal from "hooks/useDropModal";
 import { getUsername } from "userAuth";
@@ -13,14 +14,16 @@ export default function UserInfo(props: {
   oper?: string | undefined;
 }) {
   const setProfileUser = useContext(ProfileContext);
+  const me = getUsername() === props.username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
     listOf: props.listOf,
     username: props.username,
   });
-  const me = getUsername() === props.username;
+  const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
 
   return (
     <>
+      {showNotiModal && NotiModal}
       <S.TmpImg
         me={props.listOf === undefined}
         onClick={() => {
@@ -40,13 +43,13 @@ export default function UserInfo(props: {
       </S.UserInfoText>
       {props.listOf ? (
         !me && <S.KebabIcon onClick={onDropOpen} />
-      ) : (
-        <>
-          {/* TODO: 새 초대가 있는 경우/없는 경우 조건 추가 */}
-          <S.EmptyInviteIcon />
-          <S.NewInviteIcon />
-        </>
-      )}
+      ) : 
+        newNoti ? (
+          <S.NewNotiIcon onClick={onOpenNotiModal} />
+        ) : (
+          <S.EmptyNotiIcon onClick={onOpenNotiModal} />
+        )
+      }
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}

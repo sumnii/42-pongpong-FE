@@ -31,18 +31,21 @@ export const KebabIcon = styled(MdOutlineMoreVert)`
   cursor: pointer;
 `;
 
-export const EmptyInviteIcon = styled(VscBell)`
+export const EmptyNotiIcon = styled(VscBell)`
   width: 16px;
   padding: 2px;
   height: 100%;
   margin-left: auto;
+  cursor: pointer;
 `;
 
-export const NewInviteIcon = styled(VscBellDot)`
+export const NewNotiIcon = styled(VscBellDot)`
   width: 16px;
   padding: 2px;
   height: 100%;
   margin-left: auto;
+  cursor: pointer;
+  color: blue;
 `;
 
 /*
