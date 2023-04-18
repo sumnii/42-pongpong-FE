@@ -1,7 +1,7 @@
-import * as S from "./style";
-import React, { useState } from "react";
+import * as S from "./layout/style";
+import React from "react";
 import { getSocket } from "socket/socket";
-import { NotiType } from "../UserInfo";
+import { NotiType } from "@rightSide/user/UserInfo";
 
 type modalProps = {
   close: () => void;

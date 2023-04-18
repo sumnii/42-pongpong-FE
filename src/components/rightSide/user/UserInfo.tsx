@@ -4,8 +4,8 @@ import * as S from "./style";
 import { getSocket } from "socket/socket";
 import { ChatEvntType, ChatListType } from "socket/chat";
 import { useLocation } from "react-router-dom";
-import NotificationModal from "./modal/NotificationModal";
-import Modal from "./modal/Modal";
+import NotificationModal from "modal/NotificationModal";
+import Modal from "modal/layout/Modal";
 
 export type NotiType = {
   title: string;
