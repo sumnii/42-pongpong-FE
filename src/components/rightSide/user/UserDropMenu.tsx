@@ -5,8 +5,9 @@ import * as S from "./style";
 
 export default function UserDropMenu(props: {
   onClose: () => void;
-  user: string;
-  userOper?: string;
+  targetUser: string;
+  targetOper?: string;
+  oper?: string;
 }) {
   const setProfileUser = useContext(ProfileContext);
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
@@ -29,22 +30,24 @@ export default function UserDropMenu(props: {
       <S.DropMenuLayout ref={dropRef}>
         <S.DropMenuItemBox
           onClick={() => {
-            setProfileUser && onProfile(props.user, setProfileUser, props.onClose);
+            setProfileUser && onProfile(props.targetUser, setProfileUser, props.onClose);
           }}
         >
           프로필
         </S.DropMenuItemBox>
         <S.DropMenuItemBox>DM 보내기</S.DropMenuItemBox>
         <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
-        {props.userOper === "🎩" ||
-          (props.userOper === "👑" && (
-            <>
-              <S.DropMenuItemBox>음소거</S.DropMenuItemBox>
-              <S.DropMenuItemBox>내보내기</S.DropMenuItemBox>
-              <S.DropMenuItemBox>입장 금지</S.DropMenuItemBox>
-            </>
-          ))}
-        {props.userOper === "👑" && <S.DropMenuItemBox>부방장 지정</S.DropMenuItemBox>}
+        {(props.oper === "owner" ||
+          (props.oper === "admin" &&
+            props.targetOper !== "admin" &&
+            props.targetOper !== "owner")) && (
+          <>
+            <S.DropMenuItemBox>음소거</S.DropMenuItemBox>
+            <S.DropMenuItemBox>내보내기</S.DropMenuItemBox>
+            <S.DropMenuItemBox>입장 금지</S.DropMenuItemBox>
+          </>
+        )}
+        {props.oper === "owner" && <S.DropMenuItemBox>부방장 지정</S.DropMenuItemBox>}
       </S.DropMenuLayout>
     </>
   );

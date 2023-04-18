@@ -3,17 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { getSocket } from "socket/socket";
 import { ChatUserListType } from "socket/chat";
+import { getUsername } from "userAuth";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
 
-// friend, dm -> 메인/소켓
-// participant, banned -> 채팅/소켓
-// player, observer -> 게임/소켓
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
 }) {
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
   const socket = getSocket();
+  const [myOper, setMyOper] = useState("participant");
 
   const listener = (res: ChatUserListType) => {
     setChatUserList(res);
@@ -21,6 +20,12 @@ export default function UserList(props: {
 
   useEffect(() => {
     socket.on("updateChatRoom", listener);
+    const myRoomInfo = chatUserList?.userList.filter((user) => user.username === getUsername())[0];
+    if (myRoomInfo?.owner) setMyOper("owner");
+    if (myRoomInfo?.admin) setMyOper("admin");
+    // TODO: 소켓 수정 전까지 테스트 필요
+    console.log(myRoomInfo, myOper);
+
     return () => {
       socket.off("updateChatRoom", listener);
     };
@@ -49,8 +54,9 @@ export default function UserList(props: {
                 <UserInfo
                   listOf={props.listOf}
                   username={user.username}
-                  icon={user.owner ? "👑" : user.admin ? "🎩" : ""}
+                  userOper={user.owner ? "owner" : user.admin ? "admin" : ""}
                   subLine={user.login ? "🔵 온라인" : "⚫️ 오프라인"}
+                  oper={myOper}
                 />
               </S.UserItem>
             );

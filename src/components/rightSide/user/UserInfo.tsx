@@ -8,8 +8,9 @@ import { getUsername } from "userAuth";
 export default function UserInfo(props: {
   listOf?: string;
   username: string;
-  icon?: string;
+  userOper?: string;
   subLine: string;
+  oper?: string | undefined;
 }) {
   const setProfileUser = useContext(ProfileContext);
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
@@ -32,7 +33,8 @@ export default function UserInfo(props: {
           !props.listOf && setProfileUser && setProfileUser(props.username);
         }}
       >
-        {props.username} {props.icon}
+        {props.username}{" "}
+        {props.userOper === "owner" ? "👑" : props.userOper === "admin" ? "🎩" : ""}
         <br />
         {props.subLine}
       </S.UserInfoText>
@@ -46,7 +48,12 @@ export default function UserInfo(props: {
         </>
       )}
       {dropIsOpen && (
-        <UserDropMenu onClose={onDropClose} user={props.username} userOper={props.icon} />
+        <UserDropMenu
+          onClose={onDropClose}
+          targetUser={props.username}
+          targetOper={props.userOper}
+          oper={props.oper}
+        />
       )}
     </>
   );
