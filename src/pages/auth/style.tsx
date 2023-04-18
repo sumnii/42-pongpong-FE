@@ -25,4 +25,5 @@ export const RightSideLayout = styled.div`
 
   display: flex;
   flex-direction: column;
+  border-left: 0.5px solid;
 `;

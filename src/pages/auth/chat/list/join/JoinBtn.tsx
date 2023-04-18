@@ -18,7 +18,6 @@ export default function JoinChatRoom(props: PropsType) {
   const [showModal, setShowModal] = useState(false);
   const socket = getSocket();
   const [notice, setNotice] = useState("");
-  const joinBtnRef = useRef<HTMLButtonElement>(null);
 
   const listner = (res: JoinEvntType) => {
     if (res.roomId === props.roomId) {
@@ -68,7 +67,7 @@ export default function JoinChatRoom(props: PropsType) {
           />
         </Modal>
       )}
-      <S.EntryBtn id={`${props.roomId}`} ref={joinBtnRef} onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
+      <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
         참가
       </S.EntryBtn>
     </>
