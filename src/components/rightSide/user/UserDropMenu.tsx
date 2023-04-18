@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as S from "./style";
 
-export default function UserDropMenu(props: { onClose: () => void }) {
+export default function UserDropMenu(props: { onClose: () => void; userOper?: string }) {
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
 
   useEffect(() => {
@@ -16,6 +16,10 @@ export default function UserDropMenu(props: { onClose: () => void }) {
     };
   }, [dropRef]);
 
+  // 케이스1 : page가 메인/게임방 내/채팅방 내 일반 유저일 때
+  // 케이스2 : page가 채팅방 + 방장일 때
+  // 케이스3 : page가 채팅방 + 부방장일 때
+
   return (
     <>
       <S.DropModalOverlay />
@@ -23,9 +27,15 @@ export default function UserDropMenu(props: { onClose: () => void }) {
         <S.DropMenuItemBox>프로필</S.DropMenuItemBox>
         <S.DropMenuItemBox>DM 보내기</S.DropMenuItemBox>
         <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
-        <S.DropMenuItemBox>부방장 지정</S.DropMenuItemBox>
-        <S.DropMenuItemBox>내보내기</S.DropMenuItemBox>
-        <S.DropMenuItemBox>입장 금지</S.DropMenuItemBox>
+        {props.userOper === "🎩" ||
+          (props.userOper === "👑" && (
+            <>
+              <S.DropMenuItemBox>음소거</S.DropMenuItemBox>
+              <S.DropMenuItemBox>내보내기</S.DropMenuItemBox>
+              <S.DropMenuItemBox>입장 금지</S.DropMenuItemBox>
+            </>
+          ))}
+        {props.userOper === "👑" && <S.DropMenuItemBox>부방장 지정</S.DropMenuItemBox>}
       </S.DropMenuLayout>
     </>
   );

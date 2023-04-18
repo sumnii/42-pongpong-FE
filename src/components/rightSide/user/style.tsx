@@ -55,7 +55,7 @@ export const DropModalOverlay = styled.div`
 
 export const DropMenuLayout = styled.div`
   position: absolute;
-  transform: translate(-3px, 77px);
+  transform: translate(-3px, 57%);
   right: 10px;
 
   border: 1px solid black;

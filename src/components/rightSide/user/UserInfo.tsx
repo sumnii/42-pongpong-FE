@@ -41,7 +41,7 @@ export default function UserInfo(props: {
           <S.NewInviteIcon />
         </>
       )}
-      {dropIsOpen && <UserDropMenu onClose={onDropClose} />}
+      {dropIsOpen && <UserDropMenu onClose={onDropClose} userOper={props.icon} />}
     </>
   );
 }
