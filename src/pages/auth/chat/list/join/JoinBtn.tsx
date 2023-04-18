@@ -20,13 +20,37 @@ export default function JoinChatRoom(props: PropsType) {
   const [notice, setNotice] = useState("");
 
   const listner = (res: JoinEvntType) => {
-    console.log(res);
-    if (res.roomId === props.roomId) {
+    // console.log(res);
+    if (res.type === "chatRoom" && res.roomId === props.roomId) {
       if (res.status === "approved") {
         navigate({
           pathname: `/chat/${res.roomId}`,
           search: `?${props.title}`
         });
+        // socket.emit("subscribe", {
+        //   type: "chatRoom",
+        //   roomId: res.roomId,
+        // })
+      } else if (res.status === "warning") {
+        setNotice(res.detail);
+      } else if (res.status === "error") {
+        console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
+      }
+    }
+  };
+
+  const listnerMsg = (res: JoinEvntType) => {
+    if (res.type === "chatRoom" && res.roomId === props.roomId) {
+      console.log("joinBtn", res);
+      if (res.status === "approved") {
+        navigate({
+          pathname: `/chat/${res.roomId}`,
+          search: `?${props.title}`
+        });
+        // socket.emit("subscribe", {
+        //   type: "chatRoom",
+        //   roomId: res.roomId,
+        // })
       } else if (res.status === "warning") {
         setNotice(res.detail);
       } else if (res.status === "error") {
@@ -37,8 +61,10 @@ export default function JoinChatRoom(props: PropsType) {
 
   useEffect(() => {
     socket.on("joinChatRoomResult", listner);
+    socket.on("message", listnerMsg);
     return () => {
       socket.off("joinChatRoomResult", listner);
+      socket.off("message", listnerMsg);
     };
   });
 
@@ -51,9 +77,13 @@ export default function JoinChatRoom(props: PropsType) {
   };
 
   function joinHandler() {
-    socket.emit("joinChatRoom", {
-      roomId: props.roomId,
-    });
+    // socket.emit("joinChatRoom", {
+    //   roomId: props.roomId,
+    // });
+    socket.emit("subscribe", {
+      type: "chatRoom",
+      roomId: props.roomId
+    })
   }
   return (
     <>

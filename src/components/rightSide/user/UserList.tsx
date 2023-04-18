@@ -6,6 +6,7 @@ import { ChatUserListType } from "socket/chat";
 import UserInfo from "./UserInfo";
 import UserDropMenu from "./UserDropMenu";
 import * as S from "../style";
+import { useLocation } from "react-router-dom";
 
 // friend, dm -> 메인/소켓
 // participant, banned -> 채팅/소켓
@@ -16,6 +17,8 @@ export default function UserList(props: {
 }) {
   const [droppedUser, setDroppedUser] = useState("");
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
+  const target = useLocation().pathname.split("/");
+  const roomId = target[2];
   const socket = getSocket();
 
   function handleDrop(username: string) {
@@ -24,7 +27,8 @@ export default function UserList(props: {
   }
 
   const listener = (res: ChatUserListType) => {
-    if (res.type === "chatRoom" && res.roomId === props.room) {
+    if (res.type === "chatRoom" && res.roomId === Number(roomId)) {
+      console.log("userList", res);
       setChatUserList(res);
     }
   };
@@ -33,6 +37,11 @@ export default function UserList(props: {
     socket.on("message", listener);
     return () => {
       socket.off("message", listener);
+      socket.emit("unsubscribe", {
+        type: "chatRoom",
+        roomId: props.room
+      })
+      socket.once("unsubscribeReulst", (data) => console.log(data))
     };
   });
 

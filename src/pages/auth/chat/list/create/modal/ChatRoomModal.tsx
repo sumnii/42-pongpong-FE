@@ -60,10 +60,8 @@ function ChatRoomModal(props: modalProps) {
 
   useEffect(() => {
     socket.on("createChatRoomResult", listener);
-    socket.on("subscribeResult", (data) => console.log(data));
     return () => {
       socket.off("createChatRoomResult", listener);
-      socket.off("subscribeResult", (data) => console.log(data));
     };
   });
 

@@ -48,9 +48,11 @@ function Auth() {
   useEffect(() => {
     socket.on("message", chatRoomListListener);
     socket.on("subscribeResult", (data) => console.log(data));
+    socket.on("unsubscribeResult", (data) => console.log(data));
     return () => {
       socket.off("message", chatRoomListListener);
       socket.off("subscribeResult", (data) => console.log(data));
+      socket.off("unsubscribeResult", (data) => console.log(data));
     };
   });
 

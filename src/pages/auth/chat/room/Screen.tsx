@@ -19,6 +19,10 @@ export default function Screen(props: { room: number }) {
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
     return () => {
       socket.off("message", listener);
+      socket.emit("unsubscribe", {
+        type: "chatRoom",
+        roomId: props.room,
+      })
     };
   }, [screen]);
 

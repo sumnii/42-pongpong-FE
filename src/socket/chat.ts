@@ -25,6 +25,7 @@ export type ChatEvntType = {
 };
 
 export type JoinEvntType = {
+  type: string;
   status: string;
   detail: string;
   roomId: number;
