@@ -43,12 +43,21 @@ export const NewInviteIcon = styled(VscBellDot)`
  *          Drop Menu
  */
 
+export const DropModalOverlay = styled.div`
+  position: fixed;
+  width: 20vw;
+  height: 100vh;
+  right: 0;
+  top: 0;
+
+  background: rgba(0, 0, 0, 0.05);
+`;
+
 export const DropMenuLayout = styled.div`
   position: absolute;
   transform: translate(-3px, 77px);
   right: 10px;
 
-  width: 80px;
   border: 1px solid black;
   border-bottom: 0;
   background-color: white;
