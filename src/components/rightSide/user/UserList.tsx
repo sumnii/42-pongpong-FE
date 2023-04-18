@@ -12,6 +12,7 @@ import * as S from "../style";
 // player, observer -> 게임/소켓
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
+  room?: number;
 }) {
   const [droppedUser, setDroppedUser] = useState("");
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
@@ -23,7 +24,9 @@ export default function UserList(props: {
   }
 
   const listener = (res: ChatUserListType) => {
-    setChatUserList(res);
+    if (res.roomId === props.room) {
+      setChatUserList(res);
+    }
   };
 
   useEffect(() => {
