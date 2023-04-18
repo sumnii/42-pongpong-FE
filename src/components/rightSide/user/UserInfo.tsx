@@ -3,6 +3,7 @@ import { ProfileContext } from "hooks/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
 import * as S from "./style";
 import useDropModal from "hooks/useDropModal";
+import { getUsername } from "userAuth";
 
 export default function UserInfo(props: {
   listOf?: string;
@@ -15,6 +16,7 @@ export default function UserInfo(props: {
     listOf: props.listOf,
     username: props.username,
   });
+  const me = getUsername() === props.username;
 
   return (
     <>
@@ -35,7 +37,7 @@ export default function UserInfo(props: {
         {props.subLine}
       </S.UserInfoText>
       {props.listOf ? (
-        <S.KebabIcon onClick={onDropOpen} />
+        !me && <S.KebabIcon onClick={onDropOpen} />
       ) : (
         <>
           {/* TODO: 새 초대가 있는 경우/없는 경우 조건 추가 */}
