@@ -30,6 +30,7 @@ export const EmptyInviteIcon = styled(VscBell)`
   padding: 2px;
   height: 100%;
   margin-left: auto;
+  cursor: pointer;
 `;
 
 export const NewInviteIcon = styled(VscBellDot)`
@@ -37,6 +38,8 @@ export const NewInviteIcon = styled(VscBellDot)`
   padding: 2px;
   height: 100%;
   margin-left: auto;
+  cursor: pointer;
+  color: blue;
 `;
 
 /*
