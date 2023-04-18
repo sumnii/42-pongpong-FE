@@ -12,7 +12,7 @@ export default function OtherUserList() {
     case "chat":
       return (
         <>
-          <UserList listOf={"participant"} />
+          <UserList listOf={"participant"} room={Number(roomId)} />
           {/* TODO: 방장과 admin인지 확인 후 노출 */}
           <UserList listOf={"banned"} />
         </>
