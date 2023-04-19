@@ -22,6 +22,7 @@ export type ChatEvntType = {
   status: "plain" | "notice";
   from: string;
   content: string;
+  list?: [{from: string, content: string}]
 };
 
 export type JoinEvntType = {

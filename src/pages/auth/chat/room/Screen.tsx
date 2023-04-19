@@ -11,6 +11,18 @@ export default function Screen(props: { room: number }) {
   const listener = (res: ChatEvntType) => {
     if (res.type === "chat" && res.roomId === props.room) {
       setScreen(screen.concat(res));
+    } else if (res.type === "history" && res.list) {
+      const tmp: ChatEvntType[] = [];
+      res.list.map((elem) => {
+        tmp.push({
+          type: "chat",
+          roomId: props.room,
+          status: "plain",
+          from: elem.from,
+          content: elem.content
+        })
+      });
+      setScreen(screen.concat(tmp));
     }
   };
 
