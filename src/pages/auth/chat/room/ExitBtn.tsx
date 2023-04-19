@@ -11,6 +11,10 @@ export default function ExitBtn(props: { room: number }) {
     if (res.roomId === props.room) {
       if (res.status === "approved") {
         navigate("/chat/list");
+        socket.emit("unsubscribe", {
+          type: "chatRoom",
+          roomId: res.roomId
+        })
       } else if (res.status === "error") {
         console.log(res.detail); // 개발자가 알아야하는 error
       }
