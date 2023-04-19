@@ -8,6 +8,7 @@ import NotificationModal from "modal/NotificationModal";
 export type NotiType = {
   title: string;
   chatId?: number;
+  chatTitle?: string;
   dmId?: number;
   gameId?: number;
 };

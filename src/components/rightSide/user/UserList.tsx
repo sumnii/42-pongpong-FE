@@ -16,8 +16,8 @@ export default function UserList(props: {
   const [myOper, setMyOper] = useState("participant");
 
   const listener = (res: ChatUserListType) => {
+    console.log("userList", res);
     if (res.type === "chatRoom" && res.roomId === props.room) {
-      console.log("userList", res);
       setChatUserList(res);
     }
   };

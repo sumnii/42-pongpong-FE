@@ -3,18 +3,50 @@ import { isAuth } from "userAuth";
 import ChatItem from "./ChatItem";
 import * as S from "./style";
 import CreateChatRoom from "./create/CreateBtn";
-import { ChatListType } from "socket/chat";
+import { ChatListType, ChatRoomListType } from "socket/chat";
+import { useEffect, useState } from "react";
+import { getSocket } from "../../../../socket/socket";
 
-type propsType = {
-  chat: ChatListType[];
-  myChat: ChatListType[];
-};
-
-export default function ChatList(props: propsType) {
+export default function ChatList() {
   const navigate = useNavigate();
+  const [chatList, setChatList] = useState<ChatListType[]>([]);
+  const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
+  const socket = getSocket();
   if (!isAuth()) navigate("/");
   let no1 = 1;
   let no2 = 1;
+
+  const chatRoomListListener = (res: ChatRoomListType) => {
+    if (res.type === "otherRoom") {
+      const tmp: ChatListType[] = [];
+      res.list.map((elem) => {
+        if (elem.status !== "private") {
+          tmp.push(elem);
+        }
+      });
+      setChatList(tmp);
+    } else if (res.type === "myRoom") {
+      setMyChatList(res.list);
+    }
+  };
+
+  useEffect(() => {
+    socket.emit("subscribe", {
+      type: "chatRoomList"
+    });
+    return () => {
+      socket.emit("unsubscribe", {
+        type: "chatRoomList"
+      })
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.on("message", chatRoomListListener);
+    return () => {
+      socket.off("message", chatRoomListListener);
+    };
+  });
 
   return (
     <S.PageLayout>
@@ -26,7 +58,7 @@ export default function ChatList(props: propsType) {
         <S.ChatItem head>
           <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
         </S.ChatItem>
-        {props.chat.map((room) => {
+        {chatList.map((room) => {
           return (
             <S.ChatItem key={no1}>
               <ChatItem
@@ -48,7 +80,7 @@ export default function ChatList(props: propsType) {
       <S.ChatItem head>
         <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
       </S.ChatItem>
-      {props.myChat.map((room) => {
+      {myChatList.map((room) => {
         return (
           <S.ChatItem key={no2}>
             <ChatItem

@@ -9,6 +9,7 @@ export default function Screen(props: { room: number }) {
   const socket = getSocket();
   let keyCnt = 0;
   const listener = (res: ChatEvntType) => {
+    console.log(res);
     if (res.type === "chat" && res.roomId === props.room) {
       setScreen(screen.concat(res));
     } else if (res.type === "history" && res.list) {

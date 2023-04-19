@@ -36,7 +36,9 @@ function ChatRoomModal(props: modalProps) {
     console.log("create", res);
     if (res.status === "approved") {
       props.close();
-      navigate(`/chat/${res.roomId}`);
+      navigate({
+        pathname: `/chat/${res.roomId}`,
+        search: `title=${titleInput}`});
     } else if (res.status === "warning") {
       setNotice(res.detail);
     } else if (res.status === "error") {
