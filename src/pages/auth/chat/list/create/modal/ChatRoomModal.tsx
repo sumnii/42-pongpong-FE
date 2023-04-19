@@ -36,10 +36,6 @@ function ChatRoomModal(props: modalProps) {
     console.log("create", res);
     if (res.status === "approved") {
       props.close();
-      socket.emit("subscribe", {
-        type: "chatRoom",
-        roomId: res.roomId
-      })
       navigate(`/chat/${res.roomId}`);
     } else if (res.status === "warning") {
       setNotice(res.detail);

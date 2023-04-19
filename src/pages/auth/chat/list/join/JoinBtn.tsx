@@ -31,33 +31,9 @@ export default function JoinChatRoom(props: PropsType) {
           pathname: `/chat/${res.roomId}`,
           search: `title=${props.title}`
         });
-        socket.emit("subscribe", {
-          type: "chatRoom",
-          roomId: res.roomId,
-        })
       }
     }
   };
-
-  // const listnerMsg = (res: JoinEvntType) => {
-  //   if (res.type === "chatRoom" && res.roomId === props.roomId) {
-  //     console.log("joinBtn", res);
-  //     if (res.status === "approved") {
-  //       navigate({
-  //         pathname: `/chat/${res.roomId}`,
-  //         search: `?${props.title}`
-  //       });
-  //       // socket.emit("subscribe", {
-  //       //   type: "chatRoom",
-  //       //   roomId: res.roomId,
-  //       // })
-  //     } else if (res.status === "warning") {
-  //       setNotice(res.detail);
-  //     } else if (res.status === "error") {
-  //       console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     socket.on("joinChatRoomResult", listner);
@@ -85,10 +61,6 @@ export default function JoinChatRoom(props: PropsType) {
       pathname: `/chat/${props.roomId}`,
       search: `title=${props.title}`
     });
-    socket.emit("subscribe", {
-      type: "chatRoom",
-      roomId: props.roomId
-    })
   }
   return (
     <>

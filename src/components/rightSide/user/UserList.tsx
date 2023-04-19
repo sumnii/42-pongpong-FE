@@ -32,11 +32,6 @@ export default function UserList(props: {
 
     return () => {
       socket.off("message", listener);
-      socket.emit("unsubscribe", {
-        type: "chatRoom",
-        roomId: props.room
-      })
-      socket.once("unsubscribeReulst", (data) => console.log(data))
     };
   });
 
