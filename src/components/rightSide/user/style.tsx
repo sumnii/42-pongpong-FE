@@ -6,11 +6,10 @@ import { VscBell, VscBellDot } from "react-icons/vsc";
  *          User Info
  */
 
-export const TmpImg = styled.div<{ me: boolean }>`
+export const TmpImg = styled.img<{ me: boolean }>`
   width: 50px;
   height: 50px;
   border-radius: 100%;
-  background-color: gray;
 
   ${(props) => {
     if (props.me) return `cursor: pointer;`;

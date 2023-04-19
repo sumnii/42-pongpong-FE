@@ -19,11 +19,10 @@ export const Title = styled.h2`
  *      Profile Item
  */
 
-export const TmpImg = styled.div`
+export const TmpImg = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 100%;
-  background-color: gray;
 
   margin: 20px auto;
 `;

@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as S from "./style";
 import { distroyAuth } from "userAuth";
 import { AuthContext } from "hooks/AuthContext";
 import { disconnectSocket } from "socket/socket";
 import { Navigate, useNavigate } from "react-router-dom";
+import { getAvatar } from "api/user";
 
 interface userProps {
   user?: {
@@ -24,19 +25,19 @@ interface userProps {
       },
     ];
   };
+  image?: string
 }
 
 export function ProfileData(props: userProps) {
   let user;
   if (props) user = props.user;
   const setSigned = useContext(AuthContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
 
   return (
     <S.ProfileLayout>
       <S.Title>프로필</S.Title>
-      {/* 로딩중 기본 이미지 삽입 */}
-      <S.TmpImg />
+      <S.TmpImg src={`${props.image}`} />
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임
