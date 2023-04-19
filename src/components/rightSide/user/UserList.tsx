@@ -3,25 +3,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { getSocket } from "socket/socket";
 import { ChatUserListType } from "socket/chat";
+import { getUsername } from "userAuth";
 import UserInfo from "./UserInfo";
-import UserDropMenu from "./UserDropMenu";
 import * as S from "../style";
 
-// friend, dm -> 메인/소켓
-// participant, banned -> 채팅/소켓
-// player, observer -> 게임/소켓
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
   room?: number;
 }) {
-  const [droppedUser, setDroppedUser] = useState("");
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
   const socket = getSocket();
-
-  function handleDrop(username: string) {
-    if (droppedUser == username) setDroppedUser("");
-    else setDroppedUser(username);
-  }
+  const [myOper, setMyOper] = useState("participant");
 
   const listener = (res: ChatUserListType) => {
     if (res.type === "chatRoom" && res.roomId === props.room) {
@@ -32,6 +24,12 @@ export default function UserList(props: {
 
   useEffect(() => {
     socket.on("message", listener);
+    const myRoomInfo = chatUserList?.userList.filter((user) => user.username === getUsername())[0];
+    if (myRoomInfo?.owner) setMyOper("owner");
+    if (myRoomInfo?.admin) setMyOper("admin");
+    // TODO: 소켓 수정 전까지 테스트 필요
+    console.log(myRoomInfo, myOper);
+
     return () => {
       socket.off("message", listener);
       socket.emit("unsubscribe", {
@@ -63,14 +61,12 @@ export default function UserList(props: {
             return (
               <S.UserItem key={user.username}>
                 <UserInfo
+                  listOf={props.listOf}
                   username={user.username}
-                  icon={user.owner ? "👑" : user.admin ? "🎩" : ""}
+                  userOper={user.owner ? "owner" : user.admin ? "admin" : ""}
                   subLine={user.login ? "🔵 온라인" : "⚫️ 오프라인"}
-                  handleDrop={() => {
-                    handleDrop(user.username);
-                  }}
+                  oper={myOper}
                 />
-                {droppedUser === user.username && <>hihi</>}
               </S.UserItem>
             );
           })}
@@ -79,30 +75,23 @@ export default function UserList(props: {
           props.listOf === "banned" && (
             <S.UserItem>
               <UserInfo
+                listOf={props.listOf}
                 username={profileQuery.data?.username}
                 subLine="❌ 입장금지"
-                handleDrop={() => {
-                  handleDrop(profileQuery.data?.username);
-                }}
               />
-              {droppedUser === profileQuery.data?.username && <>hihi</>}
             </S.UserItem>
           )
         }
         {!["participant", "banned"].includes(props.listOf) && (
           <S.UserItem>
             <UserInfo
+              listOf={props.listOf}
               username={profileQuery.data?.username}
               subLine={profileQuery.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
-              handleDrop={() => {
-                handleDrop(profileQuery.data?.username);
-              }}
             />
-            {droppedUser === profileQuery.data?.username && <>hihi</>}
           </S.UserItem>
         )}
       </S.UserList>
-      {/* <UserDropMenu /> */}
     </S.UserListLayout>
   );
 }

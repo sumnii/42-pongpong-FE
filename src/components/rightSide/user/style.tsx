@@ -6,16 +6,22 @@ import { VscBell, VscBellDot } from "react-icons/vsc";
  *          User Info
  */
 
-export const TmpImg = styled.div`
+export const TmpImg = styled.div<{ me: boolean }>`
   width: 50px;
   height: 50px;
   border-radius: 100%;
   background-color: gray;
-  cursor: pointer;
+
+  ${(props) => {
+    if (props.me) return `cursor: pointer;`;
+  }}
 `;
 
-export const UserInfoText = styled.span`
-  cursor: pointer;
+export const UserInfoText = styled.span<{ me: boolean }>`
+  cursor: ${(props) => {
+    if (props.me) return `pointer;`;
+    return `default;`;
+  }};
 `;
 
 export const KebabIcon = styled(MdOutlineMoreVert)`
@@ -46,10 +52,24 @@ export const NewNotiIcon = styled(VscBellDot)`
  *          Drop Menu
  */
 
+export const DropModalOverlay = styled.div`
+  position: fixed;
+  width: 20vw;
+  height: 100vh;
+  right: 0;
+  top: 0;
+
+  background: rgba(0, 0, 0, 0.05);
+`;
+
 export const DropMenuLayout = styled.div`
-  width: 80px;
+  position: absolute;
+  transform: translate(-3px, 57%);
+  right: 10px;
+
   border: 1px solid black;
   border-bottom: 0;
+  background-color: white;
 `;
 
 export const DropMenuItemBox = styled.div`
@@ -60,4 +80,6 @@ export const DropMenuItemBox = styled.div`
   width: 80px;
   height: 20px;
   border-bottom: 1px solid black;
+
+  cursor: pointer;
 `;
