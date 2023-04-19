@@ -1,10 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import * as S from "./style";
-import { distroyAuth } from "userAuth";
+import { distroyAuth, getUsername } from "userAuth";
 import { AuthContext } from "hooks/AuthContext";
 import { disconnectSocket } from "socket/socket";
-import { Navigate, useNavigate } from "react-router-dom";
-import { getAvatar } from "api/user";
+import { useNavigate } from "react-router-dom";
+import Modal from "modal/layout/Modal";
+import NotificationModal from "modal/NotificationModal";
+import AvatarUploadModal from "modal/AvatarUploadModal";
 
 interface userProps {
   user?: {
@@ -25,19 +27,34 @@ interface userProps {
       },
     ];
   };
-  image?: string
+  image?: string;
 }
 
 export function ProfileData(props: userProps) {
   let user;
   if (props) user = props.user;
   const setSigned = useContext(AuthContext);
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const myProfile = getUsername() === props.user?.username;
+
+  const openModalHandler = () => {
+    setShowModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+  }
 
   return (
     <S.ProfileLayout>
+      { showModal && (
+        <Modal setView={closeModalHandler}>
+          <AvatarUploadModal close={closeModalHandler}/>
+        </Modal>
+      )}
       <S.Title>프로필</S.Title>
-      <S.TmpImg src={`${props.image}`} />
+      <S.TmpImg me={myProfile} src={`${props.image}`} onClick={openModalHandler} />
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임

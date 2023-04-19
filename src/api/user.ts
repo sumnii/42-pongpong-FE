@@ -47,3 +47,15 @@ export async function getAvatar(username: string) {
     }
   }
 }
+
+export async function postAvatar(form: FormData) {
+  try {
+    const res = await axios.post('/user/avatar', form);
+    return res;
+  } catch (err: unknown) {
+    if (err instanceof AxiosError && err.response) {
+      console.error(err.response);
+      return err.response;
+    }
+  }
+}

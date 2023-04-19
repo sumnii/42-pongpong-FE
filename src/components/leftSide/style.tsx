@@ -19,12 +19,15 @@ export const Title = styled.h2`
  *      Profile Item
  */
 
-export const TmpImg = styled.img`
+export const TmpImg = styled.img<{me: boolean}>`
   width: 100px;
   height: 100px;
   border-radius: 100%;
 
   margin: 20px auto;
+  ${(props) => {
+    if (props.me) return `cursor: pointer;`;
+  }}
 `;
 
 export const InfoWrapper = styled.div`
