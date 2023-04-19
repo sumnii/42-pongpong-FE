@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { JoinEvntType } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
@@ -11,6 +11,7 @@ type PropsType = {
   status?: string;
   roomId: number | undefined;
   title: string;
+  myRoom?: boolean;
 };
 
 export default function JoinChatRoom(props: PropsType) {
@@ -20,51 +21,48 @@ export default function JoinChatRoom(props: PropsType) {
   const [notice, setNotice] = useState("");
 
   const listner = (res: JoinEvntType) => {
-    // console.log(res);
-    if (res.type === "chatRoom" && res.roomId === props.roomId) {
-      if (res.status === "approved") {
+    if (res.status === "error") { // status (error, warning) 에도 roomId가 있다면
+      console.log(res);
+    } else if (res.status === "warning") {
+      setNotice(res.detail);
+    } else {
+      if (res.roomId === props.roomId) {
         navigate({
           pathname: `/chat/${res.roomId}`,
           search: `title=${props.title}`
         });
-        // socket.emit("subscribe", {
-        //   type: "chatRoom",
-        //   roomId: res.roomId,
-        // })
-      } else if (res.status === "warning") {
-        setNotice(res.detail);
-      } else if (res.status === "error") {
-        console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
+        socket.emit("subscribe", {
+          type: "chatRoom",
+          roomId: res.roomId,
+        })
       }
     }
   };
 
-  const listnerMsg = (res: JoinEvntType) => {
-    if (res.type === "chatRoom" && res.roomId === props.roomId) {
-      console.log("joinBtn", res);
-      if (res.status === "approved") {
-        navigate({
-          pathname: `/chat/${res.roomId}`,
-          search: `?${props.title}`
-        });
-        // socket.emit("subscribe", {
-        //   type: "chatRoom",
-        //   roomId: res.roomId,
-        // })
-      } else if (res.status === "warning") {
-        setNotice(res.detail);
-      } else if (res.status === "error") {
-        console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
-      }
-    }
-  };
+  // const listnerMsg = (res: JoinEvntType) => {
+  //   if (res.type === "chatRoom" && res.roomId === props.roomId) {
+  //     console.log("joinBtn", res);
+  //     if (res.status === "approved") {
+  //       navigate({
+  //         pathname: `/chat/${res.roomId}`,
+  //         search: `?${props.title}`
+  //       });
+  //       // socket.emit("subscribe", {
+  //       //   type: "chatRoom",
+  //       //   roomId: res.roomId,
+  //       // })
+  //     } else if (res.status === "warning") {
+  //       setNotice(res.detail);
+  //     } else if (res.status === "error") {
+  //       console.log(res.detail); // 개발자가 알아야 하는 에러 api.txt 참조
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     socket.on("joinChatRoomResult", listner);
-    socket.on("message", listnerMsg);
     return () => {
       socket.off("joinChatRoomResult", listner);
-      socket.off("message", listnerMsg);
     };
   });
 
@@ -77,9 +75,16 @@ export default function JoinChatRoom(props: PropsType) {
   };
 
   function joinHandler() {
-    // socket.emit("joinChatRoom", {
-    //   roomId: props.roomId,
-    // });
+    socket.emit("joinChatRoom", {
+      roomId: props.roomId,
+    });
+  }
+
+  function joinMyChatHandler() {
+    navigate({
+      pathname: `/chat/${props.roomId}`,
+      search: `title=${props.title}`
+    });
     socket.emit("subscribe", {
       type: "chatRoom",
       roomId: props.roomId
@@ -98,9 +103,14 @@ export default function JoinChatRoom(props: PropsType) {
           />
         </Modal>
       )}
-      <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
-        참가
-      </S.EntryBtn>
+      {props.myRoom
+        ? <S.EntryBtn onClick={joinMyChatHandler}>
+          참가
+        </S.EntryBtn>
+        : <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
+          참가
+        </S.EntryBtn>
+      }
     </>
   );
 }

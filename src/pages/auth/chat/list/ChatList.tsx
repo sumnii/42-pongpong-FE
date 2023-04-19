@@ -58,6 +58,7 @@ export default function ChatList(props: propsType) {
               participantsCnt={room.joining}
               status={room.status}
               room={room.roomId}
+              myRoom={true}
             />
           </S.ChatItem>
         );
