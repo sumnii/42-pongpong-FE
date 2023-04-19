@@ -33,19 +33,9 @@ function ChatRoomModal(props: modalProps) {
   }
 
   const listener = (res: CreateEvntType) => {
-    console.log(res);
+    console.log("create", res);
     if (res.status === "approved") {
       props.close();
-      //if (status === "protected") {
-      //  socket.emit("joinChatRoom", {
-      //    roomId: res.roomId,
-      //    password: pwInput,
-      //  });
-      //} else {
-      //  socket.emit("joinChatRoom", {
-      //    roomId: res.roomId,
-      //  });
-      //}
       socket.emit("subscribe", {
         type: "chatRoom",
         roomId: res.roomId
@@ -97,29 +87,29 @@ function ChatRoomModal(props: modalProps) {
     <S.CreateRoomLayout>
       <form>
         <h1>새로운 채팅방 만들기</h1>
-        <S.BtnWrapper>
+        <S.Wrapper>
           <S.Input placeholder="채팅방 이름" onChange={setTitleHandler} autoFocus />
-        </S.BtnWrapper>
-        <S.BtnWrapper>
+        </S.Wrapper>
+        <S.Wrapper>
           <select onChange={setStatusHandler}>
             <option value="">--채팅방을 설정해주세요--</option>
             <option value="public">공개방</option>
             <option value="private">비공개방</option>
             <option value="protected">비밀번호방</option>
           </select>
-        </S.BtnWrapper>
-        <S.BtnWrapper>
+        </S.Wrapper>
+        <S.Wrapper>
           <S.Input
             placeholder="비밀번호"
             onChange={setPwHandler}
             disabled={status !== "protected"}
             value={pwInput}
           />
-        </S.BtnWrapper>
+        </S.Wrapper>
         <S.Span color="red">{notice}</S.Span>
-        <S.BtnWrapper>
+        <S.Wrapper>
           <S.ModalButton2 onClick={createChatRoomHandler}> 만들기 </S.ModalButton2>
-        </S.BtnWrapper>
+        </S.Wrapper>
       </form>
     </S.CreateRoomLayout>
   );
