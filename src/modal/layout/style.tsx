@@ -1,28 +1,8 @@
 import styled from "@emotion/styled";
 
-export const NotificationLayout = styled.div`
-  position: relative;
-  width: 100%;
-  height: 95%;
-  text-align: center;
-  background: white;
-  font-size: 14px;
-  border-radius: 20px;
-`;
-
-export const NotiContent = styled.div`
-  position: relative;
-  height: 50%;
-  text-align: center;
-  overflow-y: auto;
-`
-
-export const BtnWrapper = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-around;
-`
+/* 
+  Common Modal style
+*/
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -42,7 +22,12 @@ export const Modal = styled.dialog`
   box-shadow: 0 1px 3px 1px rgba(0,0,0,.08);
   z-index: 1;
   top: 100px;
-
+`
+export const BtnWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
 `
 
 export const Button = styled.button`
@@ -62,3 +47,25 @@ export const ModalButton2 = styled(Button)`
   width: 30%;
   margin-top: 10px
 `
+
+/* 
+  Notification Modal
+*/
+
+export const NotificationLayout = styled.div`
+  position: relative;
+  width: 100%;
+  height: 95%;
+  text-align: center;
+  background: white;
+  font-size: 14px;
+  border-radius: 20px;
+`;
+
+export const NotiContent = styled.div`
+  position: relative;
+  height: 50%;
+  text-align: center;
+  overflow-y: auto;
+`
+

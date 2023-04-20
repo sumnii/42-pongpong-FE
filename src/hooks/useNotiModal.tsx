@@ -8,6 +8,7 @@ import NotificationModal from "modal/NotificationModal";
 export type NotiType = {
   title: string;
   chatId?: number;
+  chatTitle?: string;
   dmId?: number;
   gameId?: number;
 };
@@ -26,7 +27,6 @@ export default function useNotiModal() {
     if (locPage !== "chat" || locRoom !== String(res.roomId)) {
       myChat.map((chat) => {
         if (chat.roomId === res.roomId) {
-          // console.log(res.roomId);
           const data: NotiType = {
             title: "참여하고 있는 채팅방에 새로운 메시지",
             chatId: res.roomId,
@@ -49,7 +49,7 @@ export default function useNotiModal() {
       socket.off("chat", listener);
       socket.off("updateMyChatRoomList", myChatListener);
     };
-  });
+  }, []);
 
   const closeModalHandler = () => {
     setShowNotiModal(false);

@@ -16,13 +16,13 @@ export default function UserList(props: {
   const [myOper, setMyOper] = useState("participant");
 
   const listener = (res: ChatUserListType) => {
-    if (res.roomId === props.room) {
+    if (res.type === "chatRoom" && res.roomId === props.room) {
       setChatUserList(res);
     }
   };
 
   useEffect(() => {
-    socket.on("updateChatRoom", listener);
+    socket.on("message", listener);
     const myRoomInfo = chatUserList?.userList.filter((user) => user.username === getUsername())[0];
     if (myRoomInfo?.owner) setMyOper("owner");
     if (myRoomInfo?.admin) setMyOper("admin");
@@ -30,9 +30,9 @@ export default function UserList(props: {
     console.log(myRoomInfo, myOper);
 
     return () => {
-      socket.off("updateChatRoom", listener);
+      socket.off("message", listener);
     };
-  });
+  }, []);
 
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({

@@ -8,7 +8,6 @@ import ListTabBar from "@centerHeader/ListTabBar";
 import RightSide from "@rightSide/RightSide";
 import NotFound from "pages/NotFound";
 import { ProfileContext } from "hooks/ProfileContext";
-import { ChatListType } from "socket/chat";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
 
@@ -27,32 +26,16 @@ const GameRoom = loadable(() => {
 
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
-  const [chatList, setChatList] = useState<ChatListType[]>([]);
-  const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
   const socket = getSocket();
 
-  const chatRoomListener = (res: ChatListType[]) => {
-    const tmp: ChatListType[] = [];
-    res.map((elem) => {
-      if (elem.status !== "private") {
-        tmp.push(elem);
-      }
-    });
-    setChatList(tmp);
-  };
-
-  const myChatRoomListener = (res: ChatListType[]) => {
-    setMyChatList(res);
-  };
-
   useEffect(() => {
-    socket.on("updateChatRoomList", chatRoomListener);
-    socket.on("updateMyChatRoomList", myChatRoomListener);
+    socket.on("subscribeResult", (data) => console.log(data));
+    socket.on("unsubscribeResult", (data) => console.log(data));
     return () => {
-      socket.off("updateChatRoomList", chatRoomListener);
-      socket.off("updateMyChatRoomList", myChatRoomListener);
+      socket.off("subscribeResult", (data) => console.log(data));
+      socket.off("unsubscribeResult", (data) => console.log(data));
     };
-  });
+  }, []);
 
   return (
     <S.AppLayout>
@@ -65,7 +48,7 @@ function Auth() {
             <ListTabBar />
             <Routes>
               <Route path="/" element={<Main />} />
-              <Route path="/chat/list" element={<ChatList chat={chatList} myChat={myChatList} />} />
+              <Route path="/chat/list" element={<ChatList />} />
               <Route path="/game/list" element={<GameList />} />
               <Route path="/chat/:roomId" element={<ChatRoom />} />
               <Route path="/game/:gameId" element={<GameRoom />} />

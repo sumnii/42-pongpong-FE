@@ -9,7 +9,7 @@ export const CreateRoomLayout = styled.div`
   border-radius: 20px;
 `;
 
-export const BtnWrapper = styled.div`
+export const Wrapper = styled.div`
   width: 100%;
   margin: 5% 0;
   display: flex;
@@ -33,7 +33,6 @@ export const Modal = styled.dialog`
   box-shadow: 0 1px 3px 1px rgba(0,0,0,.08);
   z-index: 1;
   top: 100px;
-
 `
 
 export const Button = styled.button`

@@ -9,16 +9,30 @@ export default function Screen(props: { room: number }) {
   const socket = getSocket();
   let keyCnt = 0;
   const listener = (res: ChatEvntType) => {
-    if (res.roomId === props.room) {
+    if (res.type === "chat" && res.roomId === props.room) {
       setScreen(screen.concat(res));
+    } else if (res.type === "history" && res.list) {
+      const tmp: ChatEvntType[] = [];
+      res.list.map((elem) => {
+        tmp.push({
+          type: "chat",
+          roomId: props.room,
+          status: "plain",
+          from: elem.from,
+          content: elem.content
+        })
+      });
+      if (screen.toString() !== tmp.toString()) {
+        setScreen(screen.concat(tmp));
+      }
     }
   };
 
   useEffect(() => {
-    socket.on("chat", listener);
+    socket.on("message", listener);
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
     return () => {
-      socket.off("chat", listener);
+      socket.off("message", listener);
     };
   }, [screen]);
 

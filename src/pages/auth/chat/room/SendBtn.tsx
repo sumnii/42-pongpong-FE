@@ -22,7 +22,7 @@ export default function SendBtn(props: { room: string | number }) {
     return () => {
       socket.off("chatResult", listener);
     };
-  });
+  }, []);
 
   function chatInputHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setChatInput(e.target.value);

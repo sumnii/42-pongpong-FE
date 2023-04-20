@@ -7,7 +7,7 @@ export default function ExitBtn(props: { room: number }) {
   const navigate = useNavigate();
   const socket = getSocket();
 
-  const listner = (res: exitEvntType) => {
+  const listener = (res: exitEvntType) => {
     if (res.roomId === props.room) {
       if (res.status === "approved") {
         navigate("/chat/list");
@@ -17,11 +17,11 @@ export default function ExitBtn(props: { room: number }) {
     }
   };
   useEffect(() => {
-    socket.on("exitChatRoomResult", listner);
+    socket.on("exitChatRoomResult", listener);
     return () => {
-      socket.off("exitChatRoomResult", listner);
+      socket.off("exitChatRoomResult", listener);
     };
-  });
+  }, []);
 
   function exitHandler() {
     socket.emit("exitChatRoom", {

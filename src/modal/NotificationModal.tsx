@@ -2,6 +2,7 @@ import * as S from "./layout/style";
 import React from "react";
 import { getSocket } from "socket/socket";
 import { NotiType } from "hooks/useNotiModal";
+import { useNavigate } from "react-router-dom";
 
 type modalProps = {
   close: () => void;
@@ -10,11 +11,13 @@ type modalProps = {
 
 function NotificationModal(props: modalProps) {
   const socket = getSocket();
+  const navigate = useNavigate();
   const joinHandler = (e: React.MouseEvent<HTMLSpanElement>) => {
-    console.log(e.currentTarget.id);
-    socket.emit("joinChatRoom", {
-      roomId: Number(e.currentTarget.id),
-    });
+    const target = e.currentTarget.id.split("-");
+    navigate({
+      pathname: `/chat/${target[0]}`,
+      search: `title=${target[1]}`
+    })
     props.close();
   };
 
@@ -26,7 +29,7 @@ function NotificationModal(props: modalProps) {
           props.notiList.map((noti) => {
             return (
               <>
-                <S.Span onClick={joinHandler} id={`${noti.chatId}`}>
+                <S.Span onClick={joinHandler} id={`${noti.chatId}-${noti.chatTitle}`}>
                   {noti.title}
                 </S.Span>
                 <br />

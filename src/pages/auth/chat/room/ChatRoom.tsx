@@ -4,6 +4,8 @@ import * as S from "./style";
 import Screen from "./Screen";
 import ExitBtn from "./ExitBtn";
 import SendBtn from "./SendBtn";
+import { getSocket } from "socket/socket";
+import { useEffect } from "react";
 
 export default function ChatRoom() {
   const navigate = useNavigate();
@@ -11,6 +13,20 @@ export default function ChatRoom() {
   const { roomId } = useParams();
   if (Number.isNaN(Number(roomId))) navigate("/404");
   const [target, setTarget] = useSearchParams();
+  const socket = getSocket();
+  
+  useEffect(() => {
+    socket.emit("subscribe", {
+      type: "chatRoom",
+      roomId: Number(roomId)
+    })
+    return () => {
+      socket.emit("unsubscribe", {
+        type : "chatRoom",
+        roomId: Number(roomId),
+      })
+    }
+  }, []);
 
   return (
     <S.PageLayout>

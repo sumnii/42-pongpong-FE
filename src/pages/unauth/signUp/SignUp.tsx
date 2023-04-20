@@ -55,11 +55,9 @@ export default function signUp() {
     if (phoneInput) {
       const res = await auth.getOtpSignUp(phoneInput);
       if (res && (res.status === 200 || res.status === 201)) {
-        console.log(res);
         setPhoneCheck("인증번호를 보냈습니다.");
         setSendAuthBtn(true);
       } else {
-        console.log(res);
         setPhoneCheck("휴대폰 번호를 확인해주세요.");
       }
     } else {
@@ -82,7 +80,6 @@ export default function signUp() {
         //     token: res.data.accessToken,
         //   });
         setCheckAuthBtn(true);
-        console.log(res);
       } else {
         setPhoneAuthCheck("인증번호가 일치하지 않습니다.");
         console.log(res);
@@ -107,7 +104,6 @@ export default function signUp() {
       const res = await user.create(userInfo);
       if (res && (res.status === 200 || res.status === 201)) {
         alert("회원가입 완료되었습니다.");
-        console.log(res);
         navigate("/");
       } else {
         console.log(res);
