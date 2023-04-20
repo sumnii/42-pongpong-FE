@@ -6,6 +6,7 @@ import ExitBtn from "./ExitBtn";
 import SendBtn from "./SendBtn";
 import { getSocket } from "socket/socket";
 import { useEffect } from "react";
+
 export default function ChatRoom() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
