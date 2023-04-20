@@ -8,7 +8,6 @@ import ListTabBar from "@centerHeader/ListTabBar";
 import RightSide from "@rightSide/RightSide";
 import NotFound from "pages/NotFound";
 import { ProfileContext } from "hooks/ProfileContext";
-import { ChatListType, ChatRoomListType } from "socket/chat";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
 
