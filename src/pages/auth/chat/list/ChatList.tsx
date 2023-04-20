@@ -46,7 +46,7 @@ export default function ChatList() {
     return () => {
       socket.off("message", chatRoomListListener);
     };
-  });
+  }, []);
 
   return (
     <S.PageLayout>

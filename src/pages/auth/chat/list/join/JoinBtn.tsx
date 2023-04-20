@@ -40,7 +40,7 @@ export default function JoinChatRoom(props: PropsType) {
     return () => {
       socket.off("joinChatRoomResult", listner);
     };
-  });
+  }, []);
 
   const showModalHandler = () => {
     setShowModal(true);

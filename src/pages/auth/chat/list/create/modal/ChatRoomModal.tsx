@@ -33,7 +33,6 @@ function ChatRoomModal(props: modalProps) {
   }
 
   const listener = (res: CreateEvntType) => {
-    console.log("create", res);
     if (res.status === "approved") {
       props.close();
       navigate({
@@ -51,7 +50,7 @@ function ChatRoomModal(props: modalProps) {
     return () => {
       socket.off("createChatRoomResult", listener);
     };
-  });
+  }, []);
 
   function createChatRoomHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();

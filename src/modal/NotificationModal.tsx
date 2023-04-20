@@ -13,7 +13,6 @@ function NotificationModal(props: modalProps) {
   const socket = getSocket();
   const navigate = useNavigate();
   const joinHandler = (e: React.MouseEvent<HTMLSpanElement>) => {
-    console.log(e.currentTarget.id);
     const target = e.currentTarget.id.split("-");
     navigate({
       pathname: `/chat/${target[0]}`,

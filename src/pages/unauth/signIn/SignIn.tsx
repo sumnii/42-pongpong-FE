@@ -61,7 +61,7 @@ export default function signIn() {
         token: res.data.accessToken,
       });
     } else {
-      console.log(res);
+      console.log(res); // TODO: 중복 로그인 방지 추가하기
       setFormCheck("아이디 또는 패스워드를 확인해주세요.");
     }
   }

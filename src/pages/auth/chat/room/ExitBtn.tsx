@@ -21,7 +21,7 @@ export default function ExitBtn(props: { room: number }) {
     return () => {
       socket.off("exitChatRoomResult", listner);
     };
-  });
+  }, []);
 
   function exitHandler() {
     socket.emit("exitChatRoom", {

@@ -16,7 +16,6 @@ export default function UserList(props: {
   const [myOper, setMyOper] = useState("participant");
 
   const listener = (res: ChatUserListType) => {
-    console.log("userList", res);
     if (res.type === "chatRoom" && res.roomId === props.room) {
       setChatUserList(res);
     }
@@ -33,7 +32,7 @@ export default function UserList(props: {
     return () => {
       socket.off("message", listener);
     };
-  });
+  }, []);
 
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({
