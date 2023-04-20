@@ -82,7 +82,7 @@ export default function ChatList() {
       </S.ChatItem>
       {myChatList.map((room) => {
         return (
-          <S.ChatItem key={no2}>
+          <S.ChatItem key={room.roomId}>
             <ChatItem
               no={no2++}
               subject={room.title}
