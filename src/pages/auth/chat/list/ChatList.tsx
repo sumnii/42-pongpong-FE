@@ -60,7 +60,7 @@ export default function ChatList() {
         </S.ChatItem>
         {chatList.map((room) => {
           return (
-            <S.ChatItem key={no1}>
+            <S.ChatItem key={room.roomId}>
               <ChatItem
                 no={no1++}
                 subject={room.title}
