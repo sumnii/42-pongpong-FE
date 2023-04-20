@@ -1,12 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as S from "./style";
 import { distroyAuth, getUsername } from "userAuth";
 import { AuthContext } from "hooks/AuthContext";
 import { disconnectSocket } from "socket/socket";
 import { useNavigate } from "react-router-dom";
 import Modal from "modal/layout/Modal";
-import NotificationModal from "modal/NotificationModal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
+import { getAvatar } from "api/user";
 
 interface userProps {
   user?: {
@@ -37,6 +37,24 @@ export function ProfileData(props: userProps) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === props.user?.username;
+  const [img, setImg] = useState("");
+
+  useEffect(() => {
+    const getAvatarHandler = async () => {
+      if (props.user) {
+        console.log(props.user);
+        const res = await getAvatar(props.user.username);
+        const file = new File([res?.data], "avatar");
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const previewImage = String(ev.target?.result);
+          setImg(previewImage);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    getAvatarHandler();
+  }, [props.user, img]);
 
   const openModalHandler = () => {
     setShowModal(true);
@@ -50,11 +68,11 @@ export function ProfileData(props: userProps) {
     <S.ProfileLayout>
       { showModal && (
         <Modal setView={closeModalHandler}>
-          <AvatarUploadModal close={closeModalHandler}/>
+          <AvatarUploadModal close={closeModalHandler} setImage={setImg}/>
         </Modal>
       )}
       <S.Title>프로필</S.Title>
-      <S.TmpImg me={myProfile} src={`${props.image}`} onClick={openModalHandler} />
+      <S.TmpImg me={myProfile} src={`${img}`} onClick={myProfile ? openModalHandler : undefined} />
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임

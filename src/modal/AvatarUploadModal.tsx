@@ -1,10 +1,10 @@
 import { postAvatar } from "api/user";
 import * as S from "./layout/style";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
-import { getSocket } from "socket/socket";
 
 type modalProps = {
   close: () => void;
+  setImage: Dispatch<SetStateAction<string>>;
 };
 
 function AvatarUploadModal(props: modalProps) {
@@ -19,6 +19,7 @@ function AvatarUploadModal(props: modalProps) {
     const res = await postAvatar(form);
     if (res?.status === 201) {
       props.close();
+      props.setImage("")
     } else {
       setNoti(res?.data.message);
     }
