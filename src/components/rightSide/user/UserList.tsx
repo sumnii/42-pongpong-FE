@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { getSocket } from "socket/socket";
@@ -6,6 +6,7 @@ import { ChatUserListType } from "socket/chat";
 import { getUsername } from "userAuth";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
+import { ProfileImgIsUpContext } from "hooks/ProfileContext";
 
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
@@ -14,6 +15,7 @@ export default function UserList(props: {
   const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
   const socket = getSocket();
   const [myOper, setMyOper] = useState("participant");
+  const profileImgIsUp = useContext(ProfileImgIsUpContext);
 
   const listener = (res: ChatUserListType) => {
     if (res.type === "chatRoom" && res.roomId === props.room) {
@@ -32,7 +34,7 @@ export default function UserList(props: {
     return () => {
       socket.off("message", listener);
     };
-  }, []);
+  }, [profileImgIsUp]);
 
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({

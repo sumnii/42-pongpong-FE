@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "api/user";
+import { getAvatar, getProfile } from "api/user";
 import { ProfileData } from "./ProfileData";
 
 export default function Profile(props: { username?: string }) {

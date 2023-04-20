@@ -1,9 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as S from "./style";
-import { distroyAuth } from "userAuth";
+import { distroyAuth, getUsername } from "userAuth";
 import { AuthContext } from "hooks/AuthContext";
 import { disconnectSocket } from "socket/socket";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Modal from "modal/layout/Modal";
+import AvatarUploadModal from "modal/AvatarUploadModal";
+import { getAvatar } from "api/user";
+import { ProfileImgIsUpContext } from "hooks/ProfileContext";
 
 interface userProps {
   user?: {
@@ -24,6 +28,7 @@ interface userProps {
       },
     ];
   };
+  image?: string;
 }
 
 export function ProfileData(props: userProps) {
@@ -31,12 +36,44 @@ export function ProfileData(props: userProps) {
   if (props) user = props.user;
   const setSigned = useContext(AuthContext);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const myProfile = getUsername() === props.user?.username;
+  const [img, setImg] = useState("");
+  const profileImgIsUp = useContext(ProfileImgIsUpContext);
+
+  useEffect(() => {
+    const getAvatarHandler = async () => {
+      if (props.user) {
+        const res = await getAvatar(props.user.username);
+        const file = new File([res?.data], "avatar");
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const previewImage = String(ev.target?.result);
+          setImg(previewImage);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    getAvatarHandler();
+  }, [props.user, profileImgIsUp]);
+
+  const openModalHandler = () => {
+    setShowModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
 
   return (
     <S.ProfileLayout>
+      {showModal && (
+        <Modal setView={closeModalHandler}>
+          <AvatarUploadModal close={closeModalHandler} />
+        </Modal>
+      )}
       <S.Title>프로필</S.Title>
-      {/* 로딩중 기본 이미지 삽입 */}
-      <S.TmpImg />
+      <S.TmpImg me={myProfile} src={`${img}`} onClick={myProfile ? openModalHandler : undefined} />
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임
