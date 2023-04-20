@@ -9,8 +9,8 @@ type modalProps = {
 };
 
 function ChatRoomModal(props: modalProps) {
-  const [titleInput, setTitleInput] = useState("");
   const [status, setStatus] = useState("");
+  const [titleInput, setTitleInput] = useState("");
   const [pwInput, setPwInput] = useState("");
   const [notice, setNotice] = useState("");
   const navigate = useNavigate();
@@ -34,10 +34,10 @@ function ChatRoomModal(props: modalProps) {
 
   const listener = (res: CreateEvntType) => {
     if (res.status === "approved") {
-      props.close();
       navigate({
         pathname: `/chat/${res.roomId}`,
         search: `title=${titleInput}`});
+      props.close();
     } else if (res.status === "warning") {
       setNotice(res.detail);
     } else if (res.status === "error") {
@@ -50,9 +50,9 @@ function ChatRoomModal(props: modalProps) {
     return () => {
       socket.off("createChatRoomResult", listener);
     };
-  }, []);
+  });
 
-  function createChatRoomHandler(e: React.MouseEvent<HTMLButtonElement>) {
+  function createChatRoomHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isComplete()) {
       if (status === "protected") {
@@ -73,7 +73,7 @@ function ChatRoomModal(props: modalProps) {
   }
 
   function isComplete(): boolean {
-    if (titleInput && status) {
+    if  (titleInput && status) {
       if (status === "protected" && !pwInput) return false;
       return true;
     }
@@ -82,10 +82,10 @@ function ChatRoomModal(props: modalProps) {
 
   return (
     <S.CreateRoomLayout>
-      <form>
+      <form onSubmit={createChatRoomHandler}>
         <h1>새로운 채팅방 만들기</h1>
         <S.Wrapper>
-          <S.Input placeholder="채팅방 이름" onChange={setTitleHandler} autoFocus />
+          <S.Input placeholder="채팅방 이름" value={titleInput} onChange={setTitleHandler} autoFocus />
         </S.Wrapper>
         <S.Wrapper>
           <select onChange={setStatusHandler}>
@@ -105,7 +105,7 @@ function ChatRoomModal(props: modalProps) {
         </S.Wrapper>
         <S.Span color="red">{notice}</S.Span>
         <S.Wrapper>
-          <S.ModalButton2 onClick={createChatRoomHandler}> 만들기 </S.ModalButton2>
+          <S.ModalButton2> 만들기 </S.ModalButton2>
         </S.Wrapper>
       </form>
     </S.CreateRoomLayout>
