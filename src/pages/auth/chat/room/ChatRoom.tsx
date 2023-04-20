@@ -25,7 +25,7 @@ export default function ChatRoom() {
         roomId: Number(roomId),
       })
     }
-  });
+  }, []);
 
   return (
     <S.PageLayout>

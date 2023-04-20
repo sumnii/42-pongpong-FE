@@ -12,10 +12,6 @@ export function setSocket(token: string): Socket {
   });
   // 로그인 시 소켓 연결 확인용 로그
   console.log("init", socket);
-
-  // socket.emit("subscribe", { // 새로고침을 고려한다면 이 위치에 있어야함
-  //   type: "chatRoomList",
-  // });
   return socket;
 }
 

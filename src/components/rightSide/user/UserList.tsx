@@ -33,7 +33,7 @@ export default function UserList(props: {
     return () => {
       socket.off("message", listener);
     };
-  });
+  }, []);
 
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({

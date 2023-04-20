@@ -50,7 +50,7 @@ export default function useNotiModal() {
       socket.off("chat", listener);
       socket.off("updateMyChatRoomList", myChatListener);
     };
-  });
+  }, []);
 
   const closeModalHandler = () => {
     setShowNotiModal(false);

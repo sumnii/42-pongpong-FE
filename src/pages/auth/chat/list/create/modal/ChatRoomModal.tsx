@@ -51,7 +51,7 @@ function ChatRoomModal(props: modalProps) {
     return () => {
       socket.off("createChatRoomResult", listener);
     };
-  });
+  }, []);
 
   function createChatRoomHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();

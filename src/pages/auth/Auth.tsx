@@ -36,7 +36,7 @@ function Auth() {
       socket.off("subscribeResult", (data) => console.log(data));
       socket.off("unsubscribeResult", (data) => console.log(data));
     };
-  });
+  }, []);
 
   return (
     <S.AppLayout>

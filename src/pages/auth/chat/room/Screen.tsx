@@ -23,7 +23,9 @@ export default function Screen(props: { room: number }) {
           content: elem.content
         })
       });
-      setScreen(screen.concat(tmp));
+      if (screen.toString() !== tmp.toString()) {
+        setScreen(screen.concat(tmp));
+      }
     }
   };
 
