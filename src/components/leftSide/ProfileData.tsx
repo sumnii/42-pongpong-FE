@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import { getAvatar } from "api/user";
+import { ProfileImgIsUpContext } from "hooks/ProfileContext";
 
 interface userProps {
   user?: {
@@ -38,11 +39,11 @@ export function ProfileData(props: userProps) {
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === props.user?.username;
   const [img, setImg] = useState("");
+  const profileImgIsUp = useContext(ProfileImgIsUpContext);
 
   useEffect(() => {
     const getAvatarHandler = async () => {
       if (props.user) {
-        console.log(props.user);
         const res = await getAvatar(props.user.username);
         const file = new File([res?.data], "avatar");
         const reader = new FileReader();
@@ -54,7 +55,7 @@ export function ProfileData(props: userProps) {
       }
     };
     getAvatarHandler();
-  }, [props.user, img]);
+  }, [props.user, profileImgIsUp]);
 
   const openModalHandler = () => {
     setShowModal(true);
@@ -62,13 +63,13 @@ export function ProfileData(props: userProps) {
 
   const closeModalHandler = () => {
     setShowModal(false);
-  }
+  };
 
   return (
     <S.ProfileLayout>
-      { showModal && (
+      {showModal && (
         <Modal setView={closeModalHandler}>
-          <AvatarUploadModal close={closeModalHandler} setImage={setImg}/>
+          <AvatarUploadModal close={closeModalHandler} />
         </Modal>
       )}
       <S.Title>프로필</S.Title>

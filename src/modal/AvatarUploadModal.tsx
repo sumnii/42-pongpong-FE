@@ -1,15 +1,16 @@
 import { postAvatar } from "api/user";
 import * as S from "./layout/style";
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { ProfileSetImgIsUpContext } from "hooks/ProfileContext";
 
 type modalProps = {
   close: () => void;
-  setImage: Dispatch<SetStateAction<string>>;
 };
 
 function AvatarUploadModal(props: modalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [noti, setNoti] = useState("");
+  const setProfileImgIsUp = useContext(ProfileSetImgIsUpContext);
 
   const changeInput = () => {
     if (noti) setNoti("");
@@ -19,7 +20,9 @@ function AvatarUploadModal(props: modalProps) {
     const res = await postAvatar(form);
     if (res?.status === 201) {
       props.close();
-      props.setImage("")
+      if (setProfileImgIsUp) {
+        setProfileImgIsUp((prev) => !prev);
+      }
     } else {
       setNoti(res?.data.message);
     }
@@ -32,7 +35,6 @@ function AvatarUploadModal(props: modalProps) {
     const formData = new FormData();
     if (files) {
       formData.append("avatar", files[0]);
-      console.log(files);
       postAvatarHandler(formData);
     }
   };

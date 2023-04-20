@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ProfileContext } from "hooks/ProfileContext";
+import { ProfileContext, ProfileImgIsUpContext } from "hooks/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
 import useNotiModal from "hooks/useNotiModal";
 import * as S from "./style";
@@ -15,6 +15,7 @@ export default function UserInfo(props: {
   oper?: string | undefined;
 }) {
   const setProfileUser = useContext(ProfileContext);
+  const profileImgIsUp = useContext(ProfileImgIsUpContext);
   const me = getUsername() === props.username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
     listOf: props.listOf,
@@ -35,7 +36,7 @@ export default function UserInfo(props: {
       reader.readAsDataURL(file);
     };
     getAvatarHandler();
-  }, []);
+  }, [profileImgIsUp]);
 
   return (
     <>
