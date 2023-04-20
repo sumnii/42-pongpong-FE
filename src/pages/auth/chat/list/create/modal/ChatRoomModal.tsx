@@ -15,7 +15,6 @@ function ChatRoomModal(props: modalProps) {
   const [notice, setNotice] = useState("");
   const navigate = useNavigate();
   const socket = getSocket();
-  const abc = 3;
 
   function setStatusHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     setStatus(e.target.value);
