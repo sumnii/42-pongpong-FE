@@ -10,7 +10,7 @@ type modalProps = {
 
 function ChatRoomModal(props: modalProps) {
   const [status, setStatus] = useState("");
-  const [titleInput, setTitleInput] = useState("123");
+  const [titleInput, setTitleInput] = useState("");
   const [pwInput, setPwInput] = useState("");
   const [notice, setNotice] = useState("");
   const navigate = useNavigate();
