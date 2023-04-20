@@ -27,7 +27,6 @@ export default function useNotiModal() {
     if (locPage !== "chat" || locRoom !== String(res.roomId)) {
       myChat.map((chat) => {
         if (chat.roomId === res.roomId) {
-          // console.log(res.roomId);
           const data: NotiType = {
             title: "참여하고 있는 채팅방에 새로운 메시지",
             chatId: res.roomId,

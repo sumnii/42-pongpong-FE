@@ -51,7 +51,6 @@ export default function JoinChatRoom(props: PropsType) {
   };
 
   function joinHandler() {
-    console.log("joinBtn")
     socket.emit("joinChatRoom", {
       roomId: props.roomId,
     });

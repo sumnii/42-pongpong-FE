@@ -33,7 +33,6 @@ function ChatRoomModal(props: modalProps) {
   }
 
   const listener = (res: CreateEvntType) => {
-    console.log("create", res);
     if (res.status === "approved") {
       props.close();
       navigate({
