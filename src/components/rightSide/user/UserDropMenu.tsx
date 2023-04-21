@@ -1,10 +1,8 @@
 import { useEffect, useRef, useContext } from "react";
 import { ProfileContext } from "hooks/context/ProfileContext";
-import { onProfile } from "./dropFunction";
-import { useAppointAdmin } from "hooks/dropFunc/useAppointAdmin";
+import { useOper, onProfile } from "hooks/dropFunc/useOper";
 import { RoomIdContext } from "hooks/context/RoomIdContext";
 import * as S from "./style";
-import useMute from "hooks/dropFunc/useMute";
 
 export default function UserDropMenu(props: {
   onClose: () => void;
@@ -16,8 +14,8 @@ export default function UserDropMenu(props: {
   const setProfileUser = useContext(ProfileContext);
   const roomId = useContext(RoomIdContext);
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
-  const { onAppointAdmin } = useAppointAdmin(roomId, props.targetUser, props.onClose);
-  const { isMuted, onMute } = useMute(roomId, props.targetUser, props.targetMuted, props.onClose);
+  const onAppointAdmin = useOper("appointAdmin", roomId, props.targetUser, props.onClose);
+  const onMute = useOper("appointAdmin", roomId, props.targetUser, props.onClose);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -50,7 +48,7 @@ export default function UserDropMenu(props: {
             props.targetOper !== "owner")) && (
           <>
             {/* TODO: isMuted 테스트 더 필요 */}
-            {isMuted ? (
+            {props.targetMuted ? (
               <S.DropMenuItemBox disabled={true}>음소거중</S.DropMenuItemBox>
             ) : (
               <S.DropMenuItemBox onClick={onMute}>음소거</S.DropMenuItemBox>
