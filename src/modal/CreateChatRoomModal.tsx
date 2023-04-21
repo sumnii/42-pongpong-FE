@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatRoomResponse } from "socket/active/chatEventType";
 import { getSocket } from "socket/socket";
-import * as S from "./style";
+import * as S from "./layout/style";
 
 type modalProps = {
   close: () => void;
 };
 
-function ChatRoomModal(props: modalProps) {
+function CreateChatRoomModal(props: modalProps) {
   const [status, setStatus] = useState("");
   const [titleInput, setTitleInput] = useState("");
   const [pwInput, setPwInput] = useState("");
@@ -118,4 +118,4 @@ function ChatRoomModal(props: modalProps) {
   );
 }
 
-export default ChatRoomModal;
+export default CreateChatRoomModal;

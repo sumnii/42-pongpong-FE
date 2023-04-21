@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatRoomResponse } from "socket/active/chatEventType";
 import { getSocket } from "socket/socket";
-import Modal from "./modal/Modal";
-import PassWdModal from "./modal/PassWdModal";
+import Modal from "modal/layout/Modal";
+import PassWdModal from "modal/PassWdModal";
 import * as S from "./style";
 
 type PropsType = {

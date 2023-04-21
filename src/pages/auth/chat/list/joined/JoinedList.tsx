@@ -1,6 +1,6 @@
 import { ChatListArray } from "socket/passive/chatRoomListType";
-import ChatItem from "./ChatItem";
-import * as S from "./style";
+import ChatItem from "../ChatItem";
+import * as S from "../style";
 
 export default function JoinedList(props: { myChatList: ChatListArray }) {
   let no = 1;

@@ -82,3 +82,36 @@ export const AvatarUploadLayout = styled.div`
   font-size: 14px;
   border-radius: 20px;
 `;
+
+/* 
+  password room entry
+*/
+
+export const CreateRoomLayout = styled.div`
+  position: relative;
+  width: 100%;
+  text-align: center;
+  background: white;
+  font-size: 14px;
+  border-radius: 20px;
+`;
+
+export const Input = styled.input`
+  width: 50%;
+  padding: 12px 18px 12px;
+  border: 1.5px solid lightgray;
+  border-radius: 8px;
+  transition: border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  margin-right: 5px;
+`;
+
+/* 
+  create chat room
+*/
+
+export const Wrapper = styled.div`
+  width: 100%;
+  margin: 5% 0;
+  display: flex;
+  justify-content: space-around;
+`;

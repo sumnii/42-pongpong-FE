@@ -1,13 +1,13 @@
-import * as S from "./style";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { getSocket } from "socket/socket";
+import * as S from "./layout/style";
 
 type modalProps = {
   no: string | number;
   close: () => void;
   room: number | undefined;
   noti: string;
-  setNoti: Dispatch<SetStateAction<string>>
+  setNoti: Dispatch<SetStateAction<string>>;
 };
 
 function PassWdModal(props: modalProps) {
@@ -25,7 +25,7 @@ function PassWdModal(props: modalProps) {
       socket.emit("joinChatRoom", {
         roomId: props.room,
         password: pwInput,
-      })
+      });
     } else {
       props.setNoti("비밀번호를 입력해주세요.");
     }

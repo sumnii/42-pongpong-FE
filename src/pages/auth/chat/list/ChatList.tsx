@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ChatListArray, ChatRoomListData } from "socket/passive/chatRoomListType";
 import { isAuth } from "userAuth";
 import { getSocket } from "socket/socket";
-import AvailableList from "./AvailableList";
-import JoinedList from "./JoinedList";
+import AvailableList from "./available/AvailableList";
+import JoinedList from "./joined/JoinedList";
 import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 

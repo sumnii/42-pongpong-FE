@@ -1,7 +1,7 @@
 import { ChatListArray } from "socket/passive/chatRoomListType";
-import ChatItem from "./ChatItem";
-import CreateChatRoom from "./create/CreateBtn";
-import * as S from "./style";
+import ChatItem from "../ChatItem";
+import CreateChatRoom from "./CreateBtn";
+import * as S from "../style";
 
 export default function AvailableList(props: { chatList: ChatListArray }) {
   let no = 1;

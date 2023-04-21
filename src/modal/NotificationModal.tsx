@@ -1,8 +1,6 @@
-import * as S from "./layout/style";
-import React from "react";
-import { getSocket } from "socket/socket";
-import { NotiType } from "hooks/useNotiModal";
 import { useNavigate } from "react-router-dom";
+import { NotiType } from "hooks/useNotiModal";
+import * as S from "./layout/style";
 
 type modalProps = {
   close: () => void;
@@ -10,14 +8,13 @@ type modalProps = {
 };
 
 function NotificationModal(props: modalProps) {
-  const socket = getSocket();
   const navigate = useNavigate();
   const joinHandler = (e: React.MouseEvent<HTMLSpanElement>) => {
     const target = e.currentTarget.id.split("-");
     navigate({
       pathname: `/chat/${target[0]}`,
-      search: `title=${target[1]}`
-    })
+      search: `title=${target[1]}`,
+    });
     props.close();
   };
 
