@@ -24,6 +24,8 @@ export default function ChatRoom() {
   const myOper = useRef("participant");
 
   function handleChatRoom(res: T.HistoryData | T.ChatRoomData | T.ChatData) {
+    // TEST: 채팅방 내 전체 이벤트 리스너
+    console.log("채팅방", res);
     if (res.type === "chat" && res.roomId === Number(roomId) && screen) {
       setScreen(screen.concat(res));
     } else if (res.type === "history") {
@@ -49,16 +51,9 @@ export default function ChatRoom() {
   });
 
   useEffect(() => {
-    socket.emit("subscribe", {
-      type: "chatRoom",
-      roomId: Number(roomId),
-    });
-
+    socket.emit("subscribe", { type: "chatRoom", roomId: Number(roomId) });
     return () => {
-      socket.emit("unsubscribe", {
-        type: "chatRoom",
-        roomId: Number(roomId),
-      });
+      socket.emit("unsubscribe", { type: "chatRoom", roomId: Number(roomId) });
     };
   }, []);
 
