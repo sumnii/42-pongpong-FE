@@ -34,3 +34,9 @@ export type UserListArray = {
 export type BanListArray = {
   username: string;
 }[];
+
+export type AffectedData = {
+  type: "ban" | "mute" | "kick";
+  roomId: boolean;
+  from: string;
+};

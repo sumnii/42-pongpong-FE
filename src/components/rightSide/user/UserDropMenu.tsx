@@ -1,6 +1,6 @@
 import { useEffect, useRef, useContext } from "react";
 import { ProfileContext } from "hooks/context/ProfileContext";
-import { useOper, onProfile } from "hooks/dropFunc/useOper";
+import { useOper, onProfile } from "hooks/useOper";
 import { RoomIdContext } from "hooks/context/RoomIdContext";
 import * as S from "./style";
 
@@ -16,6 +16,7 @@ export default function UserDropMenu(props: {
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
   const onAppointAdmin = useOper("appointAdmin", roomId, props.targetUser, props.onClose);
   const onMute = useOper("appointAdmin", roomId, props.targetUser, props.onClose);
+  const onKick = useOper("kick", roomId, props.targetUser, props.onClose);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -53,7 +54,7 @@ export default function UserDropMenu(props: {
             ) : (
               <S.DropMenuItemBox onClick={onMute}>음소거</S.DropMenuItemBox>
             )}
-            <S.DropMenuItemBox>내보내기</S.DropMenuItemBox>
+            <S.DropMenuItemBox onClick={onKick}>내보내기</S.DropMenuItemBox>
             <S.DropMenuItemBox>입장 금지</S.DropMenuItemBox>
           </>
         )}

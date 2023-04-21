@@ -23,7 +23,7 @@ export default function ChatRoom() {
   const socket = getSocket();
   const myOper = useRef("participant");
 
-  function handleChatRoom(res: T.HistoryData | T.ChatRoomData | T.ChatData) {
+  function handleChatRoom(res: T.HistoryData | T.ChatRoomData | T.ChatData | T.AffectedData) {
     // TEST: 채팅방 내 전체 이벤트 리스너
     console.log("채팅방", res);
     if (res.type === "chat" && res.roomId === Number(roomId) && screen) {
@@ -40,6 +40,9 @@ export default function ChatRoom() {
       if (myRoomInfo?.admin) myOper.current = "admin";
       setParticipant(res.userList);
       setBanned(res.banList);
+    } else if (res.type === "kick") {
+      alert(res.from + "님이 추방했습니다.");
+      navigate("/chat/list");
     }
   }
 
