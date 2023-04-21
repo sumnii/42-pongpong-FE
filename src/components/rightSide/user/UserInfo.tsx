@@ -75,7 +75,7 @@ export default function UserInfo(props: {
           targetUser={props.username}
           targetOper={props.userOper}
           targetMuted={props.muted}
-          banned
+          banned={props.banned}
         />
       )}
     </>
