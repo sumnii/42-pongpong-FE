@@ -18,7 +18,7 @@ export default function MyProfile() {
   return (
     <S.MyProfileLayout>
       <S.UserItem>
-        <UserInfo username={profileQuery?.data?.username} subLine="🔵 온라인" />
+        <UserInfo username={profileQuery?.data?.username} subLine="🟣 온라인" />
       </S.UserItem>
     </S.MyProfileLayout>
   );
