@@ -12,7 +12,8 @@ export default function UserInfo(props: {
   username: string;
   userOper?: string;
   subLine: string;
-  oper?: string | undefined;
+  myOper?: string | undefined;
+  muted?: boolean;
 }) {
   const setProfileUser = useContext(ProfileContext);
   const profileImgIsUp = useContext(ProfileImgIsUpContext);
@@ -24,19 +25,20 @@ export default function UserInfo(props: {
   const [img, setImg] = useState("");
   const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
 
-  useEffect(() => {
-    const getAvatarHandler = async () => {
-      const res = await getAvatar(props.username);
-      const file = new File([res?.data], "avatar");
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const previewImage = String(ev.target?.result);
-        setImg(previewImage);
-      };
-      reader.readAsDataURL(file);
-    };
-    getAvatarHandler();
-  }, [profileImgIsUp]);
+  // TEST: 구현 중 아바타 api 정지
+  // useEffect(() => {
+  //   const getAvatarHandler = async () => {
+  //     const res = await getAvatar(props.username);
+  //     const file = new File([res?.data], "avatar");
+  //     const reader = new FileReader();
+  //     reader.onload = (ev) => {
+  //       const previewImage = String(ev.target?.result);
+  //       setImg(previewImage);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   };
+  //   getAvatarHandler();
+  // }, [profileImgIsUp]);
 
   return (
     <>
@@ -56,6 +58,7 @@ export default function UserInfo(props: {
       >
         {props.username}{" "}
         {props.userOper === "owner" ? "👑" : props.userOper === "admin" ? "🎩" : ""}
+        {props.muted ? " 🤐" : ""}
         <br />
         {props.subLine}
       </S.UserInfoText>
@@ -71,7 +74,8 @@ export default function UserInfo(props: {
           onClose={onDropClose}
           targetUser={props.username}
           targetOper={props.userOper}
-          oper={props.oper}
+          targetMuted={props.muted}
+          myOper={props.myOper}
         />
       )}
     </>

@@ -27,6 +27,7 @@ export type UserListArray = {
   username: string;
   owner: boolean;
   admin: boolean;
+  muted: boolean;
   login: boolean;
 }[];
 

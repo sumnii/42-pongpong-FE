@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { MdOutlineMoreVert } from "react-icons/md";
 import { VscBell, VscBellDot } from "react-icons/vsc";
+import { darkGray, lightGray, lightMain } from "style/color";
 
 /*
  *          User Info
@@ -71,7 +72,7 @@ export const DropMenuLayout = styled.div`
   background-color: white;
 `;
 
-export const DropMenuItemBox = styled.div`
+export const DropMenuItemBox = styled.div<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,4 +82,15 @@ export const DropMenuItemBox = styled.div`
   border-bottom: 1px solid black;
 
   cursor: pointer;
+  ${(props) => {
+    return props.disabled ? `color: ${darkGray}; cursor: default;` : null;
+  }}
+
+  :hover {
+    ${(props) => {
+      return props.disabled
+        ? `background-color: ${lightGray}; cursor: default;`
+        : `background-color: ${lightMain};`;
+    }}
+  }
 `;

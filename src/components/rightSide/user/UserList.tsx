@@ -40,8 +40,9 @@ export default function UserList(props: UserListCase) {
                   listOf={props.listOf}
                   username={user.username}
                   userOper={user.owner ? "owner" : user.admin ? "admin" : ""}
-                  subLine={user.login ? "🔵 온라인" : "⚫️ 오프라인"}
-                  oper={myOper}
+                  subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
+                  myOper={myOper}
+                  muted={user.muted ? true : false}
                 />
               </S.UserItem>
             );
@@ -63,7 +64,7 @@ export default function UserList(props: UserListCase) {
             <UserInfo
               listOf={props.listOf}
               username={profileQuery.data?.username}
-              subLine={profileQuery.data?.status === "login" ? "🔵 온라인" : "⚫️ 오프라인"}
+              subLine={profileQuery.data?.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
             />
           </S.UserItem>
         )}
