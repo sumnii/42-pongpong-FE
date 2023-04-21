@@ -15,7 +15,7 @@ export default function UserDropMenu(props: {
   const roomId = useContext(RoomIdContext);
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
   const onAppointAdmin = useOper("appointAdmin", roomId, props.targetUser, props.onClose);
-  const onMute = useOper("appointAdmin", roomId, props.targetUser, props.onClose);
+  const onMute = useOper("mute", roomId, props.targetUser, props.onClose);
   const onKick = useOper("kick", roomId, props.targetUser, props.onClose);
 
   useEffect(() => {
