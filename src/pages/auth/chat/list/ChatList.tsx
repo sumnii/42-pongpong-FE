@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChatListType, ChatRoomListType } from "socket/chat";
+import { ChatListArray, ChatRoomListData } from "socket/passive/chatRoomListType";
 import { isAuth } from "userAuth";
 import { getSocket } from "socket/socket";
 import ChatItem from "./ChatItem";
@@ -10,16 +10,16 @@ import * as S from "./style";
 
 export default function ChatList() {
   const navigate = useNavigate();
-  const [chatList, setChatList] = useState<ChatListType[]>([]);
-  const [myChatList, setMyChatList] = useState<ChatListType[]>([]);
+  const [chatList, setChatList] = useState<ChatListArray>([]);
+  const [myChatList, setMyChatList] = useState<ChatListArray>([]);
   const socket = getSocket();
   if (!isAuth()) navigate("/");
   let no1 = 1;
   let no2 = 1;
 
-  const chatRoomListListener = (res: ChatRoomListType) => {
+  const chatRoomListListener = (res: ChatRoomListData) => {
     if (res.type === "otherRoom") {
-      const tmp: ChatListType[] = [];
+      const tmp: ChatListArray = [];
       res.list.map((elem) => {
         if (elem.status !== "private") {
           tmp.push(elem);
@@ -35,6 +35,7 @@ export default function ChatList() {
     socket.emit("subscribe", {
       type: "chatRoomList",
     });
+
     return () => {
       socket.emit("unsubscribe", {
         type: "chatRoomList",

@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import * as S from "./style";
 import { useEffect, useState } from "react";
-import { ChatEventResult } from "socket/chat";
+import { useNavigate } from "react-router-dom";
+import { ChatRoomResponse } from "socket/active/chatEventType";
+import { getSocket } from "socket/socket";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
-import { getSocket } from "socket/socket";
+import * as S from "./style";
 
 type PropsType = {
   no: string | number;
@@ -20,7 +20,7 @@ export default function JoinChatRoom(props: PropsType) {
   const socket = getSocket();
   const [notice, setNotice] = useState("");
 
-  const listner = (res: ChatEventResult) => {
+  const listner = (res: ChatRoomResponse) => {
     if (res.status === "error") {
       // status (error, warning) 에도 roomId가 있다면
       console.log(res);

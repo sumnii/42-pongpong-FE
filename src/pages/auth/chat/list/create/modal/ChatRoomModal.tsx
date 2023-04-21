@@ -1,8 +1,8 @@
-import * as S from "./style";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChatEventResult } from "socket/chat";
+import { ChatRoomResponse } from "socket/active/chatEventType";
 import { getSocket } from "socket/socket";
+import * as S from "./style";
 
 type modalProps = {
   close: () => void;
@@ -32,7 +32,7 @@ function ChatRoomModal(props: modalProps) {
     if (notice) setNotice("");
   }
 
-  const listener = (res: ChatEventResult) => {
+  const listener = (res: ChatRoomResponse) => {
     if (res.status === "approved") {
       navigate({
         pathname: `/chat/${res.roomId}`,
