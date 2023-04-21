@@ -4,7 +4,7 @@ import * as font from "style/font";
 export const basicColor = `
   border-radius: 8px;
   border: none;
-  background-color: ${color.blue};
+  background-color: ${color.darkMain};
 
   ${font.inBtn}
   color: white;
