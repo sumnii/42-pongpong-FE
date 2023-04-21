@@ -51,9 +51,12 @@ export default function UserDropMenu(props: {
             <S.DropMenuItemBox>입장 금지</S.DropMenuItemBox>
           </>
         )}
-        {props.oper === "owner" && (
-          <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
-        )}
+        {props.oper === "owner" &&
+          (props.targetOper === "admin" ? (
+            <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 해제</S.DropMenuItemBox>
+          ) : (
+            <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
+          ))}
       </S.DropMenuLayout>
     </>
   );

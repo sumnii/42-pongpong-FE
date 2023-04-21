@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getSocket } from "socket/socket";
 import { ChatRoomResponse } from "socket/active/chatEventType";
 
-export function useAppointAdmin(roomId: number, targetUser: string) {
+export function useAppointAdmin(roomId: number, targetUser: string, onClose: () => void) {
   const socket = getSocket();
 
   function resultHandler(res: ChatRoomResponse) {
@@ -12,6 +12,7 @@ export function useAppointAdmin(roomId: number, targetUser: string) {
         console.log("부방장 지정 승인", res);
       }
     } else console.log(res);
+    onClose();
   }
 
   useEffect(() => {
