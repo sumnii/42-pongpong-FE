@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ChatListArray, ChatRoomListData } from "socket/passive/chatRoomListType";
 import { isAuth } from "userAuth";
 import { getSocket } from "socket/socket";
-import ChatItem from "./ChatItem";
-import CreateChatRoom from "./create/CreateBtn";
+import AvailableList from "./AvailableList";
+import JoinedList from "./JoinedList";
 import RightSide from "@rightSide/RightSide";
 import * as S from "./style";
 
@@ -14,8 +14,6 @@ export default function ChatList() {
   const [myChatList, setMyChatList] = useState<ChatListArray>([]);
   const socket = getSocket();
   if (!isAuth()) navigate("/");
-  let no1 = 1;
-  let no2 = 1;
 
   const chatRoomListListener = (res: ChatRoomListData) => {
     if (res.type === "otherRoom") {
@@ -53,51 +51,9 @@ export default function ChatList() {
   return (
     <>
       <S.PageLayout>
-        <S.HeaderBox>
-          <S.H2>참여 가능한 채팅방</S.H2>
-          <CreateChatRoom />
-        </S.HeaderBox>
-        <S.ChatList>
-          <S.ChatItem head>
-            <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
-          </S.ChatItem>
-          {chatList.map((room) => {
-            return (
-              <S.ChatItem key={room.roomId}>
-                <ChatItem
-                  no={no1++}
-                  subject={room.title}
-                  owner={room.owner}
-                  participantsCnt={room.joining}
-                  status={room.status}
-                  room={room.roomId}
-                />
-              </S.ChatItem>
-            );
-          })}
-        </S.ChatList>
+        <AvailableList chatList={chatList} />
         <hr />
-        <S.HeaderBox>
-          <S.H2>참여중인 채팅방</S.H2>
-        </S.HeaderBox>
-        <S.ChatItem head>
-          <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
-        </S.ChatItem>
-        {myChatList.map((room) => {
-          return (
-            <S.ChatItem key={room.roomId}>
-              <ChatItem
-                no={no2++}
-                subject={room.title}
-                owner={room.owner}
-                participantsCnt={room.joining}
-                status={room.status}
-                room={room.roomId}
-                myRoom={true}
-              />
-            </S.ChatItem>
-          );
-        })}
+        <JoinedList myChatList={myChatList} />
       </S.PageLayout>
       <RightSide />
     </>
