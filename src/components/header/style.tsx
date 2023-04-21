@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { lightMain, darkMain } from "style/color";
+import { lightMain, darkMain, basicMain } from "style/color";
 import * as font from "style/font";
 
 export const HeaderLayout = styled.div`
@@ -8,18 +8,19 @@ export const HeaderLayout = styled.div`
   height: 40px;
   padding: 5px 0;
   border-bottom: 0.5px solid;
+  background-color: ${lightMain};
 `;
 
 export const HeaderBtn = styled.button`
-  margin-bottom: 2px;
+  margin-top: 5px;
   ${font.bodyBold}
+  height: 17px;
 
   background: none;
   border: none;
   ${(props: { clicked: boolean }) => {
     if (props.clicked)
-      return `border-bottom: 2px solid ${lightMain};
-    margin: 0;
+      return `border-bottom: 11px solid ${basicMain};
     color: ${darkMain};`;
     return "";
   }}

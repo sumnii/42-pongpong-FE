@@ -19,10 +19,7 @@ export default defineConfig({
       { find: "@page", replacement: "src/pages/auth" },
       { find: "@leftSide", replacement: "src/components/leftSide" },
       { find: "@rightSide", replacement: "src/components/rightSide" },
-      { find: "@centerHeader", replacement: "src/components/centerHeader" },
-      // { find: "@style", replacement: "src/style" },
-      // { find: "@api", replacement: "src/api" },
-      // { find: "@hooks", replacement: "src/hooks" },
+      { find: "@header", replacement: "src/components/header" },
     ],
   },
   esbuild: {

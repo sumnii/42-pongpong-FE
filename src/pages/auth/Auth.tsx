@@ -4,8 +4,7 @@ import { getUsername } from "userAuth";
 import loadable from "@loadable/component";
 import Main from "@page/main/Main";
 import Profile from "@leftSide/Profile";
-import ListTabBar from "@centerHeader/ListTabBar";
-import RightSide from "@rightSide/RightSide";
+import ListTabBar from "@header/ListTabBar";
 import NotFound from "pages/NotFound";
 import {
   ProfileContext,
@@ -31,16 +30,17 @@ const GameRoom = loadable(() => {
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
   const [profileImgIsUp, setProfileImgIsUp] = useState(false);
-  const socket = getSocket();
+  // const socket = getSocket();
 
-  useEffect(() => {
-    socket.on("subscribeResult", (data) => console.log(data));
-    socket.on("unsubscribeResult", (data) => console.log(data));
-    return () => {
-      socket.off("subscribeResult", (data) => console.log(data));
-      socket.off("unsubscribeResult", (data) => console.log(data));
-    };
-  }, []);
+  // TEST: 구현 중 콘솔 정리
+  // useEffect(() => {
+  //   socket.on("subscribeResult", (data) => console.log(data));
+  //   socket.on("unsubscribeResult", (data) => console.log(data));
+  //   return () => {
+  //     socket.off("subscribeResult", (data) => console.log(data));
+  //     socket.off("unsubscribeResult", (data) => console.log(data));
+  //   };
+  // }, []);
 
   return (
     <S.AppLayout>
