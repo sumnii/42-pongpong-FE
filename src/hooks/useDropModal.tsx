@@ -1,5 +1,5 @@
 import { useCallback, useContext } from "react";
-import { UserDropContext } from "hooks/UserDropContext";
+import { UserDropContext } from "hooks/context/UserDropContext";
 
 export default function useDropModal(props: { listOf: string | undefined; username: string }) {
   const dropped = useContext(UserDropContext);

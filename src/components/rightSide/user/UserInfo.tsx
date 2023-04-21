@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ProfileContext, ProfileImgIsUpContext } from "hooks/ProfileContext";
+import { ProfileContext, ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
 import useNotiModal from "hooks/useNotiModal";
 import * as S from "./style";
@@ -61,13 +61,11 @@ export default function UserInfo(props: {
       </S.UserInfoText>
       {props.listOf ? (
         !me && <S.KebabIcon onClick={onDropOpen} />
-      ) : 
-        newNoti ? (
-          <S.NewNotiIcon onClick={onOpenNotiModal} />
-        ) : (
-          <S.EmptyNotiIcon onClick={onOpenNotiModal} />
-        )
-      }
+      ) : newNoti ? (
+        <S.NewNotiIcon onClick={onOpenNotiModal} />
+      ) : (
+        <S.EmptyNotiIcon onClick={onOpenNotiModal} />
+      )}
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}

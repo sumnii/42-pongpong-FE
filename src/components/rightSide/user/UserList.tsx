@@ -6,7 +6,7 @@ import { ChatUserListType } from "socket/chat";
 import { getUsername } from "userAuth";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
-import { ProfileImgIsUpContext } from "hooks/ProfileContext";
+import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 
 export default function UserList(props: {
   listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;

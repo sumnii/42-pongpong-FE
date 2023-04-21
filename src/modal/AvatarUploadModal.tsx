@@ -1,7 +1,7 @@
 import { postAvatar } from "api/user";
 import * as S from "./layout/style";
 import React, { useContext, useRef, useState } from "react";
-import { ProfileSetImgIsUpContext } from "hooks/ProfileContext";
+import { ProfileSetImgIsUpContext } from "hooks/context/ProfileContext";
 
 type modalProps = {
   close: () => void;

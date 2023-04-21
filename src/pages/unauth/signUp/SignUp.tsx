@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "hooks/AuthContext";
+import { AuthContext } from "hooks/context/AuthContext";
 import * as S from "./style";
 import * as user from "api/user";
 import * as auth from "api/auth";

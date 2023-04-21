@@ -1,5 +1,5 @@
 import { useEffect, useRef, useContext } from "react";
-import { ProfileContext } from "hooks/ProfileContext";
+import { ProfileContext } from "hooks/context/ProfileContext";
 import { onProfile } from "./dropFunction";
 import * as S from "./style";
 

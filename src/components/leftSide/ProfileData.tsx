@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import * as S from "./style";
 import { distroyAuth, getUsername } from "userAuth";
-import { AuthContext } from "hooks/AuthContext";
+import { AuthContext } from "hooks/context/AuthContext";
 import { disconnectSocket } from "socket/socket";
 import { useNavigate } from "react-router-dom";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import { getAvatar } from "api/user";
-import { ProfileImgIsUpContext } from "hooks/ProfileContext";
+import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 
 interface userProps {
   user?: {

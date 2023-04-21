@@ -11,7 +11,7 @@ import {
   ProfileContext,
   ProfileImgIsUpContext,
   ProfileSetImgIsUpContext,
-} from "hooks/ProfileContext";
+} from "hooks/context/ProfileContext";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
 
