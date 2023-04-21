@@ -1,11 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import { isAuth } from "userAuth";
-import ChatItem from "./ChatItem";
-import * as S from "./style";
-import CreateChatRoom from "./create/CreateBtn";
-import { ChatListType, ChatRoomListType } from "socket/chat";
 import { useEffect, useState } from "react";
-import { getSocket } from "../../../../socket/socket";
+import { useNavigate } from "react-router-dom";
+import { ChatListType, ChatRoomListType } from "socket/chat";
+import { isAuth } from "userAuth";
+import { getSocket } from "socket/socket";
+import ChatItem from "./ChatItem";
+import CreateChatRoom from "./create/CreateBtn";
+import RightSide from "@rightSide/RightSide";
+import * as S from "./style";
 
 export default function ChatList() {
   const navigate = useNavigate();
@@ -32,13 +33,13 @@ export default function ChatList() {
 
   useEffect(() => {
     socket.emit("subscribe", {
-      type: "chatRoomList"
+      type: "chatRoomList",
     });
     return () => {
       socket.emit("unsubscribe", {
-        type: "chatRoomList"
-      })
-    }
+        type: "chatRoomList",
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -49,52 +50,55 @@ export default function ChatList() {
   }, []);
 
   return (
-    <S.PageLayout>
-      <S.HeaderBox>
-        <S.H2>참여 가능한 채팅방</S.H2>
-        <CreateChatRoom />
-      </S.HeaderBox>
-      <S.ChatList>
+    <>
+      <S.PageLayout>
+        <S.HeaderBox>
+          <S.H2>참여 가능한 채팅방</S.H2>
+          <CreateChatRoom />
+        </S.HeaderBox>
+        <S.ChatList>
+          <S.ChatItem head>
+            <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
+          </S.ChatItem>
+          {chatList.map((room) => {
+            return (
+              <S.ChatItem key={room.roomId}>
+                <ChatItem
+                  no={no1++}
+                  subject={room.title}
+                  owner={room.owner}
+                  participantsCnt={room.joining}
+                  status={room.status}
+                  room={room.roomId}
+                />
+              </S.ChatItem>
+            );
+          })}
+        </S.ChatList>
+        <hr />
+        <S.HeaderBox>
+          <S.H2>참여중인 채팅방</S.H2>
+        </S.HeaderBox>
         <S.ChatItem head>
           <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
         </S.ChatItem>
-        {chatList.map((room) => {
+        {myChatList.map((room) => {
           return (
             <S.ChatItem key={room.roomId}>
               <ChatItem
-                no={no1++}
+                no={no2++}
                 subject={room.title}
                 owner={room.owner}
                 participantsCnt={room.joining}
                 status={room.status}
                 room={room.roomId}
+                myRoom={true}
               />
             </S.ChatItem>
           );
         })}
-      </S.ChatList>
-      <hr />
-      <S.HeaderBox>
-        <S.H2>참여중인 채팅방</S.H2>
-      </S.HeaderBox>
-      <S.ChatItem head>
-        <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
-      </S.ChatItem>
-      {myChatList.map((room) => {
-        return (
-          <S.ChatItem key={room.roomId}>
-            <ChatItem
-              no={no2++}
-              subject={room.title}
-              owner={room.owner}
-              participantsCnt={room.joining}
-              status={room.status}
-              room={room.roomId}
-              myRoom={true}
-            />
-          </S.ChatItem>
-        );
-      })}
-    </S.PageLayout>
+      </S.PageLayout>
+      <RightSide />
+    </>
   );
 }

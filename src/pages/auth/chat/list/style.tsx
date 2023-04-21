@@ -3,7 +3,8 @@ import * as font from "style/font";
 import * as button from "style/button";
 
 export const PageLayout = styled.div`
-  height: calc(100% - 40px);
+  width: 70%;
+  height: 100%;
   padding: 5px 15px;
 `;
 

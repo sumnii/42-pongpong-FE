@@ -2,6 +2,15 @@ import styled from "@emotion/styled";
 import { FaUserFriends } from "react-icons/fa";
 import { BsEnvelope, BsEnvelopeExclamation } from "react-icons/bs";
 
+export const RightSideLayout = styled.div`
+  height: 100%;
+  width: 20vw;
+
+  display: flex;
+  flex-direction: column;
+  border-left: 0.5px solid;
+`;
+
 /*
  *            My Profile
  */

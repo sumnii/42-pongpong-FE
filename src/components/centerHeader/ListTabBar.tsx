@@ -1,9 +1,9 @@
-import { useLocation, useNavigate } from "react-router-dom"
-import * as S from "./style"
+import { useLocation, useNavigate } from "react-router-dom";
+import * as S from "./style";
 
 export default function ListTabBar() {
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <S.HeaderLayout>
@@ -23,5 +23,5 @@ export default function ListTabBar() {
         게임방 리스트
       </S.HeaderBtn>
     </S.HeaderLayout>
-  )
+  );
 }
