@@ -32,7 +32,7 @@ export default function ChatRoom() {
     } else if (res.type === "history") {
       const initialChat: T.ChatData[] = [];
       res.list.map((chat) => {
-        initialChat.push({ ...chat, type: "chat", roomId: Number(roomId), status: "plain" });
+        initialChat.push({ ...chat, type: "chat", roomId: Number(roomId) });
       });
       setScreen(initialChat);
     } else if (res.type === "chatRoom") {

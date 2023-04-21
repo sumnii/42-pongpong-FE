@@ -13,6 +13,7 @@ export type HistoryData = {
 };
 
 export type HistoryArray = {
+  status: "plain" | "notice";
   from: string;
   content: string;
 }[];

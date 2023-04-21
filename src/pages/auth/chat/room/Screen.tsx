@@ -16,7 +16,8 @@ export default function Screen(props: { room: number; screen: ChatData[] | null 
         {props.screen?.map((chat: ChatData) => {
           return (
             <S.H2 key={chat.from + keyCnt++}>
-              {chat.from} : {chat.content}
+              {chat.from === "server" ? "📣 " : `${chat.from} : `}
+              {chat.content}
             </S.H2>
           );
         })}
