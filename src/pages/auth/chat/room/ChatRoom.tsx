@@ -42,7 +42,7 @@ export default function ChatRoom() {
       setParticipant(res.userList);
       setBanned(res.banList);
     } else if (res.type === "kick") {
-      alert(res.from + "님이 추방했습니다.");
+      // TODO: 추방 알림 띄워주기
       navigate("/chat/list");
     }
   }

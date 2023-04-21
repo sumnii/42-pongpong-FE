@@ -15,6 +15,7 @@ export default function UserDropMenu(props: {
   const roomId = useContext(RoomIdContext);
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
   const onAppointAdmin = useOper("appointAdmin", roomId, props.targetUser, props.onClose);
+  const onDismissAdmin = useOper("dismissAdmin", roomId, props.targetUser, props.onClose);
   const onMute = useOper("mute", roomId, props.targetUser, props.onClose);
   const onKick = useOper("kick", roomId, props.targetUser, props.onClose);
 
@@ -61,9 +62,7 @@ export default function UserDropMenu(props: {
         {props.myOper === "owner" &&
           (props.targetOper === "admin" ? (
             // TODO: 부방장 해제
-            <S.DropMenuItemBox onClick={() => alert("부방장 해제 콜!")}>
-              부방장 해제
-            </S.DropMenuItemBox>
+            <S.DropMenuItemBox onClick={onDismissAdmin}>부방장 해제</S.DropMenuItemBox>
           ) : (
             <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
           ))}
