@@ -25,8 +25,9 @@ export default function ChatRoom() {
 
   function handleChatRoom(res: T.HistoryData | T.ChatRoomData | T.ChatData | T.AffectedData) {
     // TEST: 채팅방 내 전체 이벤트 리스너
+    if (res.roomId !== Number(roomId)) return;
     console.log("채팅방", res);
-    if (res.type === "chat" && res.roomId === Number(roomId) && screen) {
+    if (res.type === "chat" && screen) {
       setScreen(screen.concat(res));
     } else if (res.type === "history") {
       const initialChat: T.ChatData[] = [];

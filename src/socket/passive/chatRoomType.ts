@@ -8,6 +8,7 @@ export type ChatData = {
 
 export type HistoryData = {
   type: "history";
+  roomId: number;
   list: HistoryArray;
 };
 
@@ -37,6 +38,6 @@ export type BanListArray = {
 
 export type AffectedData = {
   type: "ban" | "mute" | "kick";
-  roomId: boolean;
+  roomId: number;
   from: string;
 };
