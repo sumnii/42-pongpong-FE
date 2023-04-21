@@ -41,7 +41,7 @@ export default function ChatRoom() {
       if (myRoomInfo?.admin) myOper.current = "admin";
       setParticipant(res.userList);
       setBanned(res.banList);
-    } else if (res.type === "kick") {
+    } else if (res.type === "kick" || res.type === "ban") {
       // TODO: 추방 알림 띄워주기
       navigate("/chat/list");
     }

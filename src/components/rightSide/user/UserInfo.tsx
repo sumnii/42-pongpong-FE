@@ -12,8 +12,8 @@ export default function UserInfo(props: {
   username: string;
   userOper?: string;
   subLine: string;
-  myOper?: string | undefined;
   muted?: boolean;
+  banned?: boolean;
 }) {
   const setProfileUser = useContext(ProfileContext);
   const profileImgIsUp = useContext(ProfileImgIsUpContext);
@@ -75,7 +75,7 @@ export default function UserInfo(props: {
           targetUser={props.username}
           targetOper={props.userOper}
           targetMuted={props.muted}
-          myOper={props.myOper}
+          banned
         />
       )}
     </>

@@ -10,14 +10,16 @@ export default function OtherUserList() {
   const roomId = path[2];
   if (roomId === undefined || roomId === "list") return null;
   const userListSet = useContext(UserListContext);
+  const myOper = useContext(UserListContext)?.myOper;
 
   switch (page) {
     case "chat":
       return (
         <RoomIdContext.Provider value={Number(roomId)}>
           <UserList listOf={"participant"} list={userListSet && userListSet.participant} />
-          {/* TODO: 방장과 admin인지 확인 후 노출 */}
-          <UserList listOf={"banned"} list={userListSet && userListSet.banned} />
+          {myOper !== "participant" && (
+            <UserList listOf={"banned"} list={userListSet && userListSet.banned} />
+          )}
         </RoomIdContext.Provider>
       );
     case "game":

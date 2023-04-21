@@ -14,7 +14,6 @@ type UserListCase =
 
 export default function UserList(props: UserListCase) {
   const profileImgIsUp = useContext(ProfileImgIsUpContext);
-  const myOper = useContext(UserListContext)?.myOper;
 
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({
@@ -41,24 +40,25 @@ export default function UserList(props: UserListCase) {
                   username={user.username}
                   userOper={user.owner ? "owner" : user.admin ? "admin" : ""}
                   subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
-                  myOper={myOper}
                   muted={user.muted ? true : false}
                 />
               </S.UserItem>
             );
           })}
-        {
-          // TODO: 소켓 이벤트 데이터 연동 필요, key 값에 username
-          props.listOf === "banned" && (
-            <S.UserItem>
-              <UserInfo
-                listOf={props.listOf}
-                username={profileQuery.data?.username}
-                subLine="❌ 입장금지"
-              />
-            </S.UserItem>
-          )
-        }
+        {/* TODO: 소켓 이벤트 데이터 연동 필요, key 값에 username */}
+        {props.listOf === "banned" &&
+          props.list?.map((user) => {
+            return (
+              <S.UserItem key={user.username}>
+                <UserInfo
+                  listOf={props.listOf}
+                  username={user.username}
+                  subLine="❌ 입장금지"
+                  banned
+                />
+              </S.UserItem>
+            );
+          })}
         {!["participant", "banned"].includes(props.listOf) && (
           <S.UserItem>
             <UserInfo
