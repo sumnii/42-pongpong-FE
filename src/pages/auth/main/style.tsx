@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
-import { basicMain } from "style/color";
+import { darkMain } from "style/color";
 
 export const MainLayout = styled.div`
   height: calc(100% - 40px);
@@ -36,6 +36,6 @@ export const Text = styled.span`
 
   ${font.body};
   ${(props: { featured?: boolean }) => {
-    return props.featured ? `color: ${basicMain}; font-weight: 600;` : "";
+    return props.featured ? `color: ${darkMain}; font-weight: 600;` : "";
   }}
 `;

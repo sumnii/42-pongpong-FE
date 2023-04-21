@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { FaUserFriends } from "react-icons/fa";
 import { BsEnvelope, BsEnvelopeExclamation } from "react-icons/bs";
+import { darkMain } from "style/color";
 
 export const RightSideLayout = styled.div`
   height: 100%;
@@ -55,6 +56,7 @@ export const NewDmIcon = styled(BsEnvelopeExclamation)`
   width: 20px;
   height: 20px;
   pointer-events: none;
+  color: ${darkMain};
 `;
 
 /*

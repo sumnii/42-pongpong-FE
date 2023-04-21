@@ -4,11 +4,24 @@ import * as font from "style/font";
 
 export const HeaderLayout = styled.div`
   display: flex;
-  justify-content: space-evenly;
   height: 40px;
   padding: 5px 0;
   border-bottom: 0.5px solid;
   background-color: ${lightMain};
+`;
+
+export const HeaderWrapper = styled.div`
+  width: 60vw;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+export const Subject = styled.h1`
+  display: flex;
+  justify-content: center;
+  width: 20vw;
+  ${font.bodyBold}
+  height: 17px;
 `;
 
 export const HeaderBtn = styled.button`

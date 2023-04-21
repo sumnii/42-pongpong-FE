@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { MdOutlineMoreVert } from "react-icons/md";
 import { VscBell, VscBellDot } from "react-icons/vsc";
-import { darkGray, lightGray, lightMain } from "style/color";
+import { darkGray, darkMain, lightGray, lightMain } from "style/color";
 
 /*
  *          User Info
@@ -45,7 +45,7 @@ export const NewNotiIcon = styled(VscBellDot)`
   height: 100%;
   margin-left: auto;
   cursor: pointer;
-  color: blue;
+  color: ${darkMain};
 `;
 
 /*
