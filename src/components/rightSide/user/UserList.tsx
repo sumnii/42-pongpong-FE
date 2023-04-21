@@ -1,40 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
-import { getSocket } from "socket/socket";
-import { ChatUserListType } from "socket/chat";
-import { getUsername } from "userAuth";
+import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
+import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
+import { UserListContext } from "hooks/context/UserListContext";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
-import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 
-export default function UserList(props: {
-  listOf: "friend" | "dm" | "participant" | "banned" | "player" | "observer" | string;
-  room?: number;
-}) {
-  const [chatUserList, setChatUserList] = useState<ChatUserListType | null>(null);
-  const socket = getSocket();
-  const [myOper, setMyOper] = useState("participant");
+type UserListCase =
+  | { listOf: "friend" | "dm" | "player" | "observer" }
+  | { listOf: "participant"; list: UserListArray | null }
+  | { listOf: "banned"; list: BanListArray | null };
+
+export default function UserList(props: UserListCase) {
   const profileImgIsUp = useContext(ProfileImgIsUpContext);
-
-  const listener = (res: ChatUserListType) => {
-    if (res.type === "chatRoom" && res.roomId === props.room) {
-      setChatUserList(res);
-    }
-  };
-
-  useEffect(() => {
-    socket.on("message", listener);
-    const myRoomInfo = chatUserList?.userList.filter((user) => user.username === getUsername())[0];
-    if (myRoomInfo?.owner) setMyOper("owner");
-    if (myRoomInfo?.admin) setMyOper("admin");
-    // TODO: 소켓 수정 전까지 테스트 필요
-    console.log(myRoomInfo, myOper);
-
-    return () => {
-      socket.off("message", listener);
-    };
-  }, [profileImgIsUp]);
+  const myOper = useContext(UserListContext)?.myOper;
 
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({
@@ -53,7 +33,7 @@ export default function UserList(props: {
       <h3>{props.listOf}</h3>
       <S.UserList>
         {props.listOf === "participant" &&
-          chatUserList?.userList.map((user) => {
+          props.list?.map((user) => {
             return (
               <S.UserItem key={user.username}>
                 <UserInfo

@@ -1,16 +1,17 @@
 import { useState } from "react";
-import * as S from "./style";
 import UserList from "./user/UserList";
+import * as S from "./style";
 
 export default function FriendAndDmBar() {
-  const [isOpen, setIsOpen] = useState("");
+  const [isOpen, setIsOpen] = useState<"friend" | "dm" | "">("");
   const [isNewDm, setIsNewDm] = useState(true);
   // TODO: dm 이벤트에 따라 set 함수 사용
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
-    if (e.currentTarget.id === "dm") setIsNewDm(false);
-    if (e.currentTarget.id === isOpen) setIsOpen("");
-    else setIsOpen(e.currentTarget.id);
+    const id = e.currentTarget.id;
+    if (id === "dm") setIsNewDm(false);
+    if (id === "friend" || id === "dm") setIsOpen(id);
+    if (id === isOpen) setIsOpen("");
   }
 
   return (

@@ -1,48 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as S from "./style";
-import { ChatEvntType } from "socket/chat";
-import { getSocket } from "socket/socket";
+import { ChatData } from "socket/passive/chatRoomType";
 
-export default function Screen(props: { room: number }) {
-  const [screen, setScreen] = useState<ChatEvntType[]>([]);
+export default function Screen(props: { room: number; screen: ChatData[] | null }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const socket = getSocket();
   let keyCnt = 0;
-  const listener = (res: ChatEvntType) => {
-    if (res.type === "chat" && res.roomId === props.room) {
-      setScreen(screen.concat(res));
-    } else if (res.type === "history" && res.list) {
-      const tmp: ChatEvntType[] = [];
-      res.list.map((elem) => {
-        tmp.push({
-          type: "chat",
-          roomId: props.room,
-          status: "plain",
-          from: elem.from,
-          content: elem.content
-        })
-      });
-      if (screen.toString() !== tmp.toString()) {
-        setScreen(screen.concat(tmp));
-      }
-    }
-  };
 
   useEffect(() => {
-    socket.on("message", listener);
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
-    return () => {
-      socket.off("message", listener);
-    };
-  }, [screen]);
+  }, [props.screen]);
 
   return (
     <>
       <S.Screen ref={scrollRef}>
-        {screen.map((i: ChatEvntType) => {
+        {props.screen?.map((chat: ChatData) => {
           return (
-            <S.H2 key={i.from + keyCnt++}>
-              {i.from} : {i.content}
+            <S.H2 key={chat.from + keyCnt++}>
+              {chat.from} : {chat.content}
             </S.H2>
           );
         })}
