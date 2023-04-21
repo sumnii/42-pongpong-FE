@@ -1,7 +1,7 @@
 export type ChatRoomListType = {
-  type : string;
-  list : ChatListType[];
-}
+  type: string;
+  list: ChatListType[];
+};
 
 export type ChatListType = {
   owner: string;
@@ -11,41 +11,23 @@ export type ChatListType = {
   joining: number;
 };
 
-export type emitChatType = {
-  status: "error" | "warning" | "approved";
-  detail: string;
-};
-
 export type ChatEvntType = {
   type: string;
   roomId: number;
   status: "plain" | "notice";
   from: string;
   content: string;
-  list?: [{from: string, content: string}]
+  list?: [{ from: string; content: string }];
 };
 
-export type JoinEvntType = {
-  type: string;
-  status: string;
+export type ChatEventResult = {
+  status: "error" | "warning" | "approved";
   detail: string;
-  roomId: number;
-};
-
-export type CreateEvntType = {
-  status: string;
-  detail: string;
-  roomId: number;
-};
-
-export type exitEvntType = {
-  status: "error" | "approved";
-  detail: string;
-  roomId: number;
+  roomId?: number;
 };
 
 export type ChatUserListType = {
-  type: string
+  type: string;
   roomId: number;
   userList: [
     {

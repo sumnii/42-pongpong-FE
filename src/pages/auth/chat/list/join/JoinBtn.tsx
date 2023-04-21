@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
 import { useEffect, useState } from "react";
-import { JoinEvntType } from "socket/chat";
+import { ChatEventResult } from "socket/chat";
 import Modal from "./modal/Modal";
 import PassWdModal from "./modal/PassWdModal";
 import { getSocket } from "socket/socket";
@@ -20,8 +20,9 @@ export default function JoinChatRoom(props: PropsType) {
   const socket = getSocket();
   const [notice, setNotice] = useState("");
 
-  const listner = (res: JoinEvntType) => {
-    if (res.status === "error") { // status (error, warning) 에도 roomId가 있다면
+  const listner = (res: ChatEventResult) => {
+    if (res.status === "error") {
+      // status (error, warning) 에도 roomId가 있다면
       console.log(res);
     } else if (res.status === "warning") {
       setNotice(res.detail);
@@ -29,7 +30,7 @@ export default function JoinChatRoom(props: PropsType) {
       if (res.roomId === props.roomId) {
         navigate({
           pathname: `/chat/${res.roomId}`,
-          search: `title=${props.title}`
+          search: `title=${props.title}`,
         });
       }
     }
@@ -59,7 +60,7 @@ export default function JoinChatRoom(props: PropsType) {
   function joinMyChatHandler() {
     navigate({
       pathname: `/chat/${props.roomId}`,
-      search: `title=${props.title}`
+      search: `title=${props.title}`,
     });
   }
   return (
@@ -75,14 +76,13 @@ export default function JoinChatRoom(props: PropsType) {
           />
         </Modal>
       )}
-      {props.myRoom
-        ? <S.EntryBtn onClick={joinMyChatHandler}>
+      {props.myRoom ? (
+        <S.EntryBtn onClick={joinMyChatHandler}>참가</S.EntryBtn>
+      ) : (
+        <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
           참가
         </S.EntryBtn>
-        : <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
-          참가
-        </S.EntryBtn>
-      }
+      )}
     </>
   );
 }

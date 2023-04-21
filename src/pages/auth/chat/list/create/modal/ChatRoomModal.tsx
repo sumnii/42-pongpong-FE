@@ -1,7 +1,7 @@
 import * as S from "./style";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreateEvntType } from "socket/chat";
+import { ChatEventResult } from "socket/chat";
 import { getSocket } from "socket/socket";
 
 type modalProps = {
@@ -32,11 +32,12 @@ function ChatRoomModal(props: modalProps) {
     if (notice) setNotice("");
   }
 
-  const listener = (res: CreateEvntType) => {
+  const listener = (res: ChatEventResult) => {
     if (res.status === "approved") {
       navigate({
         pathname: `/chat/${res.roomId}`,
-        search: `title=${titleInput}`});
+        search: `title=${titleInput}`,
+      });
       props.close();
     } else if (res.status === "warning") {
       setNotice(res.detail);
@@ -73,7 +74,7 @@ function ChatRoomModal(props: modalProps) {
   }
 
   function isComplete(): boolean {
-    if  (titleInput && status) {
+    if (titleInput && status) {
       if (status === "protected" && !pwInput) return false;
       return true;
     }
@@ -85,7 +86,12 @@ function ChatRoomModal(props: modalProps) {
       <form onSubmit={createChatRoomHandler}>
         <h1>새로운 채팅방 만들기</h1>
         <S.Wrapper>
-          <S.Input placeholder="채팅방 이름" value={titleInput} onChange={setTitleHandler} autoFocus />
+          <S.Input
+            placeholder="채팅방 이름"
+            value={titleInput}
+            onChange={setTitleHandler}
+            autoFocus
+          />
         </S.Wrapper>
         <S.Wrapper>
           <select onChange={setStatusHandler}>

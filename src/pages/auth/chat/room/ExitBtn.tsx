@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { exitEvntType } from "socket/chat";
+import { ChatEventResult } from "socket/chat";
 import { getSocket } from "socket/socket";
 
 export default function ExitBtn(props: { room: number }) {
   const navigate = useNavigate();
   const socket = getSocket();
 
-  const listener = (res: exitEvntType) => {
+  const listener = (res: ChatEventResult) => {
     if (res.roomId === props.room) {
       if (res.status === "approved") {
         navigate("/chat/list");
