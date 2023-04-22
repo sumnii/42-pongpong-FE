@@ -53,7 +53,7 @@ export default function UserDropMenu(props: {
           (myOper === "admin" && props.targetOper !== "admin" && props.targetOper !== "owner")) && (
           <>
             {props.targetMuted ? (
-              <S.DropMenuItemBox disabled={true}>음소거중</S.DropMenuItemBox>
+              <S.DropMenuItemBox disabled>음소거중</S.DropMenuItemBox>
             ) : (
               <S.DropMenuItemBox onClick={onMute}>음소거</S.DropMenuItemBox>
             )}
