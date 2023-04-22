@@ -30,17 +30,16 @@ const GameRoom = loadable(() => {
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
   const [profileImgIsUp, setProfileImgIsUp] = useState(false);
-  // const socket = getSocket();
+  const socket = getSocket();
 
-  // TEST: 구현 중 콘솔 정리
-  // useEffect(() => {
-  //   socket.on("subscribeResult", (data) => console.log(data));
-  //   socket.on("unsubscribeResult", (data) => console.log(data));
-  //   return () => {
-  //     socket.off("subscribeResult", (data) => console.log(data));
-  //     socket.off("unsubscribeResult", (data) => console.log(data));
-  //   };
-  // }, []);
+  useEffect(() => {
+    socket.on("subscribeResult", (data) => console.log(data));
+    socket.on("unsubscribeResult", (data) => console.log(data));
+    return () => {
+      socket.off("subscribeResult", (data) => console.log(data));
+      socket.off("unsubscribeResult", (data) => console.log(data));
+    };
+  }, []);
 
   return (
     <S.AppLayout>

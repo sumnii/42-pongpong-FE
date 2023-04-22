@@ -25,20 +25,19 @@ export default function UserInfo(props: {
   const [img, setImg] = useState("");
   const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
 
-  // TEST: 구현 중 아바타 api 정지
-  // useEffect(() => {
-  //   const getAvatarHandler = async () => {
-  //     const res = await getAvatar(props.username);
-  //     const file = new File([res?.data], "avatar");
-  //     const reader = new FileReader();
-  //     reader.onload = (ev) => {
-  //       const previewImage = String(ev.target?.result);
-  //       setImg(previewImage);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   };
-  //   getAvatarHandler();
-  // }, [profileImgIsUp]);
+  useEffect(() => {
+    const getAvatarHandler = async () => {
+      const res = await getAvatar(props.username);
+      const file = new File([res?.data], "avatar");
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const previewImage = String(ev.target?.result);
+        setImg(previewImage);
+      };
+      reader.readAsDataURL(file);
+    };
+    getAvatarHandler();
+  }, [profileImgIsUp]);
 
   return (
     <>
