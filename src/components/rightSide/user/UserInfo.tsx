@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { ProfileContext, ProfileImgIsUpContext } from "hooks/context/ProfileContext";
+import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
-import useNotiModal from "hooks/useNotiModal";
 import useDropModal from "hooks/useDropModal";
 import { getUsername } from "userAuth";
 import { getAvatar } from "api/user";
@@ -14,8 +13,8 @@ export default function UserInfo(props: {
   subLine: string;
   muted?: boolean;
   banned?: boolean;
+  onClickProfile?: () => void;
 }) {
-  const setProfileUser = useContext(ProfileContext);
   const profileImgIsUp = useContext(ProfileImgIsUpContext);
   const me = getUsername() === props.username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
@@ -23,7 +22,6 @@ export default function UserInfo(props: {
     username: props.username,
   });
   const [img, setImg] = useState("");
-  const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
 
   useEffect(() => {
     const getAvatarHandler = async () => {
@@ -41,18 +39,17 @@ export default function UserInfo(props: {
 
   return (
     <>
-      {showNotiModal && NotiModal}
       <S.TmpImg
         src={img}
-        me={props.listOf === undefined}
+        clickable={props.listOf === undefined}
         onClick={() => {
-          !props.listOf && setProfileUser && setProfileUser(props.username);
+          // TODO
         }}
       />
       <S.UserInfoText
-        me={!props.listOf}
+        clickable={!props.listOf}
         onClick={() => {
-          !props.listOf && setProfileUser && setProfileUser(props.username);
+          // TODO
         }}
       >
         {props.username}{" "}
@@ -61,13 +58,7 @@ export default function UserInfo(props: {
         <br />
         {props.subLine}
       </S.UserInfoText>
-      {props.listOf ? (
-        !me && <S.KebabIcon onClick={onDropOpen} />
-      ) : newNoti ? (
-        <S.NewNotiIcon onClick={onOpenNotiModal} />
-      ) : (
-        <S.EmptyNotiIcon onClick={onOpenNotiModal} />
-      )}
+      {props.listOf && !me && <S.KebabIcon onClick={onDropOpen} />}
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}

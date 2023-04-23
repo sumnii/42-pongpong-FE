@@ -7,19 +7,19 @@ import { darkGray, darkMain, lightGray, lightMain } from "style/color";
  *          User Info
  */
 
-export const TmpImg = styled.img<{ me: boolean }>`
+export const TmpImg = styled.img<{ clickable: boolean }>`
   width: 50px;
   height: 50px;
   border-radius: 100%;
 
   ${(props) => {
-    if (props.me) return `cursor: pointer;`;
+    if (props.clickable) return `cursor: pointer;`;
   }}
 `;
 
-export const UserInfoText = styled.span<{ me: boolean }>`
+export const UserInfoText = styled.span<{ clickable: boolean }>`
   cursor: ${(props) => {
-    if (props.me) return `pointer;`;
+    if (props.clickable) return `pointer;`;
     return `default;`;
   }};
 `;
