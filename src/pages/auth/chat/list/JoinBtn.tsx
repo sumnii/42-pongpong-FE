@@ -21,18 +21,19 @@ export default function JoinChatRoom(props: PropsType) {
   const [notice, setNotice] = useState("");
 
   const listner = (res: ChatRoomResponse) => {
+    if (res.roomId !== props.roomId) return;
+    console.log("참가 결과", res);
     if (res.status === "error") {
-      // status (error, warning) 에도 roomId가 있다면
       console.log(res);
     } else if (res.status === "warning") {
+      // TODO: 여기도 모달로?
+      if (res.detail === "밴 당하셨습니다.") alert("입장이 거부된 방입니다.");
       setNotice(res.detail);
     } else {
-      if (res.roomId === props.roomId) {
-        navigate({
-          pathname: `/chat/${res.roomId}`,
-          search: `title=${props.title}`,
-        });
-      }
+      navigate({
+        pathname: `/chat/${res.roomId}`,
+        search: `title=${props.title}`,
+      });
     }
   };
 

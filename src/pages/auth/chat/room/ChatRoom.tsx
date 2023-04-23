@@ -42,7 +42,8 @@ export default function ChatRoom() {
       setParticipant(res.userList);
       setBanned(res.banList);
     } else if (res.type === "kick" || res.type === "ban") {
-      // TODO: 추방 알림 띄워주기
+      // TODO: 추방 알림 모달로?
+      alert(res.from + "님이 " + getUsername() + "님을 내보냈습니다.");
       navigate("/chat/list");
     }
   }
