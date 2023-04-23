@@ -22,7 +22,6 @@ export default function JoinChatRoom(props: PropsType) {
 
   const listner = (res: ChatRoomResponse) => {
     if (res.roomId !== props.roomId) return;
-    console.log("참가 결과", res);
     if (res.status === "error") {
       console.log(res);
     } else if (res.status === "warning") {

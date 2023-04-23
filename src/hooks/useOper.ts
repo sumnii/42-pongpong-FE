@@ -18,7 +18,6 @@ export function useOper(operator: string, roomId: number, targetUser: string, on
     // TEST : 이벤트 결과 확인용
     if (res.status === "approved") {
       if (res.roomId === roomId) {
-        console.log("승인", res);
         onClose();
       }
     } else console.log("오류", res);
