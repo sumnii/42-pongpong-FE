@@ -115,3 +115,40 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: space-around;
 `;
+
+/*
+ *  DM modal
+ */
+
+export const DmModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  top: 0;
+
+  background: rgba(0, 0, 0, 0.05);
+`;
+
+export const DmLayout = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 400px;
+  height: 600px;
+  padding: 20px;
+  /* margin: 20px; */
+
+  border: 1px solid;
+  background-color: white;
+`;
+
+export const DmChatBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  overflow: auto;
+`;

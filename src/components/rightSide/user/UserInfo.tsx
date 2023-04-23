@@ -5,6 +5,7 @@ import useDropModal from "hooks/useDropModal";
 import { getUsername } from "userAuth";
 import { getAvatar } from "api/user";
 import * as S from "./style";
+import DmModal from "modal/DmModal";
 
 export default function UserInfo(props: {
   listOf?: string;
@@ -21,6 +22,7 @@ export default function UserInfo(props: {
     listOf: props.listOf,
     username: props.username,
   });
+  const [dmIsOpen, setDmIsOpen] = useState(false);
   const [img, setImg] = useState("");
 
   useEffect(() => {
@@ -39,17 +41,18 @@ export default function UserInfo(props: {
 
   return (
     <>
+      {dmIsOpen && <DmModal targetUser={props.username} onClose={setDmIsOpen} />}
       <S.TmpImg
         src={img}
-        clickable={props.listOf === undefined}
+        clickable={props.listOf === "dm"}
         onClick={() => {
-          // TODO
+          setDmIsOpen(true);
         }}
       />
       <S.UserInfoText
-        clickable={!props.listOf}
+        clickable={props.listOf === "dm"}
         onClick={() => {
-          // TODO
+          setDmIsOpen(true);
         }}
       >
         {props.username}{" "}
@@ -58,7 +61,7 @@ export default function UserInfo(props: {
         <br />
         {props.subLine}
       </S.UserInfoText>
-      {props.listOf && !me && <S.KebabIcon onClick={onDropOpen} />}
+      {props.listOf !== "dm" && !me && <S.KebabIcon onClick={onDropOpen} />}
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}
