@@ -1,19 +1,16 @@
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSocket } from "socket/socket";
 import * as S from "modal/layout/style";
 import * as T from "socket/passive/friendDmListType";
 
-export default function DmModal(props: {
-  targetUser: string;
-  onClose: React.Dispatch<SetStateAction<boolean>>;
-}) {
+export default function DmModal(props: { targetUser: string; onClose: () => void }) {
   const socket = getSocket();
   const [dmChat, setDmChat] = useState<T.DmData[]>([]);
   const modalRef: React.RefObject<HTMLDivElement> = useRef(null);
   let key = 0;
 
   function handleClose(e: MouseEvent) {
-    if (modalRef.current && !modalRef.current.contains(e.target as Element)) props.onClose(false);
+    if (modalRef.current && !modalRef.current.contains(e.target as Element)) props.onClose();
   }
 
   useEffect(() => {
@@ -57,6 +54,12 @@ export default function DmModal(props: {
     <>
       <S.DmModalOverlay />
       <S.DmLayout ref={modalRef}>
+        <S.DmHeader>
+          <S.DmTitle>{props.targetUser}님과의 다이렉트 메시지</S.DmTitle>
+          <S.IconWrapper type="reset" onClick={props.onClose}>
+            <S.CloseIcon />
+          </S.IconWrapper>
+        </S.DmHeader>
         <S.DmChatBox>
           {dmChat.map((chat) => {
             return (
@@ -66,7 +69,19 @@ export default function DmModal(props: {
             );
           })}
         </S.DmChatBox>
-        {/* TODO: 입력창 만들기 / DM 전송 */}
+        <S.InputBox>
+          <S.DmInput />
+          <S.IconWrapper
+            type="submit"
+            onClick={(e) => {
+              // TODO: DM 전송 구현
+              e.preventDefault();
+              alert("DM 전송!");
+            }}
+          >
+            <S.SendBtn />
+          </S.IconWrapper>
+        </S.InputBox>
       </S.DmLayout>
     </>
   );

@@ -41,7 +41,14 @@ export default function UserInfo(props: {
 
   return (
     <>
-      {dmIsOpen && <DmModal targetUser={props.username} onClose={setDmIsOpen} />}
+      {dmIsOpen && (
+        <DmModal
+          targetUser={props.username}
+          onClose={() => {
+            setDmIsOpen(false);
+          }}
+        />
+      )}
       <S.TmpImg
         src={img}
         clickable={props.listOf === "dm"}

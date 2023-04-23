@@ -1,4 +1,8 @@
 import styled from "@emotion/styled";
+import * as font from "style/font";
+import { darkMain } from "style/color";
+import { AiOutlineCloseSquare } from "react-icons/ai";
+import { RiSendPlane2Line } from "react-icons/ri";
 
 /* 
   Common Modal style
@@ -139,16 +143,70 @@ export const DmLayout = styled.div`
   width: 400px;
   height: 600px;
   padding: 20px;
-  /* margin: 20px; */
 
   border: 1px solid;
   background-color: white;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+export const DmHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+`;
+
+export const DmTitle = styled.h1`
+  ${font.titleBold};
+  overflow: auto;
+  margin: 0;
+`;
+
+export const IconWrapper = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: none;
+  border: none;
+  padding: 0;
+`;
+
+export const CloseIcon = styled(AiOutlineCloseSquare)`
+  width: 25px;
+  height: 25px;
 `;
 
 export const DmChatBox = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
-
+  flex: 1 0 auto;
   overflow: auto;
+
+  ${font.body};
+  line-height: 1.7em;
+`;
+
+export const InputBox = styled.form`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const DmInput = styled.input`
+  width: 90%;
+  height: 35px;
+  border: 1px solid;
+  padding: 0px 5px;
+  outline-style: none;
+  ${font.body};
+`;
+
+export const SendBtn = styled(RiSendPlane2Line)`
+  width: 100%;
+  height: 30px;
+  color: ${darkMain};
 `;
