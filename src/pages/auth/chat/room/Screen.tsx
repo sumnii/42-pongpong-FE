@@ -11,11 +11,7 @@ export default function Screen(props: { room: number; initialChat: ChatData[] })
 
   function listener(res: ChatData) {
     if (res.roomId !== Number(props.room)) return;
-    if (res.type === "chat") {
-      const nextScreen = [...screen];
-      nextScreen.push(res);
-      setScreen(nextScreen);
-    }
+    if (res.type === "chat") setScreen((prevScreen) => [...prevScreen, res]);
   }
 
   useEffect(() => {
