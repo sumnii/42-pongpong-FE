@@ -5,7 +5,7 @@ import * as button from "style/button";
 export const ProfileLayout = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: 100vh;
+  max-height: calc(100vh - 40px);
 
   padding: 10px;
 `;
@@ -19,7 +19,7 @@ export const Title = styled.h2`
  *      Profile Item
  */
 
-export const TmpImg = styled.img<{me: boolean}>`
+export const TmpImg = styled.img<{ me: boolean }>`
   width: 100px;
   height: 100px;
   border-radius: 100%;

@@ -1,48 +1,36 @@
 import { useEffect, useRef, useState } from "react";
-import * as S from "./style";
-import { ChatEvntType } from "socket/chat";
+import { ChatData } from "socket/passive/chatRoomType";
 import { getSocket } from "socket/socket";
+import * as S from "./style";
 
-export default function Screen(props: { room: number }) {
-  const [screen, setScreen] = useState<ChatEvntType[]>([]);
-  const scrollRef = useRef<HTMLDivElement>(null);
+export default function Screen(props: { room: number; initialChat: ChatData[] }) {
   const socket = getSocket();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [screen, setScreen] = useState(props.initialChat);
   let keyCnt = 0;
-  const listener = (res: ChatEvntType) => {
-    if (res.type === "chat" && res.roomId === props.room) {
-      setScreen(screen.concat(res));
-    } else if (res.type === "history" && res.list) {
-      const tmp: ChatEvntType[] = [];
-      res.list.map((elem) => {
-        tmp.push({
-          type: "chat",
-          roomId: props.room,
-          status: "plain",
-          from: elem.from,
-          content: elem.content
-        })
-      });
-      if (screen.toString() !== tmp.toString()) {
-        setScreen(screen.concat(tmp));
-      }
-    }
-  };
+
+  function listener(res: ChatData) {
+    if (res.roomId !== Number(props.room)) return;
+    if (res.type === "chat") setScreen((prevScreen) => [...prevScreen, res]);
+  }
 
   useEffect(() => {
     socket.on("message", listener);
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
+
     return () => {
       socket.off("message", listener);
     };
-  }, [screen]);
+  });
 
   return (
     <>
       <S.Screen ref={scrollRef}>
-        {screen.map((i: ChatEvntType) => {
+        {screen?.map((chat: ChatData) => {
           return (
-            <S.H2 key={i.from + keyCnt++}>
-              {i.from} : {i.content}
+            <S.H2 key={chat.from + keyCnt++}>
+              {chat.from === "server" ? "📣 " : `${chat.from} : `}
+              {chat.content}
             </S.H2>
           );
         })}

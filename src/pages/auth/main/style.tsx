@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
-import { blue } from "style/color";
+import { darkMain } from "style/color";
 
 export const MainLayout = styled.div`
   height: calc(100% - 40px);
@@ -9,11 +9,12 @@ export const MainLayout = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: 1 0 auto;
 `;
 
 export const H1 = styled.h1`
   ${font.h1};
-  margin: 70px;
+  margin: 70px 0;
 `;
 
 export const TextBold = styled.p`
@@ -35,6 +36,6 @@ export const Text = styled.span`
 
   ${font.body};
   ${(props: { featured?: boolean }) => {
-    return props.featured ? `color: ${blue}; font-weight: 600;` : "";
+    return props.featured ? `color: ${darkMain}; font-weight: 600;` : "";
   }}
 `;

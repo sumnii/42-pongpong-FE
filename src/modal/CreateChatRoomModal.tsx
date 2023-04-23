@@ -1,14 +1,14 @@
-import * as S from "./style";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreateEvntType } from "socket/chat";
+import { ChatRoomResponse } from "socket/active/chatEventType";
 import { getSocket } from "socket/socket";
+import * as S from "./layout/style";
 
 type modalProps = {
   close: () => void;
 };
 
-function ChatRoomModal(props: modalProps) {
+function CreateChatRoomModal(props: modalProps) {
   const [status, setStatus] = useState("");
   const [titleInput, setTitleInput] = useState("");
   const [pwInput, setPwInput] = useState("");
@@ -32,11 +32,12 @@ function ChatRoomModal(props: modalProps) {
     if (notice) setNotice("");
   }
 
-  const listener = (res: CreateEvntType) => {
+  const listener = (res: ChatRoomResponse) => {
     if (res.status === "approved") {
       navigate({
         pathname: `/chat/${res.roomId}`,
-        search: `title=${titleInput}`});
+        search: `title=${titleInput}`,
+      });
       props.close();
     } else if (res.status === "warning") {
       setNotice(res.detail);
@@ -73,7 +74,7 @@ function ChatRoomModal(props: modalProps) {
   }
 
   function isComplete(): boolean {
-    if  (titleInput && status) {
+    if (titleInput && status) {
       if (status === "protected" && !pwInput) return false;
       return true;
     }
@@ -85,7 +86,12 @@ function ChatRoomModal(props: modalProps) {
       <form onSubmit={createChatRoomHandler}>
         <h1>새로운 채팅방 만들기</h1>
         <S.Wrapper>
-          <S.Input placeholder="채팅방 이름" value={titleInput} onChange={setTitleHandler} autoFocus />
+          <S.Input
+            placeholder="채팅방 이름"
+            value={titleInput}
+            onChange={setTitleHandler}
+            autoFocus
+          />
         </S.Wrapper>
         <S.Wrapper>
           <select onChange={setStatusHandler}>
@@ -112,4 +118,4 @@ function ChatRoomModal(props: modalProps) {
   );
 }
 
-export default ChatRoomModal;
+export default CreateChatRoomModal;

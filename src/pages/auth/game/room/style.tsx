@@ -3,8 +3,9 @@ import * as font from "style/font";
 // import * as button from "style/button"
 
 export const PageLayout = styled.div`
-  height: calc(100% - 40px);
+  height: 100%;
   padding: 5px 15px;
+  flex: 1 0 auto;
 `;
 
 export const HeaderBox = styled.div`

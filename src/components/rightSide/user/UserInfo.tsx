@@ -1,18 +1,19 @@
 import { useContext, useEffect, useState } from "react";
-import { ProfileContext, ProfileImgIsUpContext } from "hooks/ProfileContext";
+import { ProfileContext, ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
 import useNotiModal from "hooks/useNotiModal";
-import * as S from "./style";
 import useDropModal from "hooks/useDropModal";
 import { getUsername } from "userAuth";
 import { getAvatar } from "api/user";
+import * as S from "./style";
 
 export default function UserInfo(props: {
   listOf?: string;
   username: string;
   userOper?: string;
   subLine: string;
-  oper?: string | undefined;
+  muted?: boolean;
+  banned?: boolean;
 }) {
   const setProfileUser = useContext(ProfileContext);
   const profileImgIsUp = useContext(ProfileImgIsUpContext);
@@ -56,24 +57,24 @@ export default function UserInfo(props: {
       >
         {props.username}{" "}
         {props.userOper === "owner" ? "👑" : props.userOper === "admin" ? "🎩" : ""}
+        {props.muted ? " 🤐" : ""}
         <br />
         {props.subLine}
       </S.UserInfoText>
       {props.listOf ? (
         !me && <S.KebabIcon onClick={onDropOpen} />
-      ) : 
-        newNoti ? (
-          <S.NewNotiIcon onClick={onOpenNotiModal} />
-        ) : (
-          <S.EmptyNotiIcon onClick={onOpenNotiModal} />
-        )
-      }
+      ) : newNoti ? (
+        <S.NewNotiIcon onClick={onOpenNotiModal} />
+      ) : (
+        <S.EmptyNotiIcon onClick={onOpenNotiModal} />
+      )}
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}
           targetUser={props.username}
           targetOper={props.userOper}
-          oper={props.oper}
+          targetMuted={props.muted}
+          banned={props.banned}
         />
       )}
     </>

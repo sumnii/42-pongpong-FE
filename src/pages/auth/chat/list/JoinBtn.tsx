@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import * as S from "./style";
 import { useEffect, useState } from "react";
-import { JoinEvntType } from "socket/chat";
-import Modal from "./modal/Modal";
-import PassWdModal from "./modal/PassWdModal";
+import { useNavigate } from "react-router-dom";
+import { ChatRoomResponse } from "socket/active/chatEventType";
 import { getSocket } from "socket/socket";
+import Modal from "modal/layout/Modal";
+import PassWdModal from "modal/PassWdModal";
+import * as S from "./style";
 
 type PropsType = {
   no: string | number;
@@ -20,18 +20,20 @@ export default function JoinChatRoom(props: PropsType) {
   const socket = getSocket();
   const [notice, setNotice] = useState("");
 
-  const listner = (res: JoinEvntType) => {
-    if (res.status === "error") { // status (error, warning) 에도 roomId가 있다면
+  const listner = (res: ChatRoomResponse) => {
+    if (res.roomId !== props.roomId) return;
+    console.log("참가 결과", res);
+    if (res.status === "error") {
       console.log(res);
     } else if (res.status === "warning") {
+      // TODO: 여기도 모달로?
+      if (res.detail === "밴 당하셨습니다.") alert("입장이 거부된 방입니다.");
       setNotice(res.detail);
     } else {
-      if (res.roomId === props.roomId) {
-        navigate({
-          pathname: `/chat/${res.roomId}`,
-          search: `title=${props.title}`
-        });
-      }
+      navigate({
+        pathname: `/chat/${res.roomId}`,
+        search: `title=${props.title}`,
+      });
     }
   };
 
@@ -59,7 +61,7 @@ export default function JoinChatRoom(props: PropsType) {
   function joinMyChatHandler() {
     navigate({
       pathname: `/chat/${props.roomId}`,
-      search: `title=${props.title}`
+      search: `title=${props.title}`,
     });
   }
   return (
@@ -75,14 +77,13 @@ export default function JoinChatRoom(props: PropsType) {
           />
         </Modal>
       )}
-      {props.myRoom
-        ? <S.EntryBtn onClick={joinMyChatHandler}>
+      {props.myRoom ? (
+        <S.EntryBtn onClick={joinMyChatHandler}>참가</S.EntryBtn>
+      ) : (
+        <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
           참가
         </S.EntryBtn>
-        : <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
-          참가
-        </S.EntryBtn>
-      }
+      )}
     </>
   );
 }

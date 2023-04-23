@@ -22,10 +22,7 @@
       "@page/*": ["pages/auth/*"],
       "@leftSide/*": ["components/leftSide/*"],
       "@rightSide/*": ["components/rightSide/*"],
-      "@centerHeader/*": ["components/centerHeader/*"]
-      // "@style/*": ["style/*"],
-      // "@api/*": ["api/*"],
-      // "@hooks/*": ["hooks/*"]
+      "@header/*": ["components/header/*"]
     }
   },
   "include": ["src"],

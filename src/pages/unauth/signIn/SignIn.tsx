@@ -5,7 +5,7 @@ import AuthModal from "./modal/AuthModal";
 import Modal from "./modal/Modal";
 import * as auth from "api/auth";
 import { RiPingPongFill } from "react-icons/ri";
-import { AuthContext } from "hooks/AuthContext";
+import { AuthContext } from "hooks/context/AuthContext";
 import * as S from "./style";
 
 type eventChangeType = React.ChangeEvent<HTMLInputElement>;

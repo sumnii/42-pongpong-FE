@@ -3,8 +3,9 @@ import * as font from "style/font";
 import * as color from "style/color";
 
 export const PageLayout = styled.div`
-  height: calc(100% - 40px);
+  height: 100%;
   padding: 5px 15px;
+  flex: 1 0 auto;
 `;
 
 export const HeaderBox = styled.div`
@@ -56,7 +57,7 @@ export const SendBtn = styled.button`
   border: 1px solid lightgray;
   line-height: 1.5;
   align-items: center;
-  background-color: ${(props) => (props.disabled ? "lightgray" : `${color.blue}`)};
+  background-color: ${(props) => (props.disabled ? "lightgray" : `${color.basicMain}`)};
   cursor: pointer;
 `;
 

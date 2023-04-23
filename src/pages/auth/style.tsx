@@ -1,29 +1,27 @@
 import styled from "@emotion/styled";
 
+export const HomeLayout = styled.div`
+  display: flex;
+  height: calc(100vh - 40px);
+`;
+
 export const AppLayout = styled.div`
   height: 100vh;
   width: 100%;
 
   display: flex;
+  flex-direction: column;
 `;
 
 export const LeftSideLayout = styled.div`
-  height: 100%;
-  width: 20%;
+  height: calc(100vh - 40px);
+  width: 20vw;
 
   border-right: 0.5px solid;
 `;
 
-export const CenterLayout = styled.div`
-  height: 100%;
-  width: 60%;
-`;
-
-export const RightSideLayout = styled.div`
-  height: 100%;
-  width: 20%;
-
+export const PageLayout = styled.div`
   display: flex;
-  flex-direction: column;
-  border-left: 0.5px solid;
+  height: 100%;
+  width: 80vw;
 `;

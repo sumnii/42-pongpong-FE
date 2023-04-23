@@ -4,14 +4,13 @@ import { getUsername } from "userAuth";
 import loadable from "@loadable/component";
 import Main from "@page/main/Main";
 import Profile from "@leftSide/Profile";
-import ListTabBar from "@centerHeader/ListTabBar";
-import RightSide from "@rightSide/RightSide";
+import ListTabBar from "@header/ListTabBar";
 import NotFound from "pages/NotFound";
 import {
   ProfileContext,
   ProfileImgIsUpContext,
   ProfileSetImgIsUpContext,
-} from "hooks/ProfileContext";
+} from "hooks/context/ProfileContext";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
 
@@ -48,23 +47,22 @@ function Auth() {
         <ProfileContext.Provider value={setProfileUser}>
           <ProfileImgIsUpContext.Provider value={profileImgIsUp}>
             <ProfileSetImgIsUpContext.Provider value={setProfileImgIsUp}>
-              <S.LeftSideLayout>
-                <Profile username={profileUser} />
-              </S.LeftSideLayout>
-              <S.CenterLayout>
-                <ListTabBar />
-                <Routes>
-                  <Route path="/" element={<Main />} />
-                  <Route path="/chat/list" element={<ChatList />} />
-                  <Route path="/game/list" element={<GameList />} />
-                  <Route path="/chat/:roomId" element={<ChatRoom />} />
-                  <Route path="/game/:gameId" element={<GameRoom />} />
-                  <Route path="/*" element={<NotFound />} />
-                </Routes>
-              </S.CenterLayout>
-              <S.RightSideLayout>
-                <RightSide />
-              </S.RightSideLayout>
+              <ListTabBar />
+              <S.HomeLayout>
+                <S.LeftSideLayout>
+                  <Profile username={profileUser} />
+                </S.LeftSideLayout>
+                <S.PageLayout>
+                  <Routes>
+                    <Route path="/" element={<Main />} />
+                    <Route path="/chat/list" element={<ChatList />} />
+                    <Route path="/game/list" element={<GameList />} />
+                    <Route path="/chat/:roomId" element={<ChatRoom />} />
+                    <Route path="/game/:gameId" element={<GameRoom />} />
+                    <Route path="/*" element={<NotFound />} />
+                  </Routes>
+                </S.PageLayout>
+              </S.HomeLayout>
             </ProfileSetImgIsUpContext.Provider>
           </ProfileImgIsUpContext.Provider>
         </ProfileContext.Provider>

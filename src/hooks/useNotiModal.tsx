@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getSocket } from "socket/socket";
-import { ChatEvntType, ChatListType } from "socket/chat";
+import { ChatData, ChatRoomData } from "socket/passive/chatRoomType";
 import Modal from "modal/layout/Modal";
 import NotificationModal from "modal/NotificationModal";
 
@@ -16,14 +16,14 @@ export type NotiType = {
 export default function useNotiModal() {
   const target = useLocation().pathname.split("/");
   const socket = getSocket();
-  const [myChat, setMyChat] = useState<ChatListType[]>([]);
+  const [myChat, setMyChat] = useState<ChatRoomData[]>([]);
   const [noti, setNoti] = useState<NotiType[]>([]);
   const [newNoti, setNewNoti] = useState(false);
   const [showNotiModal, setShowNotiModal] = useState(false);
   const locPage = target[1];
   const locRoom = target[2];
 
-  const listener = (res: ChatEvntType) => {
+  const listener = (res: ChatData) => {
     if (locPage !== "chat" || locRoom !== String(res.roomId)) {
       myChat.map((chat) => {
         if (chat.roomId === res.roomId) {
@@ -38,7 +38,7 @@ export default function useNotiModal() {
     }
   };
 
-  const myChatListener = (res: ChatListType[]) => {
+  const myChatListener = (res: ChatRoomData[]) => {
     setMyChat(res);
   };
 
