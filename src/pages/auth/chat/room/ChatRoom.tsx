@@ -35,7 +35,8 @@ export default function ChatRoom() {
     } else if (res.type === "chatRoom") {
       const myRoomInfo = res.userList.filter((user) => user.username === getUsername())[0];
       if (myRoomInfo?.owner) myOper.current = "owner";
-      if (myRoomInfo?.admin) myOper.current = "admin";
+      else if (myRoomInfo?.admin) myOper.current = "admin";
+      else myOper.current = "participant";
       setParticipant(res.userList);
       setBanned(res.banList);
     } else if (res.type === "kick" || res.type === "ban") {
