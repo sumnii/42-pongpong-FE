@@ -21,7 +21,7 @@ export default function Screen(props: { room: number; initialChat: ChatData[] })
     return () => {
       socket.off("message", listener);
     };
-  }, [screen]);
+  });
 
   return (
     <>

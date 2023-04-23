@@ -21,7 +21,7 @@ export default function ChatRoom() {
   const [target, setTarget] = useSearchParams();
   const [participant, setParticipant] = useState<T.UserListArray | null>(null);
   const [banned, setBanned] = useState<T.BanListArray | null>(null);
-  const initialChat: T.ChatData[] = [];
+  const [initialChat, setInitialChat] = useState<T.ChatData[]>();
   const myOper = useRef("participant");
 
   function handleChatRoom(res: T.ChatData | T.HistoryData | T.ChatRoomData | T.AffectedData) {
@@ -29,9 +29,11 @@ export default function ChatRoom() {
     if (res.roomId !== Number(roomId) || res.type === "chat") return;
     console.log("채팅방", res);
     if (res.type === "history") {
+      const historyChat: T.ChatData[] = [];
       res.list.map((chat) => {
-        initialChat.push({ ...chat, type: "chat", roomId: Number(roomId) });
+        historyChat.push({ ...chat, type: "chat", roomId: Number(roomId) });
       });
+      setInitialChat(historyChat);
     } else if (res.type === "chatRoom") {
       const myRoomInfo = res.userList.filter((user) => user.username === getUsername())[0];
       if (myRoomInfo?.owner) myOper.current = "owner";
@@ -70,7 +72,7 @@ export default function ChatRoom() {
           <ExitBtn room={Number(roomId)} />
         </S.HeaderBox>
         <S.MainBox>
-          <Screen room={Number(roomId)} initialChat={initialChat} />
+          {initialChat && <Screen room={Number(roomId)} initialChat={initialChat} />}
           <SendBtn room={Number(roomId)} />
         </S.MainBox>
       </S.PageLayout>
