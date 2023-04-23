@@ -16,25 +16,22 @@ export default function ChatRoom() {
   if (!isAuth()) navigate("/");
   const { roomId } = useParams();
   if (Number.isNaN(Number(roomId))) navigate("/404");
+
+  const socket = getSocket();
   const [target, setTarget] = useSearchParams();
-  const [screen, setScreen] = useState<T.ChatData[] | null>(null);
   const [participant, setParticipant] = useState<T.UserListArray | null>(null);
   const [banned, setBanned] = useState<T.BanListArray | null>(null);
-  const socket = getSocket();
+  const initialChat: T.ChatData[] = [];
   const myOper = useRef("participant");
 
-  function handleChatRoom(res: T.HistoryData | T.ChatRoomData | T.ChatData | T.AffectedData) {
+  function handleChatRoom(res: T.ChatData | T.HistoryData | T.ChatRoomData | T.AffectedData) {
     // TEST: 채팅방 내 전체 이벤트 리스너
-    if (res.roomId !== Number(roomId)) return;
+    if (res.roomId !== Number(roomId) || res.type === "chat") return;
     console.log("채팅방", res);
-    if (res.type === "chat" && screen) {
-      setScreen(screen.concat(res));
-    } else if (res.type === "history") {
-      const initialChat: T.ChatData[] = [];
+    if (res.type === "history") {
       res.list.map((chat) => {
         initialChat.push({ ...chat, type: "chat", roomId: Number(roomId) });
       });
-      setScreen(initialChat);
     } else if (res.type === "chatRoom") {
       const myRoomInfo = res.userList.filter((user) => user.username === getUsername())[0];
       if (myRoomInfo?.owner) myOper.current = "owner";
@@ -72,7 +69,7 @@ export default function ChatRoom() {
           <ExitBtn room={Number(roomId)} />
         </S.HeaderBox>
         <S.MainBox>
-          <Screen room={Number(roomId)} screen={screen} />
+          <Screen room={Number(roomId)} initialChat={initialChat} />
           <SendBtn room={Number(roomId)} />
         </S.MainBox>
       </S.PageLayout>
