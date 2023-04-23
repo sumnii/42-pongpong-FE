@@ -23,6 +23,10 @@ export default function UserDropMenu(props: {
   const onBan = useOper("ban", roomId, props.targetUser, props.onClose);
   const onUnban = useOper("unban", roomId, props.targetUser, props.onClose);
 
+  function handleDm() {
+    // TODO: DM방 모달 띄우기 구현
+  }
+
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (dropRef.current && e.target instanceof Element && !dropRef.current.contains(e.target))
@@ -46,10 +50,11 @@ export default function UserDropMenu(props: {
         >
           프로필
         </S.DropMenuItemBox>
-        <S.DropMenuItemBox>DM 보내기</S.DropMenuItemBox>
+        <S.DropMenuItemBox onClick={handleDm}>DM 보내기</S.DropMenuItemBox>
         <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
         {props.banned && <S.DropMenuItemBox onClick={onUnban}>입장 금지 해제</S.DropMenuItemBox>}
         {!props.banned &&
+          props.targetOper &&
           (myOper === "owner" || (myOper === "admin" && props.targetOper === "participant")) && (
             <>
               {props.targetMuted ? (
@@ -62,6 +67,7 @@ export default function UserDropMenu(props: {
             </>
           )}
         {!props.banned &&
+          props.targetOper &&
           myOper === "owner" &&
           (props.targetOper === "admin" ? (
             // TODO: 부방장 해제
