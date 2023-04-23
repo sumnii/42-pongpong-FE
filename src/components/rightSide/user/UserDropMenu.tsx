@@ -1,9 +1,9 @@
 import { useEffect, useRef, useContext } from "react";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { useOper, onProfile } from "hooks/useOper";
-import { RoomIdContext } from "hooks/context/RoomIdContext";
 import * as S from "./style";
 import { UserListContext } from "hooks/context/UserListContext";
+import { useParams } from "react-router-dom";
 
 export default function UserDropMenu(props: {
   onClose: () => void;
@@ -13,7 +13,7 @@ export default function UserDropMenu(props: {
   banned?: boolean;
 }) {
   const setProfileUser = useContext(ProfileContext);
-  const roomId = useContext(RoomIdContext);
+  const roomId = Number(useParams().roomId);
   const dropRef: React.RefObject<HTMLDivElement> = useRef(null);
   const myOper = useContext(UserListContext)?.myOper;
   const onAppointAdmin = useOper("appointAdmin", roomId, props.targetUser, props.onClose);

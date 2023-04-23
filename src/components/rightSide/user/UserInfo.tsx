@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { ProfileContext, ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
 import useNotiModal from "hooks/useNotiModal";
-import * as S from "./style";
 import useDropModal from "hooks/useDropModal";
 import { getUsername } from "userAuth";
 import { getAvatar } from "api/user";
+import * as S from "./style";
 
 export default function UserInfo(props: {
   listOf?: string;
