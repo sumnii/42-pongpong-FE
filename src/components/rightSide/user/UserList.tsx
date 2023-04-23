@@ -2,12 +2,14 @@ import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
+import { DmListArray } from "socket/passive/friendDmListType";
 import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
 
 type UserListCase =
-  | { listOf: "friend" | "dm" | "player" | "observer" }
+  | { listOf: "friend" | "player" | "observer" }
+  | { listOf: "dm"; list: DmListArray | null }
   | { listOf: "participant"; list: UserListArray | null }
   | { listOf: "banned"; list: BanListArray | null };
 
@@ -25,7 +27,6 @@ export default function UserList(props: UserListCase) {
   if (profileQuery.isLoading) return <S.UserListLayout></S.UserListLayout>;
   if (profileQuery.isError) console.log(profileQuery.error);
 
-  // TODO : user list 받아와서 전체 값 통일하기
   return (
     <S.UserListLayout>
       <h3>{props.listOf}</h3>
@@ -44,7 +45,6 @@ export default function UserList(props: UserListCase) {
               </S.UserItem>
             );
           })}
-        {/* TODO: 소켓 이벤트 데이터 연동 필요, key 값에 username */}
         {props.listOf === "banned" &&
           props.list?.map((user) => {
             return (
@@ -58,7 +58,15 @@ export default function UserList(props: UserListCase) {
               </S.UserItem>
             );
           })}
-        {!["participant", "banned"].includes(props.listOf) && (
+        {props.listOf === "dm" &&
+          props.list?.map((dm) => {
+            return (
+              <S.UserItem key={dm.username}>
+                <UserInfo listOf={props.listOf} username={dm.username} subLine="마지막 말" />
+              </S.UserItem>
+            );
+          })}
+        {!["participant", "banned", "dm"].includes(props.listOf) && (
           <S.UserItem>
             <UserInfo
               listOf={props.listOf}
