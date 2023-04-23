@@ -49,19 +49,20 @@ export default function UserDropMenu(props: {
         <S.DropMenuItemBox>DM 보내기</S.DropMenuItemBox>
         <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
         {props.banned && <S.DropMenuItemBox onClick={onUnban}>입장 금지 해제</S.DropMenuItemBox>}
-        {(myOper === "owner" ||
-          (myOper === "admin" && props.targetOper !== "admin" && props.targetOper !== "owner")) && (
-          <>
-            {props.targetMuted ? (
-              <S.DropMenuItemBox disabled>음소거중</S.DropMenuItemBox>
-            ) : (
-              <S.DropMenuItemBox onClick={onMute}>음소거</S.DropMenuItemBox>
-            )}
-            <S.DropMenuItemBox onClick={onKick}>내보내기</S.DropMenuItemBox>
-            <S.DropMenuItemBox onClick={onBan}>입장 금지</S.DropMenuItemBox>
-          </>
-        )}
-        {myOper === "owner" &&
+        {!props.banned &&
+          (myOper === "owner" || (myOper === "admin" && props.targetOper === "participant")) && (
+            <>
+              {props.targetMuted ? (
+                <S.DropMenuItemBox disabled>음소거중</S.DropMenuItemBox>
+              ) : (
+                <S.DropMenuItemBox onClick={onMute}>음소거</S.DropMenuItemBox>
+              )}
+              <S.DropMenuItemBox onClick={onKick}>내보내기</S.DropMenuItemBox>
+              <S.DropMenuItemBox onClick={onBan}>입장 금지</S.DropMenuItemBox>
+            </>
+          )}
+        {!props.banned &&
+          myOper === "owner" &&
           (props.targetOper === "admin" ? (
             // TODO: 부방장 해제
             <S.DropMenuItemBox onClick={onDismissAdmin}>부방장 해제</S.DropMenuItemBox>

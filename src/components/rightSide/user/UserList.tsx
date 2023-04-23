@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
 import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
-import { UserListContext } from "hooks/context/UserListContext";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
 
@@ -38,7 +37,7 @@ export default function UserList(props: UserListCase) {
                 <UserInfo
                   listOf={props.listOf}
                   username={user.username}
-                  userOper={user.owner ? "owner" : user.admin ? "admin" : ""}
+                  userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
                   subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
                   muted={user.muted ? true : false}
                 />
