@@ -4,6 +4,7 @@ export type ChatData = {
   status: "plain" | "notice";
   from: string;
   content: string;
+  list?: HistoryArray;
 };
 
 export type HistoryData = {
