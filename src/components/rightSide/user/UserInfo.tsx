@@ -4,8 +4,9 @@ import UserDropMenu from "./UserDropMenu";
 import useDropModal from "hooks/useDropModal";
 import { getUsername } from "userAuth";
 import { getAvatar } from "api/user";
-import * as S from "./style";
 import DmModal from "modal/DmModal";
+// import { getSocket } from "socket/socket";
+import * as S from "./style";
 
 export default function UserInfo(props: {
   listOf?: string;
@@ -24,6 +25,7 @@ export default function UserInfo(props: {
   });
   const [dmIsOpen, setDmIsOpen] = useState(false);
   const [img, setImg] = useState("");
+  const [isMouseEnter, setIsMouseEnter] = useState(false);
 
   useEffect(() => {
     const getAvatarHandler = async () => {
@@ -39,6 +41,44 @@ export default function UserInfo(props: {
     getAvatarHandler();
   }, [profileImgIsUp]);
 
+  useEffect(() => {
+    const node = document.getElementById(props.username + "info");
+    node?.addEventListener("mouseenter", () => {
+      setIsMouseEnter(true);
+    });
+    node?.addEventListener("mouseleave", () => {
+      setIsMouseEnter(false);
+    });
+
+    return () => {
+      node?.removeEventListener("mouseenter", () => {
+        setIsMouseEnter(true);
+      });
+      node?.removeEventListener("mouseleave", () => {
+        setIsMouseEnter(false);
+      });
+    };
+  });
+  // const socket = getSocket();
+
+  // TODO: dm exit 완성 필요
+  // useEffect(() => {
+  //   socket.on("dmExitResult", (res) => {
+  //     console.log(res);
+  //   });
+  //   return () => {
+  //     socket.off("dmExitResult", (res) => {
+  //       console.log(res);
+  //     });
+  //   };
+  // });
+
+  function onDmExit() {
+    alert("dm 나가기!");
+    // TODO: dm exit 서버 구현되면 완성하기!
+    // socket.emit("dmExit", { username: props.username });
+  }
+
   function onDmOpen() {
     if (props.listOf === "dm") setDmIsOpen(true);
   }
@@ -48,7 +88,7 @@ export default function UserInfo(props: {
   }
 
   return (
-    <>
+    <S.UserItem key={props.username} id={props.username + "info"} clickable={props.listOf === "dm"}>
       {dmIsOpen && <DmModal targetUser={props.username} onClose={onDmClose} />}
       <S.TmpImg src={img} clickable={props.listOf === "dm"} onClick={onDmOpen} />
       <S.UserInfoText clickable={props.listOf === "dm"} onClick={onDmOpen}>
@@ -58,6 +98,7 @@ export default function UserInfo(props: {
         <br />
         {props.subLine}
       </S.UserInfoText>
+      {props.listOf === "dm" && isMouseEnter && <S.ExitDmIcon onClick={onDmExit} />}
       {props.listOf !== "dm" && !me && <S.KebabIcon onClick={onDropOpen} />}
       {dropIsOpen && (
         <UserDropMenu
@@ -69,6 +110,6 @@ export default function UserInfo(props: {
           banned={props.banned}
         />
       )}
-    </>
+    </S.UserItem>
   );
 }

@@ -26,15 +26,15 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
   function onSend(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (input.length === 0) return;
-    socket.emit("dm", {
-      username: props.targetUser,
-      content: input,
-    });
     socket.on("dmResult", (res) => {
       if (res.status === "approved") {
         reset();
       } else console.log("DM 오류", res);
       // TEST: DM 전송에서 발생할 에러 핸들링
+    });
+    socket.emit("dm", {
+      username: props.targetUser,
+      content: input,
     });
   }
 

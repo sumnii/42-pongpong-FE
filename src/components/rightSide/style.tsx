@@ -82,10 +82,3 @@ export const UserList = styled.ul`
 
   overflow: auto;
 `;
-
-export const UserItem = styled.li`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  list-style-type: none;
-`;

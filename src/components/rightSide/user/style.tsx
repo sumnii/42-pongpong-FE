@@ -1,11 +1,24 @@
 import styled from "@emotion/styled";
 import { MdOutlineMoreVert } from "react-icons/md";
 import { VscBell, VscBellDot } from "react-icons/vsc";
+import { GrTrash } from "react-icons/gr";
 import { darkGray, darkMain, lightGray, lightMain } from "style/color";
+import { lightRed } from "style/color";
 
 /*
  *          User Info
  */
+
+export const UserItem = styled.li<{ clickable?: boolean }>`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  list-style-type: none;
+
+  ${(props) => {
+    if (props.clickable) return `cursor: pointer;`;
+  }}
+`;
 
 export const TmpImg = styled.img<{ clickable: boolean }>`
   width: 50px;
@@ -24,15 +37,26 @@ export const UserInfoText = styled.span<{ clickable: boolean }>`
   }};
 `;
 
-export const KebabIcon = styled(MdOutlineMoreVert)`
+/*
+ *          Dm: Trash Can
+ */
+
+export const ExitDmIcon = styled(GrTrash)`
   width: 20px;
   height: 100%;
+  padding: 2px;
   margin-left: auto;
   cursor: pointer;
+  /* TODO: 컬러 변경 적용 */
+  color: ${lightRed};
 `;
 
+/*
+ *          MyProfile: Notification
+ */
+
 export const EmptyNotiIcon = styled(VscBell)`
-  width: 16px;
+  width: 20px;
   padding: 2px;
   height: 100%;
   margin-left: auto;
@@ -40,7 +64,7 @@ export const EmptyNotiIcon = styled(VscBell)`
 `;
 
 export const NewNotiIcon = styled(VscBellDot)`
-  width: 16px;
+  width: 20px;
   padding: 2px;
   height: 100%;
   margin-left: auto;
@@ -49,8 +73,15 @@ export const NewNotiIcon = styled(VscBellDot)`
 `;
 
 /*
- *          Drop Menu
+ *          Basic: Drop Menu
  */
+
+export const KebabIcon = styled(MdOutlineMoreVert)`
+  width: 20px;
+  height: 100%;
+  margin-left: auto;
+  cursor: pointer;
+`;
 
 export const DropModalOverlay = styled.div`
   position: fixed;
