@@ -32,12 +32,21 @@ function Auth() {
   const [profileImgIsUp, setProfileImgIsUp] = useState(false);
   const socket = getSocket();
 
+  const errorListener = (res: { status: string; detail: string }) => {
+    if (res.status === "error") {
+      alert("이미 접속 중 입니다.");
+      window.open('about:blank','_parent')?.parent.close();
+    }
+  };
+
   useEffect(() => {
     socket.on("subscribeResult", (data) => console.log(data));
     socket.on("unsubscribeResult", (data) => console.log(data));
+    socket.on("error", errorListener);
     return () => {
       socket.off("subscribeResult", (data) => console.log(data));
       socket.off("unsubscribeResult", (data) => console.log(data));
+      socket.off("error", errorListener);
     };
   }, []);
 
