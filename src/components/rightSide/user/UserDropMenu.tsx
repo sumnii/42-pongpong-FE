@@ -1,12 +1,13 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef, useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { useOper, onProfile } from "hooks/useOper";
-import * as S from "./style";
 import { UserListContext } from "hooks/context/UserListContext";
-import { useParams } from "react-router-dom";
+import * as S from "./style";
 
 export default function UserDropMenu(props: {
   onClose: () => void;
+  onDmOpen: () => void;
   targetUser: string;
   targetOper?: string;
   targetMuted?: boolean;
@@ -24,7 +25,8 @@ export default function UserDropMenu(props: {
   const onUnban = useOper("unban", roomId, props.targetUser, props.onClose);
 
   function handleDm() {
-    // TODO: DM방 모달 띄우기 구현
+    props.onDmOpen();
+    props.onClose();
   }
 
   useEffect(() => {
@@ -70,7 +72,6 @@ export default function UserDropMenu(props: {
           props.targetOper &&
           myOper === "owner" &&
           (props.targetOper === "admin" ? (
-            // TODO: 부방장 해제
             <S.DropMenuItemBox onClick={onDismissAdmin}>부방장 해제</S.DropMenuItemBox>
           ) : (
             <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>

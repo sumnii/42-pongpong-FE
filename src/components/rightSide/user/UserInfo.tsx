@@ -39,29 +39,19 @@ export default function UserInfo(props: {
     getAvatarHandler();
   }, [profileImgIsUp]);
 
+  function onDmOpen() {
+    setDmIsOpen(true);
+  }
+
+  function onDmClose() {
+    setDmIsOpen(false);
+  }
+
   return (
     <>
-      {dmIsOpen && (
-        <DmModal
-          targetUser={props.username}
-          onClose={() => {
-            setDmIsOpen(false);
-          }}
-        />
-      )}
-      <S.TmpImg
-        src={img}
-        clickable={props.listOf === "dm"}
-        onClick={() => {
-          setDmIsOpen(true);
-        }}
-      />
-      <S.UserInfoText
-        clickable={props.listOf === "dm"}
-        onClick={() => {
-          setDmIsOpen(true);
-        }}
-      >
+      {dmIsOpen && <DmModal targetUser={props.username} onClose={onDmClose} />}
+      <S.TmpImg src={img} clickable={props.listOf === "dm"} onClick={onDmOpen} />
+      <S.UserInfoText clickable={props.listOf === "dm"} onClick={onDmOpen}>
         {props.username}{" "}
         {props.userOper === "owner" ? "👑" : props.userOper === "admin" ? "🎩" : ""}
         {props.muted ? " 🤐" : ""}
@@ -72,6 +62,7 @@ export default function UserInfo(props: {
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}
+          onDmOpen={onDmOpen}
           targetUser={props.username}
           targetOper={props.userOper}
           targetMuted={props.muted}
