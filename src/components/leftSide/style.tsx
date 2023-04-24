@@ -19,10 +19,11 @@ export const Title = styled.h2`
  *      Profile Item
  */
 
-export const TmpImg = styled.img<{ me: boolean }>`
+export const ProfileImg = styled.img<{ me: boolean }>`
   width: 100px;
   height: 100px;
   border-radius: 100%;
+  flex-shrink: 0;
 
   margin: 20px auto;
   ${(props) => {

@@ -36,7 +36,7 @@ export default function UserInfo(props: {
   return (
     <>
       {showNotiModal && NotiModal}
-      <S.TmpImg
+      <S.ProfileImg
         src={String(avatarQuery.data)}
         me={props.listOf === undefined}
         onClick={() => {

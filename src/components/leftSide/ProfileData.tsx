@@ -68,7 +68,7 @@ export function ProfileData(props: userProps) {
         </Modal>
       )}
       <S.Title>프로필</S.Title>
-      <S.TmpImg
+      <S.ProfileImg
         me={myProfile}
         src={String(avatarQuery.data)}
         onClick={myProfile ? openModalHandler : undefined}
