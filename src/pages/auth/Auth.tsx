@@ -39,13 +39,25 @@ function Auth() {
     }
   };
 
+  const subListener = (res: {status: string; detail: string}) => {
+    if (res.status === "error") {
+      console.log("sub", res);
+    }
+  }
+
+  const unSubListener = (res: {status: string; detail: string}) => {
+    if (res.status === "error") {
+      console.log("unsub", res);
+    }
+  }
+
   useEffect(() => {
-    socket.on("subscribeResult", (data) => console.log(data));
-    socket.on("unsubscribeResult", (data) => console.log(data));
+    socket.on("subscribeResult", subListener);
+    socket.on("unsubscribeResult", unSubListener);
     socket.on("error", errorListener);
     return () => {
-      socket.off("subscribeResult", (data) => console.log(data));
-      socket.off("unsubscribeResult", (data) => console.log(data));
+      socket.off("subscribeResult", subListener);
+      socket.off("unsubscribeResult", unSubListener);
       socket.off("error", errorListener);
     };
   }, []);
