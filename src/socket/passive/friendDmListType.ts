@@ -4,6 +4,7 @@
 
 export type DmListArray = {
   username: string;
+  content: string;
 }[];
 
 export type DmList = {

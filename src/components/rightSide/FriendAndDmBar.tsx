@@ -8,7 +8,7 @@ export default function FriendAndDmBar() {
   const [isOpen, setIsOpen] = useState<"friend" | "dm" | "">("");
   const [isNewDm, setIsNewDm] = useState(true);
   const socket = getSocket();
-  const dmList = useRef<T.DmListArray>([]);
+  const [dmList, setDmList] = useState<T.DmListArray>([]);
   // TODO: dm 이벤트에 따라 set 함수 사용
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
@@ -22,7 +22,7 @@ export default function FriendAndDmBar() {
     if (res.type === "dmList") {
       // TEST: DM 리스트 출력
       console.log("dm리스트", res);
-      dmList.current = res.list;
+      setDmList(res.list);
     }
   }
 
@@ -56,7 +56,7 @@ export default function FriendAndDmBar() {
       </S.BarLayout>
       {isOpen &&
         (isOpen === "dm" ? (
-          <UserList listOf={isOpen} list={dmList.current} />
+          <UserList listOf={isOpen} list={dmList} />
         ) : (
           <UserList listOf={isOpen} />
         ))}

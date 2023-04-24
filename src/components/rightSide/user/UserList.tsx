@@ -34,46 +34,45 @@ export default function UserList(props: UserListCase) {
         {props.listOf === "participant" &&
           props.list?.map((user) => {
             return (
-              <S.UserItem key={user.username}>
-                <UserInfo
-                  listOf={props.listOf}
-                  username={user.username}
-                  userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
-                  subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
-                  muted={user.muted ? true : false}
-                />
-              </S.UserItem>
+              <UserInfo
+                key={user.username}
+                listOf={props.listOf}
+                username={user.username}
+                userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
+                subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
+                muted={user.muted ? true : false}
+              />
             );
           })}
         {props.listOf === "banned" &&
           props.list?.map((user) => {
             return (
-              <S.UserItem key={user.username}>
-                <UserInfo
-                  listOf={props.listOf}
-                  username={user.username}
-                  subLine="❌ 입장금지"
-                  banned
-                />
-              </S.UserItem>
+              <UserInfo
+                key={user.username}
+                listOf={props.listOf}
+                username={user.username}
+                subLine="❌ 입장금지"
+                banned
+              />
             );
           })}
         {props.listOf === "dm" &&
           props.list?.map((dm) => {
             return (
-              <S.UserItem key={dm.username}>
-                <UserInfo listOf={props.listOf} username={dm.username} subLine="마지막 말" />
-              </S.UserItem>
+              <UserInfo
+                key={dm.username}
+                listOf={props.listOf}
+                username={dm.username}
+                subLine={dm.content}
+              />
             );
           })}
         {!["participant", "banned", "dm"].includes(props.listOf) && (
-          <S.UserItem>
-            <UserInfo
-              listOf={props.listOf}
-              username={profileQuery.data?.username}
-              subLine={profileQuery.data?.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
-            />
-          </S.UserItem>
+          <UserInfo
+            listOf={props.listOf}
+            username={profileQuery.data?.username}
+            subLine={profileQuery.data?.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
+          />
         )}
       </S.UserList>
     </S.UserListLayout>

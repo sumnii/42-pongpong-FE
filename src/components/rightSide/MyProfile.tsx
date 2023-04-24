@@ -4,7 +4,8 @@ import { getProfile } from "api/user";
 import { getUsername } from "userAuth";
 import useNotiModal from "hooks/useNotiModal";
 import { ProfileContext } from "hooks/context/ProfileContext";
-import { MyProfileLayout, UserItem } from "./style";
+import { MyProfileLayout } from "./style";
+import { UserItem } from "./user/style";
 import * as S from "./user/style";
 
 export default function MyProfile() {
