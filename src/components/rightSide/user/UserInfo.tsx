@@ -26,8 +26,8 @@ export default function UserInfo(props: {
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${props.username}`],
-    queryFn: ({ queryKey }) => {
-      return getAvatar(queryKey[1]);
+    queryFn: () => {
+      if (props.username) return getAvatar(props.username);
     },
     enabled: !!props.username,
   });

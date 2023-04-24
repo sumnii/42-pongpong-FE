@@ -11,7 +11,6 @@ export default function Profile(props: { username?: string }) {
   });
 
   if (profileQuery.isLoading) return <ProfileData />;
-  console.log(profileQuery.data);
 
   return <ProfileData user={profileQuery.data} />;
 }
