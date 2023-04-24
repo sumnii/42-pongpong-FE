@@ -22,6 +22,7 @@ export default function FriendAndDmBar() {
     if (res.type === "dmList") {
       // TEST: DM 리스트 출력
       console.log("dm리스트", res);
+      if (isOpen !== "dm") setIsNewDm(true);
       setDmList(res.list);
     }
   }
