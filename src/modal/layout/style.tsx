@@ -180,14 +180,16 @@ export const CloseIcon = styled(AiOutlineCloseSquare)`
   height: 25px;
 `;
 
-export const DmChatBox = styled.ul`
+export const DmChatList = styled.ul`
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   overflow: auto;
 
   list-style: none;
   padding: 0;
+  margin: 0 5px 20px;
+
   ${font.body};
   line-height: 1.7em;
 `;

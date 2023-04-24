@@ -16,7 +16,7 @@ export interface DmData {
   content: string;
 }
 
-export interface DmResult extends DmData {
+export interface DmResponse extends DmData {
   type: "dm";
 }
 

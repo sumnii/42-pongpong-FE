@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getSocket } from "socket/socket";
+import useInput from "hooks/useInput";
 import * as S from "modal/layout/style";
 import * as T from "socket/passive/friendDmListType";
 
@@ -7,6 +8,8 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
   const socket = getSocket();
   const [dmChat, setDmChat] = useState<T.DmData[]>([]);
   const modalRef: React.RefObject<HTMLDivElement> = useRef(null);
+  const [input, handler, reset] = useInput("");
+  const listRef: React.RefObject<HTMLUListElement> = useRef(null);
   let key = 0;
 
   function handleClose(e: MouseEvent) {
@@ -20,15 +23,36 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
     };
   });
 
-  function listener(res: T.DmHistoryData | T.DmResult) {
+  function onSend(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (input.length === 0) return;
+    socket.emit("dm", {
+      username: props.targetUser,
+      content: input,
+    });
+    socket.on("dmResult", (res) => {
+      if (res.status === "approved") {
+        reset();
+      } else console.log("DM 오류", res);
+      // TEST: DM 전송에서 발생할 에러 핸들링
+    });
+  }
+
+  function listener(res: T.DmHistoryData | T.DmResponse) {
     if (res.type === "history" && dmChat.length === 0) {
+      console.log("dm 히스토리", res);
       res.list.map((chat) => {
         setDmChat((prevChat) => [...prevChat, chat]);
       });
     } else if (res.type === "dm") {
+      console.log("dm", res);
       setDmChat((prevChat) => [...prevChat, { from: res.from, content: res.content }]);
     }
   }
+
+  useEffect(() => {
+    document.getElementById(String(key - 1))?.scrollIntoView();
+  }, [dmChat]);
 
   useEffect(() => {
     socket.on("message", listener);
@@ -42,6 +66,8 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
       type: "dm",
       username: props.targetUser,
     });
+    document.getElementById("input")?.focus();
+
     return () => {
       socket.emit("unsubscribe", {
         type: "dm",
@@ -60,25 +86,18 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
             <S.CloseIcon />
           </S.IconWrapper>
         </S.DmHeader>
-        <S.DmChatBox>
+        <S.DmChatList ref={listRef}>
           {dmChat.map((chat) => {
             return (
-              <li key={key++}>
+              <li id={String(key)} key={key++}>
                 {chat.from} : {chat.content}
               </li>
             );
           })}
-        </S.DmChatBox>
-        <S.InputBox>
-          <S.DmInput />
-          <S.IconWrapper
-            type="submit"
-            onClick={(e) => {
-              // TODO: DM 전송 구현
-              e.preventDefault();
-              alert("DM 전송!");
-            }}
-          >
+        </S.DmChatList>
+        <S.InputBox onSubmit={onSend}>
+          <S.DmInput id="input" value={input} onChange={handler} />
+          <S.IconWrapper type="submit">
             <S.SendBtn />
           </S.IconWrapper>
         </S.InputBox>
