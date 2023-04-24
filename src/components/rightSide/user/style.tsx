@@ -47,8 +47,9 @@ export const ExitDmIcon = styled(GrTrash)`
   padding: 2px;
   margin-left: auto;
   cursor: pointer;
-  /* TODO: 컬러 변경 적용 */
-  color: ${lightRed};
+  path {
+    stroke: ${lightRed};
+  }
 `;
 
 /*
