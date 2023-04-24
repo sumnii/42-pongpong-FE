@@ -64,7 +64,7 @@ export default function useNotiModal() {
   return {
     showNotiModal,
     NotiModal: (
-      <Modal setView={closeModalHandler}>
+      <Modal set={"noti"} setView={closeModalHandler}>
         <NotificationModal close={closeModalHandler} notiList={noti} />
       </Modal>
     ),
