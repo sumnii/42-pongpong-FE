@@ -22,7 +22,6 @@ export default function UserInfo(props: {
     listOf: props.listOf,
     username: props.username,
   });
-  const [img, setImg] = useState("");
   const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
 
   const avatarQuery = useQuery({
@@ -31,14 +30,6 @@ export default function UserInfo(props: {
       return getAvatar(queryKey[1]);
     },
     enabled: !!props.username,
-    onSuccess(data) {
-      const file = new File([data?.data], "avatar");
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setImg(String(ev.target?.result));
-      };
-      reader.readAsDataURL(file);
-    },
   });
   if (avatarQuery.isLoading) console.log("loading");
 
@@ -46,7 +37,7 @@ export default function UserInfo(props: {
     <>
       {showNotiModal && NotiModal}
       <S.TmpImg
-        src={img}
+        src={String(avatarQuery.data)}
         me={props.listOf === undefined}
         onClick={() => {
           !props.listOf && setProfileUser && setProfileUser(props.username);

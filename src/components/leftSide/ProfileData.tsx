@@ -37,23 +37,15 @@ export function ProfileData(props: userProps) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === props.user?.username;
-  const [img, setImg] = useState("");
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${props.user?.username}`],
-    queryFn: ({ queryKey }) => {
-      return getAvatar(queryKey[1]);
+    queryFn: () => {
+      if (props.user) return getAvatar(props.user.username);
     },
     enabled: !!props.user,
-    onSuccess(data) {
-      const file = new File([data?.data], "avatar");
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setImg(String(ev.target?.result));
-      };
-      reader.readAsDataURL(file);
-    },
   });
+
   if (avatarQuery.isLoading) console.log("loading");
 
   const openModalHandler = () => {
@@ -72,7 +64,11 @@ export function ProfileData(props: userProps) {
         </Modal>
       )}
       <S.Title>프로필</S.Title>
-      <S.TmpImg me={myProfile} src={`${img}`} onClick={myProfile ? openModalHandler : undefined} />
+      <S.TmpImg
+        me={myProfile}
+        src={String(avatarQuery.data)}
+        onClick={myProfile ? openModalHandler : undefined}
+      />
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임
