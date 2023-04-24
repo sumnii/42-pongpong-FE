@@ -58,7 +58,7 @@ export default function UserInfo(props: {
         setIsMouseEnter(false);
       });
     };
-  });
+  }, []);
   // const socket = getSocket();
 
   // TODO: dm exit 완성 필요
@@ -88,10 +88,14 @@ export default function UserInfo(props: {
   }
 
   return (
-    <S.UserItem key={props.username} id={props.username + "info"} clickable={props.listOf === "dm"}>
-      {dmIsOpen && <DmModal targetUser={props.username} onClose={onDmClose} />}
-      <S.TmpImg src={img} clickable={props.listOf === "dm"} onClick={onDmOpen} />
-      <S.UserInfoText clickable={props.listOf === "dm"} onClick={onDmOpen}>
+    <S.UserItem
+      key={props.username}
+      id={props.username + "info"}
+      clickable={props.listOf === "dm"}
+      onClick={onDmOpen}
+    >
+      <S.TmpImg src={img} clickable={props.listOf === "dm"} />
+      <S.UserInfoText clickable={props.listOf === "dm"}>
         {props.username}{" "}
         {props.userOper === "owner" ? "👑" : props.userOper === "admin" ? "🎩" : ""}
         {props.muted ? " 🤐" : ""}
@@ -110,6 +114,7 @@ export default function UserInfo(props: {
           banned={props.banned}
         />
       )}
+      {dmIsOpen && <DmModal targetUser={props.username} onClose={onDmClose} />}
     </S.UserItem>
   );
 }

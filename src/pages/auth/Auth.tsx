@@ -32,12 +32,13 @@ function Auth() {
   const [profileImgIsUp, setProfileImgIsUp] = useState(false);
   const socket = getSocket();
 
+  // TEST: 구독/해제 테스트
   useEffect(() => {
-    socket.on("subscribeResult", (data) => console.log(data));
-    socket.on("unsubscribeResult", (data) => console.log(data));
+    socket.on("subscribeResult", (data) => console.log("구독", data));
+    socket.on("unsubscribeResult", (data) => console.log("구독해제", data));
     return () => {
-      socket.off("subscribeResult", (data) => console.log(data));
-      socket.off("unsubscribeResult", (data) => console.log(data));
+      socket.off("subscribeResult", (data) => console.log("구독", data));
+      socket.off("unsubscribeResult", (data) => console.log("구독해제", data));
     };
   }, []);
 

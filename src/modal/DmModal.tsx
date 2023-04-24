@@ -12,34 +12,9 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
   const listRef: React.RefObject<HTMLUListElement> = useRef(null);
   let key = 0;
 
-  function handleClose(e: MouseEvent) {
-    if (modalRef.current && !modalRef.current.contains(e.target as Element)) props.onClose();
-  }
-
-  useEffect(() => {
-    window.addEventListener("mousedown", handleClose);
-    return () => {
-      window.removeEventListener("mousedown", handleClose);
-    };
-  });
-
-  function onSend(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (input.length === 0) return;
-    socket.on("dmResult", (res) => {
-      if (res.status === "approved") {
-        reset();
-      } else console.log("DM 오류", res);
-      // TEST: DM 전송에서 발생할 에러 핸들링
-    });
-    socket.emit("dm", {
-      username: props.targetUser,
-      content: input,
-    });
-  }
-
   function listener(res: T.DmHistoryData | T.DmResponse) {
     if (res.type === "history" && dmChat.length === 0) {
+      // TEST: DM 구현중
       console.log("dm 히스토리", res);
       res.list.map((chat) => {
         setDmChat((prevChat) => [...prevChat, chat]);
@@ -50,21 +25,33 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
     }
   }
 
+  function handleClose(e: MouseEvent) {
+    if (modalRef.current && !modalRef.current.contains(e.target as Element)) props.onClose();
+  }
+
+  function onSend(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (input.length === 0) return;
+    socket.emit("dm", {
+      username: props.targetUser,
+      content: input,
+    });
+  }
+
   useEffect(() => {
     document.getElementById(String(key - 1))?.scrollIntoView();
   }, [dmChat]);
 
   useEffect(() => {
-    socket.on("message", listener);
-    return () => {
-      socket.off("message", listener);
-    };
-  });
-
-  useEffect(() => {
     socket.emit("subscribe", {
       type: "dm",
       username: props.targetUser,
+    });
+    socket.on("dmResult", (res) => {
+      if (res.status === "approved") {
+        reset();
+      } else console.log("DM 오류", res);
+      // TEST: DM 전송에서 발생할 에러 핸들링
     });
     document.getElementById("input")?.focus();
 
@@ -73,6 +60,21 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
         type: "dm",
         username: props.targetUser,
       });
+      socket.off("dmResult");
+    };
+  }, [props.targetUser]);
+
+  useEffect(() => {
+    socket.on("message", listener);
+    return () => {
+      socket.off("message", listener);
+    };
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("mousedown", handleClose);
+    return () => {
+      window.removeEventListener("mousedown", handleClose);
     };
   }, []);
 
