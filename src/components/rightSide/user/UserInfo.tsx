@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import UserDropMenu from "./UserDropMenu";
 import useDropModal from "hooks/useDropModal";
@@ -73,7 +73,8 @@ export default function UserInfo(props: {
   //   };
   // });
 
-  function onDmExit() {
+  function onDmExit(e: React.MouseEvent<SVGElement>) {
+    e.stopPropagation();
     alert("dm 나가기!");
     // TODO: dm exit 서버 구현되면 완성하기!
     // socket.emit("dmExit", { username: props.username });
