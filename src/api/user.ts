@@ -36,8 +36,8 @@ export async function create(userInfo: userInfoType) {
 
 export async function getAvatar(username: string) {
   try {
-    const res = await axios.get<Blob>(`/user/avatar/${username}`, {
-      responseType: 'blob'
+    const res = await axios.get<Blob | string>(`/user/avatar/${username}`, {
+      responseType: "blob",
     });
     return res;
   } catch (err: unknown) {
@@ -50,7 +50,7 @@ export async function getAvatar(username: string) {
 
 export async function postAvatar(form: FormData) {
   try {
-    const res = await axios.post('/user/avatar', form);
+    const res = await axios.post("/user/avatar", form);
     return res;
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {

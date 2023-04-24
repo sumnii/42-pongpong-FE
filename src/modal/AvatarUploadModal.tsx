@@ -1,33 +1,35 @@
 import { postAvatar } from "api/user";
 import * as S from "./layout/style";
-import React, { useContext, useRef, useState } from "react";
-import { ProfileSetImgIsUpContext } from "hooks/context/ProfileContext";
+import React, { useRef, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type modalProps = {
+  username: string | undefined;
   close: () => void;
 };
 
 function AvatarUploadModal(props: modalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [noti, setNoti] = useState("");
-  const setProfileImgIsUp = useContext(ProfileSetImgIsUpContext);
+  const queryCli = useQueryClient();
 
   const changeInput = () => {
     if (noti) setNoti("");
   };
 
-  const postAvatarHandler = async (form: FormData) => {
-    const res = await postAvatar(form);
-    if (res?.status === 201) {
-      props.close();
-      if (setProfileImgIsUp) {
-        setProfileImgIsUp((prev) => !prev);
+  const avatarMutation = useMutation({
+    mutationFn: (form: FormData) => {
+      return postAvatar(form);
+    },
+    onSuccess: (res) => {
+      if (res?.status === 201) {
+        queryCli.invalidateQueries(["avatar", props.username]);
+        props.close();
+      } else {
+        setNoti(res ? res.data.message : "");
       }
-    } else {
-      setNoti(res?.data.message);
     }
-    console.log(res);
-  };
+  });
 
   const uploadAvatarHandler = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ function AvatarUploadModal(props: modalProps) {
     const formData = new FormData();
     if (files) {
       formData.append("avatar", files[0]);
-      postAvatarHandler(formData);
+      avatarMutation.mutate(formData);
     }
   };
 

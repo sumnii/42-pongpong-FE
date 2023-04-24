@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import { getAvatar } from "api/user";
-import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
+import { useQuery } from "@tanstack/react-query";
 
 interface userProps {
   user?: {
@@ -28,7 +28,6 @@ interface userProps {
       },
     ];
   };
-  image?: string;
 }
 
 export function ProfileData(props: userProps) {
@@ -39,23 +38,23 @@ export function ProfileData(props: userProps) {
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === props.user?.username;
   const [img, setImg] = useState("");
-  const profileImgIsUp = useContext(ProfileImgIsUpContext);
 
-  useEffect(() => {
-    const getAvatarHandler = async () => {
-      if (props.user) {
-        const res = await getAvatar(props.user.username);
-        const file = new File([res?.data], "avatar");
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const previewImage = String(ev.target?.result);
-          setImg(previewImage);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    getAvatarHandler();
-  }, [props.user, profileImgIsUp]);
+  const avatarQuery = useQuery({
+    queryKey: ["avatar", `${props.user?.username}`],
+    queryFn: ({ queryKey }) => {
+      return getAvatar(queryKey[1]);
+    },
+    enabled: !!props.user,
+    onSuccess(data) {
+      const file = new File([data?.data], "avatar");
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setImg(String(ev.target?.result));
+      };
+      reader.readAsDataURL(file);
+    },
+  });
+  if (avatarQuery.isLoading) console.log("loading");
 
   const openModalHandler = () => {
     setShowModal(true);
@@ -69,7 +68,7 @@ export function ProfileData(props: userProps) {
     <S.ProfileLayout>
       {showModal && (
         <Modal setView={closeModalHandler}>
-          <AvatarUploadModal close={closeModalHandler} />
+          <AvatarUploadModal close={closeModalHandler} username={props.user?.username} />
         </Modal>
       )}
       <S.Title>프로필</S.Title>
