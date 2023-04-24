@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import { getAvatar } from "api/user";
-import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
+import { useQuery } from "@tanstack/react-query";
 
 interface userProps {
   user?: {
@@ -28,7 +28,6 @@ interface userProps {
       },
     ];
   };
-  image?: string;
 }
 
 export function ProfileData(props: userProps) {
@@ -38,24 +37,16 @@ export function ProfileData(props: userProps) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === props.user?.username;
-  const [img, setImg] = useState("");
-  const profileImgIsUp = useContext(ProfileImgIsUpContext);
 
-  useEffect(() => {
-    const getAvatarHandler = async () => {
-      if (props.user) {
-        const res = await getAvatar(props.user.username);
-        const file = new File([res?.data], "avatar");
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const previewImage = String(ev.target?.result);
-          setImg(previewImage);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    getAvatarHandler();
-  }, [props.user, profileImgIsUp]);
+  const avatarQuery = useQuery({
+    queryKey: ["avatar", `${props.user?.username}`],
+    queryFn: () => {
+      if (props.user) return getAvatar(props.user.username);
+    },
+    enabled: !!props.user,
+  });
+
+  if (avatarQuery.isLoading) console.log("loading");
 
   const openModalHandler = () => {
     setShowModal(true);
@@ -69,11 +60,19 @@ export function ProfileData(props: userProps) {
     <S.ProfileLayout>
       {showModal && (
         <Modal setView={closeModalHandler}>
-          <AvatarUploadModal close={closeModalHandler} />
+          <AvatarUploadModal
+            close={closeModalHandler}
+            prevUrl={String(avatarQuery.data)}
+            username={props.user?.username}
+          />
         </Modal>
       )}
       <S.Title>프로필</S.Title>
-      <S.TmpImg me={myProfile} src={`${img}`} onClick={myProfile ? openModalHandler : undefined} />
+      <S.ProfileImg
+        me={myProfile}
+        src={String(avatarQuery.data)}
+        onClick={myProfile ? openModalHandler : undefined}
+      />
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임

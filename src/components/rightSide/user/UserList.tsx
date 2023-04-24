@@ -1,8 +1,6 @@
-import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
-import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
 
@@ -12,8 +10,6 @@ type UserListCase =
   | { listOf: "banned"; list: BanListArray | null };
 
 export default function UserList(props: UserListCase) {
-  const profileImgIsUp = useContext(ProfileImgIsUpContext);
-
   // 임시 쿼리. 친구 리스트 불러오는 api 필요
   const profileQuery = useQuery({
     queryKey: ["profile", "아무개"],
