@@ -40,7 +40,7 @@ export default function UserInfo(props: {
   }, [profileImgIsUp]);
 
   function onDmOpen() {
-    setDmIsOpen(true);
+    if (props.listOf === "dm") setDmIsOpen(true);
   }
 
   function onDmClose() {
@@ -62,7 +62,7 @@ export default function UserInfo(props: {
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}
-          onDmOpen={onDmOpen}
+          onDmOpen={() => setDmIsOpen(true)}
           targetUser={props.username}
           targetOper={props.userOper}
           targetMuted={props.muted}
