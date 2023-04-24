@@ -60,7 +60,11 @@ export function ProfileData(props: userProps) {
     <S.ProfileLayout>
       {showModal && (
         <Modal setView={closeModalHandler}>
-          <AvatarUploadModal close={closeModalHandler} username={props.user?.username} />
+          <AvatarUploadModal
+            close={closeModalHandler}
+            prevUrl={String(avatarQuery.data)}
+            username={props.user?.username}
+          />
         </Modal>
       )}
       <S.Title>프로필</S.Title>

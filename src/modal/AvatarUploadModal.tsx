@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type modalProps = {
   username: string | undefined;
+  prevUrl: string;
   close: () => void;
 };
 
@@ -24,11 +25,12 @@ function AvatarUploadModal(props: modalProps) {
     onSuccess: (res) => {
       if (res?.status === 201) {
         queryCli.invalidateQueries(["avatar", props.username]);
+        URL.revokeObjectURL(props.prevUrl);
         props.close();
       } else {
         setNoti(res ? res.data.message : "");
       }
-    }
+    },
   });
 
   const uploadAvatarHandler = (e: React.MouseEvent<HTMLFormElement>) => {
