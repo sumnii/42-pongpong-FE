@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { getSocket } from "socket/socket";
 import Modal from "modal/layout/Modal";
 import NotificationModal from "modal/NotificationModal";
@@ -19,17 +18,21 @@ type InvitationType = {
 };
 
 export default function useNotiModal() {
-  const target = useLocation().pathname.split("/");
   const socket = getSocket();
   const [noti, setNoti] = useState<NotiType[]>([]);
   const [newNoti, setNewNoti] = useState(false);
   const [showNotiModal, setShowNotiModal] = useState(false);
-  const locPage = target[1];
-  const locRoom = target[2];
 
   const listener = (res: InvitationType) => {
     if (res.type === "chatInvitation") {
-      console.log(res);
+      setNoti((prev) => [
+        ...prev,
+        {
+          title: `${res.from} 님으로 부터 #${res.roomId} 채팅방에 초대 되었습니다.`,
+          chatId: res.roomId,
+          chatTitle: "초대된 ",
+        }
+      ])
       setNewNoti(true);
     }
   };
@@ -71,7 +74,7 @@ export default function useNotiModal() {
   return {
     showNotiModal,
     NotiModal: (
-      <Modal set={"noti"} setView={closeModalHandler}>
+      <Modal set={"noti"} setView={onOpenNotiModal}>
         <NotificationModal close={closeModalHandler} notiList={noti} />
       </Modal>
     ),

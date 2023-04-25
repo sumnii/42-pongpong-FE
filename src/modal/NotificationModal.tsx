@@ -26,7 +26,11 @@ function NotificationModal(props: modalProps) {
           props.notiList.map((noti) => {
             return (
               <>
-                <S.Span onClick={joinHandler} id={`${noti.chatId}-${noti.chatTitle}`}>
+                <S.Span
+                  key={noti.chatId}
+                  onClick={joinHandler}
+                  id={`${noti.chatId}-${noti.chatTitle}`}
+                >
                   {noti.title}
                 </S.Span>
                 <br />
