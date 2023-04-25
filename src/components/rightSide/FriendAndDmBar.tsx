@@ -1,28 +1,37 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import UserList from "./user/UserList";
 import { getSocket } from "socket/socket";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getDmList } from "api/dm";
 import * as T from "socket/passive/friendDmListType";
 import * as S from "./style";
 
 export default function FriendAndDmBar() {
   const socket = getSocket();
   const [isOpen, setIsOpen] = useState<"friend" | "dm" | "">("");
-  const [isNewDm, setIsNewDm] = useState(true);
-  const [dmList, setDmList] = useState<T.DmListArray>([]);
+  const [isNewDm, setIsNewDm] = useState(false);
+  const queryClient = useQueryClient();
+
+  const dmListQuery = useQuery({
+    queryKey: ["list", "dm"],
+    queryFn: () => {
+      return getDmList();
+    },
+    enabled: isOpen === "dm",
+  });
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     const id = e.currentTarget.id;
     if (id === "dm") setIsNewDm(false);
-    if (id === "friend" || id === "dm") setIsOpen(id);
+    setIsOpen(id as "friend" | "dm" | "");
     if (id === isOpen) setIsOpen("");
   }
 
   function handleList(res: T.DmList) {
     if (res.type === "dmList") {
-      // TEST: DM 리스트 출력
-      console.log("dm리스트", res);
-      if (isOpen !== "dm") setIsNewDm(true);
-      setDmList(res.list);
+      console.log("dm 리스트", res, "현재 열림:", isOpen);
+      // if (isOpen !== "dm") setIsNewDm(true);
+      queryClient.invalidateQueries(["list", "dm"]);
     }
   }
 
@@ -56,9 +65,15 @@ export default function FriendAndDmBar() {
       </S.BarLayout>
       {isOpen &&
         (isOpen === "dm" ? (
-          <UserList listOf={isOpen} list={dmList} />
+          dmListQuery.isLoading ? (
+            <S.UserListLayout>
+              <h3>dm</h3>
+            </S.UserListLayout>
+          ) : (
+            <UserList key={"dm"} listOf={isOpen} list={dmListQuery.data.list} />
+          )
         ) : (
-          <UserList listOf={isOpen} />
+          <UserList key={"friend"} listOf={isOpen} />
         ))}
     </>
   );

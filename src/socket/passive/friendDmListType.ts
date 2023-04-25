@@ -9,7 +9,7 @@ export type DmListArray = {
 
 export type DmList = {
   type: "dmList";
-  list: DmListArray;
+  alert: "new";
 };
 
 export interface DmData {
