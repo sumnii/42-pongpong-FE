@@ -9,7 +9,6 @@ export default function AddFriendBtn(props: { username: string }) {
   const queryCli = useQueryClient();
 
   const listener = (res: ChatRoomResponse) => {
-    console.log(res);
     if (res.status === "approved") {
       alert("친구가 되었습니다");
       queryCli.invalidateQueries(["profile", props.username]);

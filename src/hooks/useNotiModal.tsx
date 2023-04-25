@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getSocket } from "socket/socket";
-import { ChatData, ChatRoomData } from "socket/passive/chatRoomType";
 import Modal from "modal/layout/Modal";
 import NotificationModal from "modal/NotificationModal";
 
@@ -13,41 +12,49 @@ export type NotiType = {
   gameId?: number;
 };
 
+type InvitationType = {
+  type: string;
+  roomId: number;
+  from: string;
+};
+
 export default function useNotiModal() {
   const target = useLocation().pathname.split("/");
   const socket = getSocket();
-  const [myChat, setMyChat] = useState<ChatRoomData[]>([]);
   const [noti, setNoti] = useState<NotiType[]>([]);
   const [newNoti, setNewNoti] = useState(false);
   const [showNotiModal, setShowNotiModal] = useState(false);
   const locPage = target[1];
   const locRoom = target[2];
 
-  const listener = (res: ChatData) => {
-    if (locPage !== "chat" || locRoom !== String(res.roomId)) {
-      myChat.map((chat) => {
-        if (chat.roomId === res.roomId) {
-          const data: NotiType = {
-            title: "참여하고 있는 채팅방에 새로운 메시지",
-            chatId: res.roomId,
-          };
-          setNoti([data, ...noti]);
-          setNewNoti(true);
-        }
-      });
+  const listener = (res: InvitationType) => {
+    if (res.type === "chatInvitation") {
+      console.log(res);
+      setNewNoti(true);
     }
   };
 
-  const myChatListener = (res: ChatRoomData[]) => {
-    setMyChat(res);
-  };
+  useEffect(() => {
+    socket.on("message", listener);
+    return () => {
+      socket.off("message", listener);
+    };
+  }, []);
 
   useEffect(() => {
-    socket.on("chat", listener);
-    socket.on("updateMyChatRoomList", myChatListener);
+    socket.emit("subscribe", {
+      type: "chatInvitation",
+    });
+    socket.emit("subscribe", {
+      type: "gameInvitation",
+    });
     return () => {
-      socket.off("chat", listener);
-      socket.off("updateMyChatRoomList", myChatListener);
+      socket.emit("unsubscribe", {
+        type: "chatInvitation",
+      });
+      socket.emit("unsubscribe", {
+        type: "gameInvitation",
+      });
     };
   }, []);
 

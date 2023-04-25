@@ -4,6 +4,7 @@ import { useOper, onProfile } from "hooks/useOper";
 import * as S from "./style";
 import { UserListContext } from "hooks/context/UserListContext";
 import { useParams } from "react-router-dom";
+import InviteBtn from "./InviteBtn";
 
 export default function UserDropMenu(props: {
   onClose: () => void;
@@ -69,6 +70,9 @@ export default function UserDropMenu(props: {
           ) : (
             <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
           ))}
+        {roomId > 0 && !props.targetOper && !props.banned && (
+          <InviteBtn roomId={roomId} username={props.targetUser} close={props.onClose} />
+        )}
       </S.DropMenuLayout>
     </>
   );
