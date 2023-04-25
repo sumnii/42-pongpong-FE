@@ -7,7 +7,7 @@ import { darkGray, darkMain, lightGray, lightMain } from "style/color";
  *          User Info
  */
 
-export const TmpImg = styled.img<{ me: boolean }>`
+export const ProfileImg = styled.img<{ me: boolean }>`
   width: 50px;
   height: 50px;
   border-radius: 100%;
