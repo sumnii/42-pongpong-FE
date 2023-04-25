@@ -82,7 +82,10 @@ export default function UserInfo(props: {
   }
 
   function onDmOpen() {
-    if (props.listOf === "dm") onOpen();
+    if (props.listOf === "dm") {
+      setIsMouseEnter(false);
+      onOpen();
+    }
   }
 
   return (
