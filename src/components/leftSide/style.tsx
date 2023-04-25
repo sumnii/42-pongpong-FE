@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { darkGray } from "style/color";
 import * as font from "style/font";
 import * as button from "style/button";
 
@@ -18,6 +19,16 @@ export const Title = styled.h2`
 /*
  *      Profile Item
  */
+
+export const LoadingImg = styled.img<{ clickable?: boolean }>`
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  flex-shrink: 0;
+  margin: 20px auto;
+
+  background-color: ${darkGray};
+`;
 
 export const ProfileImg = styled.img<{ me: boolean }>`
   width: 100px;

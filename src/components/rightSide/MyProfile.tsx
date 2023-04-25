@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "api/user";
+import { getProfile, getAvatar } from "api/user";
 import { getUsername } from "userAuth";
 import useNotiModal from "hooks/useNotiModal";
 import { ProfileContext } from "hooks/context/ProfileContext";
@@ -16,6 +16,13 @@ export default function MyProfile() {
       return getProfile(username);
     },
   });
+  const avatarQuery = useQuery({
+    queryKey: ["avatar", `${username}`],
+    queryFn: () => {
+      if (username) return getAvatar(username);
+    },
+    enabled: !!username,
+  });
   const setProfileUser = useContext(ProfileContext);
   const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
 
@@ -25,13 +32,17 @@ export default function MyProfile() {
     <MyProfileLayout>
       <UserItem>
         {showNotiModal && NotiModal}
-        <S.TmpImg
-          clickable
-          // src={img} TODO: 로그인한 유저 프로필 이미지 불러오기 필요
-          onClick={() => {
-            setProfileUser && setProfileUser(username);
-          }}
-        />
+        {avatarQuery.isLoading ? (
+          <S.LoadingImg />
+        ) : (
+          <S.ProfileImg
+            clickable
+            src={String(avatarQuery.data)}
+            onClick={() => {
+              setProfileUser && setProfileUser(username);
+            }}
+          />
+        )}
         <S.UserInfoText
           clickable
           onClick={() => {

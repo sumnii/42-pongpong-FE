@@ -1,10 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
+import { useQuery } from "@tanstack/react-query";
 import { getAvatar } from "api/user";
-import { useContext, useState } from "react";
-import { ProfileContext } from "hooks/context/ProfileContext";
-import UserDropMenu from "./UserDropMenu";
-import useNotiModal from "hooks/useNotiModal";
 import useDropModal from "hooks/useDropModal";
 import useModal from "hooks/useModal";
 import useMouseOver from "hooks/useMouseOver";
@@ -12,7 +7,6 @@ import DmModal from "modal/DmModal";
 import UserDropMenu from "./UserDropMenu";
 import { getUsername } from "userAuth";
 // import { getSocket } from "socket/socket";
-import { useQuery } from "@tanstack/react-query";
 import * as S from "./style";
 
 type UserInfoProps = {
@@ -22,7 +16,6 @@ type UserInfoProps = {
   subLine: string;
   muted?: boolean;
   banned?: boolean;
-  onClickProfile?: () => void;
 };
 
 export default function UserInfo({
@@ -32,7 +25,6 @@ export default function UserInfo({
   subLine,
   muted,
   banned,
-  onClickProfile,
 }: UserInfoProps) {
   const me = getUsername() === username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
@@ -87,7 +79,7 @@ export default function UserInfo({
       onClick={onDmOpen}
     >
       {avatarQuery.isLoading ? (
-        <S.TmpImg />
+        <S.LoadingImg />
       ) : (
         <S.ProfileImg src={String(avatarQuery.data)} clickable={listOf === "dm"} />
       )}
