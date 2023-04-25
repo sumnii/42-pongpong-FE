@@ -25,7 +25,6 @@ const GameRoom = loadable(() => {
 
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
-  const [profileImgIsUp, setProfileImgIsUp] = useState(false);
   const socket = getSocket();
 
   const errorListener = (res: { status: string; detail: string }) => {
