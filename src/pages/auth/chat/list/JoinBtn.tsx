@@ -22,13 +22,14 @@ export default function JoinChatRoom(props: PropsType) {
 
   const listner = (res: ChatRoomResponse) => {
     if (res.roomId !== props.roomId) return;
-    console.log("참가 결과", res);
     if (res.status === "error") {
       console.log(res);
     } else if (res.status === "warning") {
-      // TODO: 여기도 모달로?
-      if (res.detail === "밴 당하셨습니다.") alert("입장이 거부된 방입니다.");
-      setNotice(res.detail);
+      if (showModal) {
+        setNotice(res.detail);
+      } else {
+        alert(res.detail);
+      }
     } else {
       navigate({
         pathname: `/chat/${res.roomId}`,
@@ -42,7 +43,7 @@ export default function JoinChatRoom(props: PropsType) {
     return () => {
       socket.off("joinChatRoomResult", listner);
     };
-  }, []);
+  }, [showModal]);
 
   const showModalHandler = () => {
     setShowModal(true);
@@ -50,6 +51,7 @@ export default function JoinChatRoom(props: PropsType) {
 
   const closeModalHandler = () => {
     setShowModal(false);
+    if (notice) setNotice("")
   };
 
   function joinHandler() {
