@@ -69,6 +69,7 @@ export default function UserInfo(props: {
           targetOper={props.userOper}
           targetMuted={props.muted}
           banned={props.banned}
+          subLine={props.subLine}
         />
       )}
     </>

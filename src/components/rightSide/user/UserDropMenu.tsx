@@ -12,6 +12,7 @@ export default function UserDropMenu(props: {
   targetOper?: string;
   targetMuted?: boolean;
   banned?: boolean;
+  subLine?: string;
 }) {
   const setProfileUser = useContext(ProfileContext);
   const roomId = Number(useParams().roomId);
@@ -23,6 +24,7 @@ export default function UserDropMenu(props: {
   const onKick = useOper("kick", roomId, props.targetUser, props.onClose);
   const onBan = useOper("ban", roomId, props.targetUser, props.onClose);
   const onUnban = useOper("unban", roomId, props.targetUser, props.onClose);
+  const isOnline = props.subLine?.split(" ")[1] === "온라인" ? true : false;
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -51,6 +53,7 @@ export default function UserDropMenu(props: {
         <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
         {props.banned && <S.DropMenuItemBox onClick={onUnban}>입장 금지 해제</S.DropMenuItemBox>}
         {!props.banned &&
+          props.targetOper &&
           (myOper === "owner" || (myOper === "admin" && props.targetOper === "participant")) && (
             <>
               {props.targetMuted ? (
@@ -63,6 +66,7 @@ export default function UserDropMenu(props: {
             </>
           )}
         {!props.banned &&
+          props.targetOper &&
           myOper === "owner" &&
           (props.targetOper === "admin" ? (
             // TODO: 부방장 해제
@@ -70,9 +74,12 @@ export default function UserDropMenu(props: {
           ) : (
             <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
           ))}
-        {(myOper === "owner" || myOper === "admin") && !props.targetOper && !props.banned && (
-          <InviteBtn roomId={roomId} username={props.targetUser} close={props.onClose} />
-        )}
+        {isOnline &&
+          (myOper === "owner" || myOper === "admin") &&
+          !props.targetOper &&
+          !props.banned && (
+            <InviteBtn roomId={roomId} username={props.targetUser} close={props.onClose} />
+          )}
       </S.DropMenuLayout>
     </>
   );
