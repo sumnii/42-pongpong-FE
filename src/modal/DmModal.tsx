@@ -3,14 +3,21 @@ import { getSocket } from "socket/socket";
 import useInput from "hooks/useInput";
 import * as S from "modal/layout/style";
 import * as T from "socket/passive/friendDmListType";
+import { useOutsideClick } from "hooks/useOutsideClick";
 
-export default function DmModal(props: { targetUser: string; onClose: () => void }) {
+type DmModalProps = {
+  targetUser: string;
+  onClose: () => void;
+};
+
+export default function DmModal({ targetUser, onClose }: DmModalProps) {
   const socket = getSocket();
   const [dmChat, setDmChat] = useState<T.DmData[]>([]);
   const modalRef: React.RefObject<HTMLDivElement> = useRef(null);
   const [input, handler, reset] = useInput("");
   const listRef: React.RefObject<HTMLUListElement> = useRef(null);
   let key = 0;
+  useOutsideClick({ modalRef, onClose });
 
   function listener(res: T.DmHistoryData | T.DmResponse) {
     if (res.type === "history" && dmChat.length === 0) {
@@ -25,15 +32,11 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
     }
   }
 
-  function handleClose(e: MouseEvent) {
-    if (modalRef.current && !modalRef.current.contains(e.target as Element)) props.onClose();
-  }
-
   function onSend(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (input.length === 0) return;
     socket.emit("dm", {
-      username: props.targetUser,
+      username: targetUser,
       content: input,
     });
   }
@@ -45,7 +48,7 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
   useEffect(() => {
     socket.emit("subscribe", {
       type: "dm",
-      username: props.targetUser,
+      username: targetUser,
     });
     socket.on("dmResult", (res) => {
       if (res.status === "approved") {
@@ -58,11 +61,11 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
     return () => {
       socket.emit("unsubscribe", {
         type: "dm",
-        username: props.targetUser,
+        username: targetUser,
       });
       socket.off("dmResult");
     };
-  }, [props.targetUser]);
+  }, [targetUser]);
 
   useEffect(() => {
     socket.on("message", listener);
@@ -71,18 +74,11 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
     };
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("mousedown", handleClose);
-    return () => {
-      window.removeEventListener("mousedown", handleClose);
-    };
-  }, []);
-
   return (
     <S.DmLayout ref={modalRef}>
       <S.DmHeader>
-        <S.DmTitle>{props.targetUser}님과의 다이렉트 메시지</S.DmTitle>
-        <S.IconWrapper type="reset" onClick={props.onClose}>
+        <S.DmTitle>{targetUser}님과의 다이렉트 메시지</S.DmTitle>
+        <S.IconWrapper type="reset" onClick={onClose}>
           <S.CloseIcon />
         </S.IconWrapper>
       </S.DmHeader>
