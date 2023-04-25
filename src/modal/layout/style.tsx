@@ -16,6 +16,7 @@ export const ModalOverlay = styled.div`
   top: 0;
 
   background: rgba(0, 0, 0, 0.1);
+  cursor: default;
 `;
 
 export const Backdrop = styled.div`
@@ -30,7 +31,7 @@ export const Backdrop = styled.div`
 
 export const Modal = styled.dialog`
   width: 40%;
-  ${props => props.id  === "noti" ? "height: 200px;" : ""}
+  ${(props) => (props.id === "noti" ? "height: 200px;" : "")}
   border: none;
   border-radius: 12px;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08);
@@ -135,16 +136,6 @@ export const Wrapper = styled.div`
  *  DM modal
  */
 
-export const DmModalOverlay = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  right: 0;
-  top: 0;
-
-  background: rgba(0, 0, 0, 0.05);
-`;
-
 export const DmLayout = styled.div`
   position: absolute;
   top: 50%;
@@ -160,6 +151,7 @@ export const DmLayout = styled.div`
 
   display: flex;
   flex-direction: column;
+  cursor: default;
 `;
 
 export const DmHeader = styled.div`

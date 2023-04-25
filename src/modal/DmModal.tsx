@@ -16,6 +16,7 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
   const modalRef: React.RefObject<HTMLDivElement> = useRef(null);
   const [input, handler, reset] = useInput("");
   const listRef: React.RefObject<HTMLUListElement> = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
   let key = 0;
   useOutsideClick({ modalRef, onClose });
 
@@ -26,6 +27,7 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
       res.list.map((chat) => {
         setDmChat((prevChat) => [...prevChat, chat]);
       });
+      setIsLoading(false);
     } else if (res.type === "dm") {
       console.log("dm", res);
       setDmChat((prevChat) => [...prevChat, { from: res.from, content: res.content }]);
@@ -43,29 +45,36 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
 
   useEffect(() => {
     document.getElementById(String(key - 1))?.scrollIntoView();
+    document.getElementById("input")?.focus();
   }, [dmChat]);
 
   useEffect(() => {
+    document.getElementById("input")?.focus();
+  }, [isLoading]);
+
+  useEffect(() => {
+    console.log("마운트");
     socket.emit("subscribe", {
       type: "dm",
       username: targetUser,
     });
     socket.on("dmResult", (res) => {
+      console.log("dm 전송 결과", res);
       if (res.status === "approved") {
         reset();
       } else console.log("DM 오류", res);
       // TEST: DM 전송에서 발생할 에러 핸들링
     });
-    document.getElementById("input")?.focus();
 
     return () => {
+      console.log("언마운트");
       socket.emit("unsubscribe", {
         type: "dm",
         username: targetUser,
       });
       socket.off("dmResult");
     };
-  }, [targetUser]);
+  }, []);
 
   useEffect(() => {
     socket.on("message", listener);
@@ -92,7 +101,7 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
         })}
       </S.DmChatList>
       <S.InputBox onSubmit={onSend}>
-        <S.DmInput id="input" value={input} onChange={handler} />
+        <S.DmInput disabled={isLoading} id="input" value={input} onChange={handler} />
         <S.IconWrapper type="submit">
           <S.SendBtn />
         </S.IconWrapper>
