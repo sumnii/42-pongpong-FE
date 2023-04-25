@@ -32,15 +32,13 @@ export default function UserInfo({
     username: username,
   });
   const { Modal, isOpen, onOpen, onClose } = useModal();
-  const node = document.getElementById(username + "info");
-  const { isMouseEnter, onLeave } = useMouseOver({ listOf, node });
+  const { isMouseEnter, onLeave } = useMouseOver({ listOf, user: username });
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${username}`],
     queryFn: () => {
       if (username) return getAvatar(username);
     },
-    enabled: !!username,
   });
 
   // const socket = getSocket();
@@ -102,7 +100,7 @@ export default function UserInfo({
         />
       )}
       {isOpen && (
-        <Modal>
+        <Modal key={username}>
           <DmModal targetUser={username} onClose={onClose} />
         </Modal>
       )}

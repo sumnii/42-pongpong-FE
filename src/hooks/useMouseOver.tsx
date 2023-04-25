@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 type MouseOverProps = {
   listOf: string | undefined;
-  node: HTMLElement | null;
+  user: string;
 };
 
-export default function useMouseOver({ listOf, node }: MouseOverProps) {
+export default function useMouseOver({ listOf, user }: MouseOverProps) {
   if (listOf !== "dm") return { isMouseEnter: false, onLeave: null };
 
   const [isMouseEnter, setIsMouseEnter] = useState(false);
@@ -19,6 +19,7 @@ export default function useMouseOver({ listOf, node }: MouseOverProps) {
   }
 
   useEffect(() => {
+    const node = document.getElementById(user + "info");
     node?.addEventListener("mouseenter", onEnter);
     node?.addEventListener("mouseleave", onLeave);
 
@@ -26,7 +27,7 @@ export default function useMouseOver({ listOf, node }: MouseOverProps) {
       node?.removeEventListener("mouseenter", onEnter);
       node?.removeEventListener("mouseleave", onLeave);
     };
-  }, [node]);
+  }, []);
 
   return { isMouseEnter, onLeave };
 }
