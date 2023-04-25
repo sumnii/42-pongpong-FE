@@ -5,11 +5,10 @@ import * as T from "socket/passive/friendDmListType";
 import * as S from "./style";
 
 export default function FriendAndDmBar() {
+  const socket = getSocket();
   const [isOpen, setIsOpen] = useState<"friend" | "dm" | "">("");
   const [isNewDm, setIsNewDm] = useState(true);
-  const socket = getSocket();
   const [dmList, setDmList] = useState<T.DmListArray>([]);
-  // TODO: dm 이벤트에 따라 set 함수 사용
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     const id = e.currentTarget.id;
@@ -32,7 +31,7 @@ export default function FriendAndDmBar() {
     return () => {
       socket.off("message", handleList);
     };
-  });
+  }, []);
 
   useEffect(() => {
     socket.emit("subscribe", {

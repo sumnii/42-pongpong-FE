@@ -5,7 +5,7 @@ type ModalProps = {
   children: React.ReactNode;
 };
 
-export function useModal() {
+export default function useModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   function onOpen() {
