@@ -22,7 +22,10 @@ export default function FriendAndDmBar() {
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     const id = e.currentTarget.id;
-    if (id === "dm") setIsNewDm(false);
+    if (id === "dm") {
+      queryClient.invalidateQueries(["list", "dm"]);
+      setIsNewDm(false);
+    }
     setIsOpen(id as "friend" | "dm" | "");
     if (id === isOpen) setIsOpen("");
   }
@@ -30,8 +33,9 @@ export default function FriendAndDmBar() {
   function handleList(res: T.DmList) {
     if (res.type === "dmList") {
       console.log("dm 리스트", res, "현재 열림:", isOpen);
-      // if (isOpen !== "dm") setIsNewDm(true);
-      queryClient.invalidateQueries(["list", "dm"]);
+      if (isOpen !== "dm") setIsNewDm(true);
+      // TODO: dm 모달 안띄워져 있을때 하기!
+      // queryClient.invalidateQueries(["list", "dm"]);
     }
   }
 
