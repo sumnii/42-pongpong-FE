@@ -20,7 +20,14 @@ export const UserItem = styled.li<{ clickable?: boolean }>`
   }}
 `;
 
-export const TmpImg = styled.img<{ clickable: boolean }>`
+export const TmpImg = styled.img<{ clickable?: boolean }>`
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: ${darkGray};
+`;
+
+export const ProfileImg = styled.img<{ clickable: boolean }>`
   width: 50px;
   height: 50px;
   border-radius: 100%;

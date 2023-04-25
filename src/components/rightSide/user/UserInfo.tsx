@@ -1,6 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { ProfileImgIsUpContext } from "hooks/context/ProfileContext";
 import { getAvatar } from "api/user";
+import { useContext, useState } from "react";
+import { ProfileContext } from "hooks/context/ProfileContext";
+import UserDropMenu from "./UserDropMenu";
+import useNotiModal from "hooks/useNotiModal";
 import useDropModal from "hooks/useDropModal";
 import useModal from "hooks/useModal";
 import useMouseOver from "hooks/useMouseOver";
@@ -8,6 +12,7 @@ import DmModal from "modal/DmModal";
 import UserDropMenu from "./UserDropMenu";
 import { getUsername } from "userAuth";
 // import { getSocket } from "socket/socket";
+import { useQuery } from "@tanstack/react-query";
 import * as S from "./style";
 
 type UserInfoProps = {
@@ -29,30 +34,22 @@ export default function UserInfo({
   banned,
   onClickProfile,
 }: UserInfoProps) {
-  const profileImgIsUp = useContext(ProfileImgIsUpContext);
   const me = getUsername() === username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
     listOf: listOf,
     username: username,
   });
   const { Modal, isOpen, onOpen, onClose } = useModal();
-  const [img, setImg] = useState("");
   const node = document.getElementById(username + "info");
   const { isMouseEnter, onLeave } = useMouseOver({ listOf, node });
 
-  useEffect(() => {
-    const getAvatarHandler = async () => {
-      const res = await getAvatar(username);
-      const file = new File([res?.data], "avatar");
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const previewImage = String(ev.target?.result);
-        setImg(previewImage);
-      };
-      reader.readAsDataURL(file);
-    };
-    getAvatarHandler();
-  }, [profileImgIsUp]);
+  const avatarQuery = useQuery({
+    queryKey: ["avatar", `${username}`],
+    queryFn: () => {
+      if (username) return getAvatar(username);
+    },
+    enabled: !!username,
+  });
 
   // const socket = getSocket();
 
@@ -89,7 +86,11 @@ export default function UserInfo({
       clickable={listOf === "dm"}
       onClick={onDmOpen}
     >
-      <S.TmpImg src={img} clickable={listOf === "dm"} />
+      {avatarQuery.isLoading ? (
+        <S.TmpImg />
+      ) : (
+        <S.ProfileImg src={String(avatarQuery.data)} clickable={listOf === "dm"} />
+      )}
       <S.UserInfoText clickable={listOf === "dm"}>
         {username} {userOper === "owner" ? "👑" : userOper === "admin" ? "🎩" : ""}
         {muted ? " 🤐" : ""}

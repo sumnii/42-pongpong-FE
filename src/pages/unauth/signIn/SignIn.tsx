@@ -60,8 +60,10 @@ export default function signIn() {
         username: idInput,
         token: res.data.accessToken,
       });
+    } else if (res && res.status === 409) {
+      setFormCheck("이미 접속 중인 아이디 입니다.")
     } else {
-      console.log(res); // TODO: 중복 로그인 방지 추가하기
+      console.log(res);
       setFormCheck("아이디 또는 패스워드를 확인해주세요.");
     }
   }
