@@ -7,6 +7,7 @@ import { getAvatar } from "api/user";
 import DmModal from "modal/DmModal";
 // import { getSocket } from "socket/socket";
 import * as S from "./style";
+import { useModal } from "hooks/useModal";
 
 export default function UserInfo(props: {
   listOf?: string;
@@ -23,7 +24,7 @@ export default function UserInfo(props: {
     listOf: props.listOf,
     username: props.username,
   });
-  const [dmIsOpen, setDmIsOpen] = useState(false);
+  const { Modal, isOpen, onOpen, onClose } = useModal();
   const [img, setImg] = useState("");
   const [isMouseEnter, setIsMouseEnter] = useState(false);
 
@@ -81,11 +82,7 @@ export default function UserInfo(props: {
   }
 
   function onDmOpen() {
-    if (props.listOf === "dm") setDmIsOpen(true);
-  }
-
-  function onDmClose() {
-    setDmIsOpen(false);
+    if (props.listOf === "dm") onOpen();
   }
 
   return (
@@ -108,14 +105,18 @@ export default function UserInfo(props: {
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}
-          onDmOpen={() => setDmIsOpen(true)}
+          onDmOpen={onOpen}
           targetUser={props.username}
           targetOper={props.userOper}
           targetMuted={props.muted}
           banned={props.banned}
         />
       )}
-      {dmIsOpen && <DmModal targetUser={props.username} onClose={onDmClose} />}
+      {isOpen && (
+        <Modal>
+          <DmModal targetUser={props.username} onClose={onClose} />
+        </Modal>
+      )}
     </S.UserItem>
   );
 }

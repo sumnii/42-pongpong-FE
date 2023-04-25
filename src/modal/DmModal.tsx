@@ -79,31 +79,28 @@ export default function DmModal(props: { targetUser: string; onClose: () => void
   }, []);
 
   return (
-    <>
-      <S.DmModalOverlay />
-      <S.DmLayout ref={modalRef}>
-        <S.DmHeader>
-          <S.DmTitle>{props.targetUser}님과의 다이렉트 메시지</S.DmTitle>
-          <S.IconWrapper type="reset" onClick={props.onClose}>
-            <S.CloseIcon />
-          </S.IconWrapper>
-        </S.DmHeader>
-        <S.DmChatList ref={listRef}>
-          {dmChat.map((chat) => {
-            return (
-              <li id={String(key)} key={key++}>
-                {chat.from} : {chat.content}
-              </li>
-            );
-          })}
-        </S.DmChatList>
-        <S.InputBox onSubmit={onSend}>
-          <S.DmInput id="input" value={input} onChange={handler} />
-          <S.IconWrapper type="submit">
-            <S.SendBtn />
-          </S.IconWrapper>
-        </S.InputBox>
-      </S.DmLayout>
-    </>
+    <S.DmLayout ref={modalRef}>
+      <S.DmHeader>
+        <S.DmTitle>{props.targetUser}님과의 다이렉트 메시지</S.DmTitle>
+        <S.IconWrapper type="reset" onClick={props.onClose}>
+          <S.CloseIcon />
+        </S.IconWrapper>
+      </S.DmHeader>
+      <S.DmChatList ref={listRef}>
+        {dmChat.map((chat) => {
+          return (
+            <li id={String(key)} key={key++}>
+              {chat.from} : {chat.content}
+            </li>
+          );
+        })}
+      </S.DmChatList>
+      <S.InputBox onSubmit={onSend}>
+        <S.DmInput id="input" value={input} onChange={handler} />
+        <S.IconWrapper type="submit">
+          <S.SendBtn />
+        </S.IconWrapper>
+      </S.InputBox>
+    </S.DmLayout>
   );
 }

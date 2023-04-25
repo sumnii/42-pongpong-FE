@@ -8,6 +8,16 @@ import { RiSendPlane2Line } from "react-icons/ri";
   Common Modal style
 */
 
+export const ModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  top: 0;
+
+  background: rgba(0, 0, 0, 0.1);
+`;
+
 export const Backdrop = styled.div`
   position: fixed;
   top: 0;
