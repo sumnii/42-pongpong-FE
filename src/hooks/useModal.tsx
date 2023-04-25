@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ModalOverlay } from "modal/layout/style";
+import ModalContainer from "modal/layout/ModalContainer";
 
 type ModalProps = {
   children: React.ReactNode;
@@ -18,10 +19,10 @@ export default function useModal() {
 
   function Modal({ children }: ModalProps) {
     return (
-      <>
+      <ModalContainer>
         <ModalOverlay />
         {children}
-      </>
+      </ModalContainer>
     );
   }
 
