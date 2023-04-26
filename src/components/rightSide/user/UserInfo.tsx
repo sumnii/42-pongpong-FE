@@ -85,6 +85,7 @@ export default function UserInfo({
         {username} {userOper === "owner" ? "👑" : userOper === "admin" ? "🎩" : ""}
         {muted ? " 🤐" : ""}
         <br />
+        {listOf === "dm" ? "✉️ " : ""}
         {subLine}
       </S.UserInfoText>
       {isMouseEnter && <S.ExitDmIcon onClick={onDmExit} />}

@@ -38,6 +38,10 @@ export const ProfileImg = styled.img<{ clickable: boolean }>`
 `;
 
 export const UserInfoText = styled.span<{ clickable: boolean }>`
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: ${(props) => {
     if (props.clickable) return `pointer;`;
     return `default;`;
