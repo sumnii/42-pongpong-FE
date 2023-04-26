@@ -66,10 +66,11 @@ export const NewDmIcon = styled(BsEnvelopeExclamation)`
 export const UserListLayout = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
+  flex: 1 1 0;
 
   padding: 8px 5px 8px 10px;
   border-bottom: 0.5px solid;
+  overflow: auto;
 `;
 
 export const UserList = styled.ul`
