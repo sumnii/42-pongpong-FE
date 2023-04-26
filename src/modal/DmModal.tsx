@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { getSocket } from "socket/socket";
 import useInput from "hooks/useInput";
 import { useOutsideClick } from "hooks/useOutsideClick";
+import LoadingCircle from "components/LoadingCircle";
 import * as S from "modal/layout/style";
 import * as T from "socket/passive/friendDmListType";
 
@@ -91,19 +92,23 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
         </S.IconWrapper>
       </S.DmHeader>
       <S.DmChatList ref={listRef}>
-        {dmChat.map((chat) => {
-          if (chat.from === targetUser)
+        {isLoading ? (
+          <LoadingCircle w={50} h={50} />
+        ) : (
+          dmChat.map((chat) => {
+            if (chat.from === targetUser)
+              return (
+                <S.OpponentChat id={String(key)} key={key++}>
+                  {chat.content}
+                </S.OpponentChat>
+              );
             return (
-              <S.OpponentChat id={String(key)} key={key++}>
+              <S.MyChat id={String(key)} key={key++}>
                 {chat.content}
-              </S.OpponentChat>
+              </S.MyChat>
             );
-          return (
-            <S.MyChat id={String(key)} key={key++}>
-              {chat.content}
-            </S.MyChat>
-          );
-        })}
+          })
+        )}
       </S.DmChatList>
       <S.InputBox onSubmit={onSend}>
         <S.DmInput disabled={isLoading} id="input" value={input} onChange={handler} />

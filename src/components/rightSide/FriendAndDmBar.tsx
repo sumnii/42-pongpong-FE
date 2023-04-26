@@ -3,6 +3,7 @@ import UserList from "./user/UserList";
 import { getSocket } from "socket/socket";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getDmList } from "api/dm";
+import LoadingCircle from "components/LoadingCircle";
 import * as T from "socket/passive/friendDmListType";
 import * as S from "./style";
 
@@ -72,6 +73,7 @@ export default function FriendAndDmBar() {
           dmListQuery.isLoading ? (
             <S.UserListLayout>
               <h3>dm</h3>
+              <LoadingCircle w={50} h={50} />
             </S.UserListLayout>
           ) : (
             <UserList key={"dm"} listOf={isOpen} list={dmListQuery.data.list} />
