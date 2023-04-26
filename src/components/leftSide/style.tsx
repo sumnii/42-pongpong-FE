@@ -6,7 +6,7 @@ import * as button from "style/button";
 export const ProfileLayout = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 40px);
+  height: 100%;
 
   padding: 10px;
 `;
@@ -62,7 +62,8 @@ export const InfoValue = styled.span`
  */
 
 export const HistoryList = styled.ul`
-  height: 400px;
+  /* height: 400px; */
+  flex: 1 0 auto;
   overflow: auto;
 `;
 
