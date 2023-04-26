@@ -3,9 +3,24 @@ import { getProfile } from "api/user";
 import { getUsername } from "userAuth";
 import UserInfo from "./user/UserInfo";
 import * as S from "./style";
+import { getSocket } from "socket/socket";
+import { useEffect } from "react";
 
 export default function MyProfile() {
   const username = getUsername();
+  const socket = getSocket();
+
+  useEffect(() => {
+    socket.emit("subscribe", {
+      type: "chatInvitation",
+    });
+    return () => {
+      socket.emit("unsubscribe", {
+        type: "chatInvitation",
+      });
+    };
+  }, []);
+  
   const profileQuery = useQuery({
     queryKey: ["profile", username],
     queryFn: () => {

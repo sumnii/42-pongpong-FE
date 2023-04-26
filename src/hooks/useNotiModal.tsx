@@ -31,9 +31,10 @@ export default function useNotiModal() {
           title: `${res.from} 님으로 부터 #${res.roomId} 채팅방에 초대 되었습니다.`,
           chatId: res.roomId,
           chatTitle: "초대된 ",
-        }
-      ])
+        },
+      ]);
       setNewNoti(true);
+      setShowNotiModal(true);
     }
   };
 
@@ -41,23 +42,6 @@ export default function useNotiModal() {
     socket.on("message", listener);
     return () => {
       socket.off("message", listener);
-    };
-  }, []);
-
-  useEffect(() => {
-    socket.emit("subscribe", {
-      type: "chatInvitation",
-    });
-    socket.emit("subscribe", {
-      type: "gameInvitation",
-    });
-    return () => {
-      socket.emit("unsubscribe", {
-        type: "chatInvitation",
-      });
-      socket.emit("unsubscribe", {
-        type: "gameInvitation",
-      });
     };
   }, []);
 

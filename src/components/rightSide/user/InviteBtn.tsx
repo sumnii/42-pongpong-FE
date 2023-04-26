@@ -31,7 +31,7 @@ export default function InviteBtn(props: PropsType) {
   }, []);
 
   const inviteHandler = () => {
-    socket.emit("InviteChat", {
+    socket.emit("inviteChat", {
       roomId: props.roomId,
       username: props.username,
     });
