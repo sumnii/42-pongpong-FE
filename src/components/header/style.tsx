@@ -33,7 +33,7 @@ export const HeaderBtn = styled.button`
   border: none;
   ${(props: { clicked: boolean }) => {
     if (props.clicked)
-      return `border-bottom: 11px solid ${basicMain};
+      return `background: linear-gradient(to top, ${basicMain} 50%, transparent 50%);
     color: ${darkMain};`;
     return "";
   }}
