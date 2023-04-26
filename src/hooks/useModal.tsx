@@ -13,7 +13,8 @@ export default function useModal() {
     setIsOpen(true);
   }
 
-  function onClose() {
+  function onClose(e: MouseEvent) {
+    e.stopPropagation();
     setIsOpen(false);
   }
 

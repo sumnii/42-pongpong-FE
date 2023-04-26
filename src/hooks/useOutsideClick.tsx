@@ -2,12 +2,12 @@ import { useEffect } from "react";
 
 type OutSideClickProps = {
   modalRef: React.RefObject<HTMLDivElement>;
-  onClose: () => void;
+  onClose: (e: MouseEvent) => void;
 };
 
 export function useOutsideClick({ modalRef, onClose }: OutSideClickProps) {
   function handleClose(e: MouseEvent) {
-    if (modalRef.current && !modalRef.current.contains(e.target as Element)) onClose();
+    if (modalRef.current && !modalRef.current.contains(e.target as Element)) onClose(e);
   }
 
   useEffect(() => {

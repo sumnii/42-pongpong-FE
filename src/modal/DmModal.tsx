@@ -7,7 +7,7 @@ import * as T from "socket/passive/friendDmListType";
 
 type DmModalProps = {
   targetUser: string;
-  onClose: () => void;
+  onClose: (e: MouseEvent) => void;
 };
 
 export default function DmModal({ targetUser, onClose }: DmModalProps) {
@@ -86,7 +86,7 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
     <S.DmLayout ref={modalRef}>
       <S.DmHeader>
         <S.DmTitle>{targetUser}님과의 다이렉트 메시지</S.DmTitle>
-        <S.IconWrapper type="reset" onClick={onClose}>
+        <S.IconWrapper onClick={onClose as unknown as React.MouseEventHandler<Element>}>
           <S.CloseIcon />
         </S.IconWrapper>
       </S.DmHeader>
@@ -107,7 +107,7 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
       </S.DmChatList>
       <S.InputBox onSubmit={onSend}>
         <S.DmInput disabled={isLoading} id="input" value={input} onChange={handler} />
-        <S.IconWrapper type="submit">
+        <S.IconWrapper>
           <S.SendBtn />
         </S.IconWrapper>
       </S.InputBox>
