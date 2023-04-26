@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "api/user";
 import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
+import { DmListArray } from "socket/passive/friendDmListType";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
 
 type UserListCase =
-  | { listOf: "friend" | "dm" | "player" | "observer" }
+  | { listOf: "friend" | "player" | "observer" }
+  | { listOf: "dm"; list: DmListArray | null }
   | { listOf: "participant"; list: UserListArray | null }
   | { listOf: "banned"; list: BanListArray | null };
 
@@ -21,7 +23,6 @@ export default function UserList(props: UserListCase) {
   if (profileQuery.isLoading) return <S.UserListLayout></S.UserListLayout>;
   if (profileQuery.isError) console.log(profileQuery.error);
 
-  // TODO : user list 받아와서 전체 값 통일하기
   return (
     <S.UserListLayout>
       <h3>{props.listOf}</h3>
@@ -29,39 +30,45 @@ export default function UserList(props: UserListCase) {
         {props.listOf === "participant" &&
           props.list?.map((user) => {
             return (
-              <S.UserItem key={user.username}>
-                <UserInfo
-                  listOf={props.listOf}
-                  username={user.username}
-                  userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
-                  subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
-                  muted={user.muted ? true : false}
-                />
-              </S.UserItem>
+              <UserInfo
+                key={user.username}
+                listOf={props.listOf}
+                username={user.username}
+                userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
+                subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
+                muted={user.muted ? true : false}
+              />
             );
           })}
-        {/* TODO: 소켓 이벤트 데이터 연동 필요, key 값에 username */}
         {props.listOf === "banned" &&
           props.list?.map((user) => {
             return (
-              <S.UserItem key={user.username}>
-                <UserInfo
-                  listOf={props.listOf}
-                  username={user.username}
-                  subLine="❌ 입장금지"
-                  banned
-                />
-              </S.UserItem>
+              <UserInfo
+                key={user.username}
+                listOf={props.listOf}
+                username={user.username}
+                subLine="❌ 입장금지"
+                banned
+              />
             );
           })}
-        {!["participant", "banned"].includes(props.listOf) && (
-          <S.UserItem>
-            <UserInfo
-              listOf={props.listOf}
-              username={profileQuery.data?.username}
-              subLine={profileQuery.data?.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
-            />
-          </S.UserItem>
+        {props.listOf === "dm" &&
+          props.list?.map((dm) => {
+            return (
+              <UserInfo
+                key={dm.username}
+                listOf={props.listOf}
+                username={dm.username}
+                subLine={dm.content}
+              />
+            );
+          })}
+        {!["participant", "banned", "dm"].includes(props.listOf) && (
+          <UserInfo
+            listOf={props.listOf}
+            username={profileQuery.data?.username}
+            subLine={profileQuery.data?.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
+          />
         )}
       </S.UserList>
     </S.UserListLayout>

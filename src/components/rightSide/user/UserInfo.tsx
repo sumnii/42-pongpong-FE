@@ -1,76 +1,110 @@
-import { useContext, useState } from "react";
-import { ProfileContext } from "hooks/context/ProfileContext";
-import UserDropMenu from "./UserDropMenu";
-import useNotiModal from "hooks/useNotiModal";
-import useDropModal from "hooks/useDropModal";
-import { getUsername } from "userAuth";
-import { getAvatar } from "api/user";
 import { useQuery } from "@tanstack/react-query";
+import { getAvatar } from "api/user";
+import useDropModal from "hooks/useDropModal";
+import useModal from "hooks/useModal";
+import useMouseOver from "hooks/useMouseOver";
+import DmModal from "modal/DmModal";
+import UserDropMenu from "./UserDropMenu";
+import { getUsername } from "userAuth";
+// import { getSocket } from "socket/socket";
 import * as S from "./style";
 
-export default function UserInfo(props: {
+type UserInfoProps = {
   listOf?: string;
   username: string;
   userOper?: string;
   subLine: string;
   muted?: boolean;
   banned?: boolean;
-}) {
-  const setProfileUser = useContext(ProfileContext);
-  const me = getUsername() === props.username;
+};
+
+export default function UserInfo({
+  listOf,
+  username,
+  userOper,
+  subLine,
+  muted,
+  banned,
+}: UserInfoProps) {
+  const me = getUsername() === username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
-    listOf: props.listOf,
-    username: props.username,
+    listOf: listOf,
+    username: username,
   });
-  const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
+  const { Modal, isOpen, onOpen, onClose } = useModal();
+  const { isMouseEnter, onLeave } = useMouseOver({ listOf, user: username });
 
   const avatarQuery = useQuery({
-    queryKey: ["avatar", `${props.username}`],
+    queryKey: ["avatar", `${username}`],
     queryFn: () => {
-      if (props.username) return getAvatar(props.username);
+      if (username) return getAvatar(username);
     },
-    enabled: !!props.username,
   });
-  if (avatarQuery.isLoading) console.log("loading");
+
+  // const socket = getSocket();
+
+  // TODO: dm exit 완성 필요
+  // useEffect(() => {
+  //   socket.on("dmExitResult", (res) => {
+  //     console.log(res);
+  //   });
+  //   return () => {
+  //     socket.off("dmExitResult", (res) => {
+  //       console.log(res);
+  //     });
+  //   };
+  // });
+
+  function onDmExit(e: React.MouseEvent<SVGElement>) {
+    e.stopPropagation();
+    alert("dm 나가기!");
+    // TODO: dm exit 서버 구현되면 완성하기!
+    // socket.emit("dmExit", { username: username });
+  }
+
+  function onDmOpen() {
+    if (listOf === "dm") {
+      onLeave && onLeave();
+      onOpen();
+    }
+  }
 
   return (
-    <>
-      {showNotiModal && NotiModal}
-      <S.ProfileImg
-        src={String(avatarQuery.data)}
-        me={props.listOf === undefined}
-        onClick={() => {
-          !props.listOf && setProfileUser && setProfileUser(props.username);
-        }}
-      />
-      <S.UserInfoText
-        me={!props.listOf}
-        onClick={() => {
-          !props.listOf && setProfileUser && setProfileUser(props.username);
-        }}
-      >
-        {props.username}{" "}
-        {props.userOper === "owner" ? "👑" : props.userOper === "admin" ? "🎩" : ""}
-        {props.muted ? " 🤐" : ""}
-        <br />
-        {props.subLine}
-      </S.UserInfoText>
-      {props.listOf ? (
-        !me && <S.KebabIcon onClick={onDropOpen} />
-      ) : newNoti ? (
-        <S.NewNotiIcon onClick={onOpenNotiModal} />
+    <S.UserItem
+      key={username}
+      id={username + "info"}
+      clickable={listOf === "dm"}
+      onClick={onDmOpen}
+    >
+      {avatarQuery.isLoading ? (
+        <S.LoadingImg />
       ) : (
-        <S.EmptyNotiIcon onClick={onOpenNotiModal} />
+        <S.ProfileImg src={String(avatarQuery.data)} clickable={listOf === "dm"} />
       )}
+      <S.UserInfoText clickable={listOf === "dm"}>
+        {username} {userOper === "owner" ? "👑" : userOper === "admin" ? "🎩" : ""}
+        {muted ? " 🤐" : ""}
+        <br />
+        {listOf === "dm" ? "✉️ " : ""}
+        {subLine}
+      </S.UserInfoText>
+      {isMouseEnter && <S.ExitDmIcon onClick={onDmExit} />}
+      {listOf !== "dm" && !me && <S.KebabIcon onClick={onDropOpen} />}
       {dropIsOpen && (
         <UserDropMenu
           onClose={onDropClose}
-          targetUser={props.username}
-          targetOper={props.userOper}
-          targetMuted={props.muted}
-          banned={props.banned}
+          onDmOpen={onOpen}
+          targetUser={username}
+          targetOper={userOper}
+          targetMuted={muted}
+          banned={banned}
         />
       )}
-    </>
+      {isOpen && (
+        <Modal key={username}>
+          <DmModal targetUser={username} onClose={onClose} />
+        </Modal>
+      )}
+    </S.UserItem>
   );
 }

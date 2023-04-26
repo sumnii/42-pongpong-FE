@@ -1,8 +1,23 @@
 import styled from "@emotion/styled";
+import * as font from "style/font";
+import { darkMain, lightMain } from "style/color";
+import { AiOutlineCloseSquare } from "react-icons/ai";
+import { RiSendPlane2Line } from "react-icons/ri";
 
 /* 
   Common Modal style
 */
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  top: 0;
+
+  background: rgba(0, 0, 0, 0.1);
+  cursor: default;
+`;
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -16,7 +31,7 @@ export const Backdrop = styled.div`
 
 export const Modal = styled.dialog`
   width: 40%;
-  ${props => props.id  === "noti" ? "height: 200px;" : ""}
+  ${(props) => (props.id === "noti" ? "height: 200px;" : "")}
   border: none;
   border-radius: 12px;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08);
@@ -115,4 +130,155 @@ export const Wrapper = styled.div`
   margin: 5% 0;
   display: flex;
   justify-content: space-around;
+`;
+
+/*
+ *  DM modal
+ */
+
+export const DmLayout = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 400px;
+  height: 600px;
+  padding: 20px;
+
+  border: 1px solid;
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+`;
+
+export const DmHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+`;
+
+export const DmTitle = styled.h1`
+  ${font.titleBold};
+  overflow: auto;
+  margin: 0;
+`;
+
+export const IconWrapper = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: none;
+  border: none;
+  padding: 0;
+`;
+
+export const CloseIcon = styled(AiOutlineCloseSquare)`
+  width: 25px;
+  height: 25px;
+`;
+
+export const DmChatList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 10px;
+  overflow: auto;
+
+  list-style: none;
+  padding: 0;
+  margin: 0 0px 20px;
+
+  ${font.body};
+  line-height: 1.7em;
+`;
+
+export const MyChat = styled.li`
+  max-width: calc(100% - 20px);
+  padding: 2px 5px;
+  border: 1px solid;
+  background-color: white;
+  position: relative;
+  margin-left: auto;
+  margin-right: 10px;
+
+  ::before {
+    border-top: 5px solid;
+    border-left: 5px solid;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    content: "";
+    position: absolute;
+    right: -10px;
+    bottom: 7px;
+  }
+
+  ::after {
+    border-top: 4px solid white;
+    border-left: 4px solid white;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    content: "";
+    position: absolute;
+    right: -8px;
+    bottom: 8px;
+  }
+`;
+
+export const OpponentChat = styled.li`
+  max-width: calc(100% - 20px);
+  padding: 2px 5px;
+  border: 1px solid;
+  background-color: ${lightMain};
+  position: relative;
+  margin-right: auto;
+  margin-left: 10px;
+
+  ::before {
+    border-top: 5px solid black;
+    border-left: 5px solid transparent;
+    border-right: 5px solid black;
+    border-bottom: 5px solid transparent;
+    content: "";
+    position: absolute;
+    left: -10px;
+    bottom: 7px;
+  }
+
+  ::after {
+    border-top: 4px solid ${lightMain};
+    border-left: 4px solid transparent;
+    border-right: 4px solid ${lightMain};
+    border-bottom: 4px solid transparent;
+    content: "";
+    position: absolute;
+    left: -8px;
+    bottom: 8px;
+  }
+`;
+
+export const InputBox = styled.form`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const DmInput = styled.input`
+  width: 90%;
+  height: 35px;
+  border: 1px solid;
+  padding: 0px 5px;
+  outline-style: none;
+  ${font.body};
+`;
+
+export const SendBtn = styled(RiSendPlane2Line)`
+  width: 100%;
+  height: 30px;
+  color: ${darkMain};
 `;
