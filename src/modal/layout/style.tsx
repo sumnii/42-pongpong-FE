@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
-import { darkMain } from "style/color";
+import { darkMain, lightMain } from "style/color";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { RiSendPlane2Line } from "react-icons/ri";
 
@@ -187,14 +187,79 @@ export const DmChatList = styled.ul`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+  gap: 10px;
   overflow: auto;
 
   list-style: none;
   padding: 0;
-  margin: 0 5px 20px;
+  margin: 0 0px 20px;
 
   ${font.body};
   line-height: 1.7em;
+`;
+
+export const MyChat = styled.li`
+  max-width: calc(100% - 20px);
+  padding: 2px 5px;
+  border: 1px solid;
+  background-color: white;
+  position: relative;
+  margin-left: auto;
+  margin-right: 10px;
+
+  ::before {
+    border-top: 5px solid;
+    border-left: 5px solid;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    content: "";
+    position: absolute;
+    right: -10px;
+    bottom: 7px;
+  }
+
+  ::after {
+    border-top: 4px solid white;
+    border-left: 4px solid white;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    content: "";
+    position: absolute;
+    right: -8px;
+    bottom: 8px;
+  }
+`;
+
+export const OpponentChat = styled.li`
+  max-width: calc(100% - 20px);
+  padding: 2px 5px;
+  border: 1px solid;
+  background-color: ${lightMain};
+  position: relative;
+  margin-right: auto;
+  margin-left: 10px;
+
+  ::before {
+    border-top: 5px solid black;
+    border-left: 5px solid transparent;
+    border-right: 5px solid black;
+    border-bottom: 5px solid transparent;
+    content: "";
+    position: absolute;
+    left: -10px;
+    bottom: 7px;
+  }
+
+  ::after {
+    border-top: 4px solid ${lightMain};
+    border-left: 4px solid transparent;
+    border-right: 4px solid ${lightMain};
+    border-bottom: 4px solid transparent;
+    content: "";
+    position: absolute;
+    left: -8px;
+    bottom: 8px;
+  }
 `;
 
 export const InputBox = styled.form`

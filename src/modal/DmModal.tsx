@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { getSocket } from "socket/socket";
 import useInput from "hooks/useInput";
+import { useOutsideClick } from "hooks/useOutsideClick";
 import * as S from "modal/layout/style";
 import * as T from "socket/passive/friendDmListType";
-import { useOutsideClick } from "hooks/useOutsideClick";
 
 type DmModalProps = {
   targetUser: string;
@@ -92,10 +92,16 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
       </S.DmHeader>
       <S.DmChatList ref={listRef}>
         {dmChat.map((chat) => {
+          if (chat.from === targetUser)
+            return (
+              <S.OpponentChat id={String(key)} key={key++}>
+                {chat.content}
+              </S.OpponentChat>
+            );
           return (
-            <li id={String(key)} key={key++}>
-              {chat.from} : {chat.content}
-            </li>
+            <S.MyChat id={String(key)} key={key++}>
+              {chat.content}
+            </S.MyChat>
           );
         })}
       </S.DmChatList>
