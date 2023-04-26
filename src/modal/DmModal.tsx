@@ -41,6 +41,7 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
       username: targetUser,
       content: input,
     });
+    reset();
   }
 
   useEffect(() => {
@@ -60,10 +61,8 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
     });
     socket.on("dmResult", (res) => {
       console.log("dm 전송 결과", res);
-      if (res.status === "approved") {
-        reset();
-      } else console.log("DM 오류", res);
       // TEST: DM 전송에서 발생할 에러 핸들링
+      if (res.status !== "approved") console.log("DM 오류", res);
     });
 
     return () => {
