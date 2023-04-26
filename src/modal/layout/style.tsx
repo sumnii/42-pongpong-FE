@@ -278,7 +278,7 @@ export const DmInput = styled.input`
 `;
 
 export const SendBtn = styled(RiSendPlane2Line)`
-  width: 100%;
+  width: 30px;
   height: 30px;
   color: ${darkMain};
 `;
