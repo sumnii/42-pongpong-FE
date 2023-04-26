@@ -25,23 +25,23 @@ const GameRoom = loadable(() => {
 
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
-  const [profileImgIsUp, setProfileImgIsUp] = useState(false);
   const socket = getSocket();
 
   const errorListener = (res: { status: string; detail: string }) => {
     if (res.status === "error") {
       alert("이미 접속 중 입니다.");
-      window.open('about:blank','_parent')?.parent.close();
+      window.open("about:blank", "_parent")?.parent.close();
     }
   };
 
+  // TEST: 구독/해제 테스트
   useEffect(() => {
-    socket.on("subscribeResult", (data) => console.log(data));
-    socket.on("unsubscribeResult", (data) => console.log(data));
+    socket.on("subscribeResult", (data) => console.log("구독", data));
+    socket.on("unsubscribeResult", (data) => console.log("구독해제", data));
     socket.on("error", errorListener);
     return () => {
-      socket.off("subscribeResult", (data) => console.log(data));
-      socket.off("unsubscribeResult", (data) => console.log(data));
+      socket.off("subscribeResult", (data) => console.log("구독", data));
+      socket.off("unsubscribeResult", (data) => console.log("구독해제", data));
       socket.off("error", errorListener);
     };
   }, []);

@@ -14,9 +14,19 @@ body {
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  box-sizing: border-box;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+* {
+  /* 오페라 */
+  box-sizing: border-box;
+  /* 파이어폭스 */
+  -moz-box-sizing: border-box;
+  /* 웹킷 & 크롬 */
+  -webkit-box-sizing: border-box;
+  /* iOS 사파리 기본 스타일 제거 */
+  /* -webkit-appearance: none; */
 }

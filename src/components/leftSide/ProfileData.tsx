@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import * as S from "./style";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAvatar } from "api/user";
 import { distroyAuth, getUsername } from "userAuth";
 import { AuthContext } from "hooks/context/AuthContext";
 import { disconnectSocket } from "socket/socket";
-import { useNavigate } from "react-router-dom";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import { getAvatar } from "api/user";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import * as S from "./style";
 
 interface userProps {
   user?: {
@@ -47,8 +48,6 @@ export function ProfileData(props: userProps) {
     enabled: !!props.user,
   });
 
-  if (avatarQuery.isLoading) console.log("loading");
-
   const openModalHandler = () => {
     setShowModal(true);
   };
@@ -79,11 +78,15 @@ export function ProfileData(props: userProps) {
         </Modal>
       )}
       <S.Title>프로필</S.Title>
-      <S.ProfileImg
-        me={myProfile}
-        src={String(avatarQuery.data)}
-        onClick={myProfile ? openModalHandler : undefined}
-      />
+      {avatarQuery.isLoading ? (
+        <S.LoadingImg />
+      ) : (
+        <S.ProfileImg
+          me={myProfile}
+          src={String(avatarQuery.data)}
+          onClick={myProfile ? openModalHandler : undefined}
+        />
+      )}
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임
