@@ -31,6 +31,8 @@ export function useOper(operator: string, roomId: number, targetUser: string, on
   }, []);
 
   return function onOper() {
+    // TEST: 블락/언블락 테스트
+    console.log("emit 전송", roomId, targetUser);
     socket.emit(operator, {
       roomId,
       username: targetUser,
