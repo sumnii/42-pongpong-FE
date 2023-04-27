@@ -35,12 +35,14 @@ function Auth() {
   };
 
   const subListener = (res: {status: string; type: string}) => {
+    console.log("구독", res.type);
     if (res.status === "error") {
       console.log("sub", res);
     }
   }
 
   const unSubListener = (res: {status: string; type: string}) => {
+    console.log("구독해제", res.type);
     if (res.status === "error") {
       console.log("unsub", res);
     }

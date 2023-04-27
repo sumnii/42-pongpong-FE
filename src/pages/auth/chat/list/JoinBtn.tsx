@@ -26,9 +26,11 @@ export default function JoinChatRoom(props: PropsType) {
       console.log(res);
     } else if (res.status === "warning") {
       if (showModal) {
-        setNotice(res.detail);
+        if (res.detail === "밴 당하셨습니다.") setNotice("입장이 거부된 방입니다.");
+        else setNotice(res.detail);
       } else {
-        alert(res.detail);
+        if (res.detail === "밴 당하셨습니다.") alert("입장이 거부된 방입니다.");
+        else alert(res.detail);
       }
     } else {
       navigate({

@@ -113,7 +113,7 @@ export const CreateRoomLayout = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 50%;
+  width: 60%;
   padding: 12px 18px 12px;
   border: 1.5px solid lightgray;
   border-radius: 8px;
