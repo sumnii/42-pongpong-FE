@@ -31,5 +31,6 @@ export default function AddFriendBtn(props: { username: string }) {
       username: props.username,
     });
   };
+  
   return <S.Button onClick={addBtnHandler}>친구 추가</S.Button>;
 }
