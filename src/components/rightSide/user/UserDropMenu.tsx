@@ -80,7 +80,7 @@ export default function UserDropMenu(props: {
             <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
           ))}
         {isOnline &&
-          (myOper === "owner" || myOper === "admin") &&
+          myOper && myOper !== "participant" &&
           !props.targetOper &&
           !props.banned && (
             <InviteBtn roomId={roomId} username={props.targetUser} close={props.onClose} />
