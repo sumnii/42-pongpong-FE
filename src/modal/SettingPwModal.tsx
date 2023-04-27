@@ -31,17 +31,24 @@ export default function SettingPwModal(props: modalProps) {
 
   function setHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
-
     if (option === "change") {
-      socket.emit("changePassword", {
-        roomId: Number(roomId),
-        password: pwInput,
-      });
+      if (pwInput) {
+        socket.emit("changePassword", {
+          roomId: Number(roomId),
+          password: pwInput,
+        });
+      } else {
+        props.setNotice("비밀번호를 입력해주세요.");
+      }
     } else if (option === "set") {
-      socket.emit("setPassword", {
-        roomId: Number(roomId),
-        password: pwInput,
-      });
+      if (pwInput) {
+        socket.emit("setPassword", {
+          roomId: Number(roomId),
+          password: pwInput,
+        });
+      } else {
+        props.setNotice("비밀번호를 입력해주세요.");
+      }
     } else if (option === "remove") {
       socket.emit("removePassword", {
         roomId: Number(roomId),
