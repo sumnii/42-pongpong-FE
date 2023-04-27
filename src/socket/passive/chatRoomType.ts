@@ -31,7 +31,7 @@ export type UserListArray = {
   owner: boolean;
   admin: boolean;
   muted: boolean;
-  login: boolean;
+  status: string;
 }[];
 
 export type BanListArray = {

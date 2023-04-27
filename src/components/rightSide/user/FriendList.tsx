@@ -22,7 +22,7 @@ export default function FriendList(props: { listOf: string }) {
       setFriendList(res.list);
     }
   };
-  
+
   useEffect(() => {
     socket.emit("subscribe", {
       type: "friendList",
@@ -40,13 +40,12 @@ export default function FriendList(props: { listOf: string }) {
     <>
       {friendList.map((user) => {
         return (
-          <S.UserItem key={user.username}>
-            <UserInfo
-              listOf={props.listOf}
-              username={user.username}
-              subLine={user.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
-            />
-          </S.UserItem>
+          <UserInfo
+            key={user.username}
+            listOf={props.listOf}
+            username={user.username}
+            subLine={user.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
+          />
         );
       })}
     </>
