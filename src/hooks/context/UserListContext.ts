@@ -4,6 +4,7 @@ import { UserListArray, BanListArray } from "socket/passive/chatRoomType";
 export type UserListSet = {
   participant: UserListArray | null;
   banned: BanListArray | null;
+  blocked: BanListArray | null;
   myOper: string;
 };
 

@@ -21,9 +21,12 @@ export default function ChatRoom() {
   const [target, setTarget] = useSearchParams();
   const [participant, setParticipant] = useState<T.UserListArray | null>(null);
   const [banned, setBanned] = useState<T.BanListArray | null>(null);
+  const [blocked, setBlocked] = useState<T.BanListArray | null>(null);
   const myOper = useRef("participant");
 
-  function handleChatRoom(res: T.ChatData | T.HistoryData | T.ChatRoomData | T.AffectedData) {
+  function handleChatRoom(
+    res: T.ChatData | T.HistoryData | T.ChatRoomData | T.AffectedData | T.BlockData,
+  ) {
     // TEST: 채팅방 내 전체 이벤트 리스너
     if (res.roomId !== Number(roomId) || res.type === "chat") return;
     console.log("채팅방", res);
@@ -38,6 +41,8 @@ export default function ChatRoom() {
       // TODO: 추방 알림 모달로?
       alert(res.from + "님이 " + getUsername() + "님을 내보냈습니다.");
       navigate("/chat/list");
+    } else if (res.type === "block") {
+      setBlocked(res.list);
     }
   }
 
@@ -70,7 +75,7 @@ export default function ChatRoom() {
           <SendBtn room={Number(roomId)} />
         </S.MainBox>
       </S.PageLayout>
-      <UserListContext.Provider value={{ participant, banned, myOper: myOper.current }}>
+      <UserListContext.Provider value={{ participant, banned, blocked, myOper: myOper.current }}>
         <RightSide />
       </UserListContext.Provider>
     </>
