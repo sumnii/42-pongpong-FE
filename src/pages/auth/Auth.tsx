@@ -25,13 +25,12 @@ const GameRoom = loadable(() => {
 
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
-  const [profileImgIsUp, setProfileImgIsUp] = useState(false);
   const socket = getSocket();
 
   const errorListener = (res: { status: string; detail: string }) => {
     if (res.status === "error") {
       alert("이미 접속 중 입니다.");
-      window.open('about:blank','_parent')?.parent.close();
+      window.open("about:blank", "_parent")?.parent.close();
     }
   };
 

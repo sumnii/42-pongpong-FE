@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FaUserFriends } from "react-icons/fa";
+import { FiUsers } from "react-icons/fi";
 import { BsEnvelope, BsEnvelopeExclamation } from "react-icons/bs";
 import { darkMain } from "style/color";
 
@@ -40,7 +40,7 @@ export const IconWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const FriendIcon = styled(FaUserFriends)`
+export const FriendIcon = styled(FiUsers)`
   width: 20px;
   height: 20px;
   pointer-events: none;
@@ -66,10 +66,11 @@ export const NewDmIcon = styled(BsEnvelopeExclamation)`
 export const UserListLayout = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
+  flex: 1 1 0;
 
   padding: 8px 5px 8px 10px;
   border-bottom: 0.5px solid;
+  overflow: auto;
 `;
 
 export const UserList = styled.ul`
@@ -81,11 +82,4 @@ export const UserList = styled.ul`
   padding: 0;
 
   overflow: auto;
-`;
-
-export const UserItem = styled.li`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  list-style-type: none;
 `;

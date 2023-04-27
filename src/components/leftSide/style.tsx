@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
+import { darkGray } from "style/color";
 import * as font from "style/font";
 import * as button from "style/button";
 
 export const ProfileLayout = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 40px);
+  height: 100%;
 
   padding: 10px;
 `;
@@ -18,6 +19,16 @@ export const Title = styled.h2`
 /*
  *      Profile Item
  */
+
+export const LoadingImg = styled.img<{ clickable?: boolean }>`
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  flex-shrink: 0;
+  margin: 20px auto;
+
+  background-color: ${darkGray};
+`;
 
 export const ProfileImg = styled.img<{ me: boolean }>`
   width: 100px;
@@ -51,7 +62,8 @@ export const InfoValue = styled.span`
  */
 
 export const HistoryList = styled.ul`
-  height: 400px;
+  /* height: 400px; */
+  flex: 1 0 auto;
   overflow: auto;
 `;
 

@@ -1,13 +1,14 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef, useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { useOper, onProfile } from "hooks/useOper";
-import * as S from "./style";
 import { UserListContext } from "hooks/context/UserListContext";
-import { useParams } from "react-router-dom";
 import InviteBtn from "./InviteBtn";
+import * as S from "./style";
 
 export default function UserDropMenu(props: {
   onClose: () => void;
+  onDmOpen: () => void;
   targetUser: string;
   targetOper?: string;
   targetMuted?: boolean;
@@ -25,6 +26,11 @@ export default function UserDropMenu(props: {
   const onBan = useOper("ban", roomId, props.targetUser, props.onClose);
   const onUnban = useOper("unban", roomId, props.targetUser, props.onClose);
   const isOnline = props.subLine?.split(" ")[1] === "온라인" ? true : false;
+
+  function handleDm() {
+    props.onDmOpen();
+    props.onClose();
+  }
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -49,7 +55,7 @@ export default function UserDropMenu(props: {
         >
           프로필
         </S.DropMenuItemBox>
-        <S.DropMenuItemBox>DM 보내기</S.DropMenuItemBox>
+        <S.DropMenuItemBox onClick={handleDm}>DM 보내기</S.DropMenuItemBox>
         <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
         {props.banned && <S.DropMenuItemBox onClick={onUnban}>입장 금지 해제</S.DropMenuItemBox>}
         {!props.banned &&
@@ -69,7 +75,6 @@ export default function UserDropMenu(props: {
           props.targetOper &&
           myOper === "owner" &&
           (props.targetOper === "admin" ? (
-            // TODO: 부방장 해제
             <S.DropMenuItemBox onClick={onDismissAdmin}>부방장 해제</S.DropMenuItemBox>
           ) : (
             <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>

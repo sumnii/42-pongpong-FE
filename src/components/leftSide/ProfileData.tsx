@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import * as S from "./style";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAvatar } from "api/user";
 import { distroyAuth, getUsername } from "userAuth";
 import { AuthContext } from "hooks/context/AuthContext";
 import { disconnectSocket } from "socket/socket";
-import { useNavigate } from "react-router-dom";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
-import { getAvatar } from "api/user";
-import { useQuery } from "@tanstack/react-query";
 import AddFriendBtn from "./AddFriendBtn";
+import * as S from "./style";
 
 interface userProps {
   user?: {
@@ -38,6 +38,7 @@ export function ProfileData(props: userProps) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === props.user?.username;
+  const queryClient = useQueryClient();
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${props.user?.username}`],
@@ -47,8 +48,6 @@ export function ProfileData(props: userProps) {
     enabled: !!props.user,
   });
 
-  if (avatarQuery.isLoading) console.log("loading");
-
   const openModalHandler = () => {
     setShowModal(true);
   };
@@ -56,6 +55,16 @@ export function ProfileData(props: userProps) {
   const closeModalHandler = () => {
     setShowModal(false);
   };
+
+  function onLogout() {
+    distroyAuth();
+    disconnectSocket();
+    if (setSigned) setSigned(false);
+    queryClient.resetQueries(["profile"]);
+    queryClient.resetQueries(["avatar"]);
+    queryClient.resetQueries(["list"]);
+    navigate("/");
+  }
 
   return (
     <S.ProfileLayout>
@@ -69,11 +78,15 @@ export function ProfileData(props: userProps) {
         </Modal>
       )}
       <S.Title>프로필</S.Title>
-      <S.ProfileImg
-        me={myProfile}
-        src={String(avatarQuery.data)}
-        onClick={myProfile ? openModalHandler : undefined}
-      />
+      {avatarQuery.isLoading ? (
+        <S.LoadingImg />
+      ) : (
+        <S.ProfileImg
+          me={myProfile}
+          src={String(avatarQuery.data)}
+          onClick={myProfile ? openModalHandler : undefined}
+        />
+      )}
       <S.InfoWrapper>
         <S.InfoLabel>
           닉네임
@@ -114,19 +127,8 @@ export function ProfileData(props: userProps) {
           })}
       </S.HistoryList>
       <S.ButtonBox>
-        {(!user || user.relation === "myself") && (
-          <S.Button
-            onClick={() => {
-              distroyAuth();
-              disconnectSocket();
-              if (setSigned) setSigned(false);
-              navigate("/");
-            }}
-          >
-            로그아웃
-          </S.Button>
-        )}
-        {user && user.relation === "friend" && <S.Button>친구 삭제</S.Button>}
+        {(!user || user.relation === "myself") && <S.Button onClick={onLogout}>로그아웃</S.Button>}
+        {user && user?.relation === "friend" && <S.Button>친구 삭제</S.Button>}
         {user && user.relation === "others" && <AddFriendBtn username={user.username} />}
       </S.ButtonBox>
     </S.ProfileLayout>
