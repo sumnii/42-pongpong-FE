@@ -76,7 +76,7 @@ export default function FriendAndDmBar() {
               <LoadingCircle w={50} h={50} />
             </S.UserListLayout>
           ) : (
-            <UserList key={"dm"} listOf={isOpen} list={dmListQuery.data.list} />
+            <UserList key={"dm"} listOf={isOpen} list={dmListQuery.data?.list} />
           )
         ) : (
           <UserList key={"friend"} listOf={isOpen} />
