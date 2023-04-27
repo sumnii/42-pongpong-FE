@@ -36,7 +36,7 @@ export const FormLogo = styled.div`
 `
 
 export const Input = styled.input`
-  width: 55%;
+  width: 65%;
   padding: 12px 18px 12px;
   border: 1.5px solid lightgray;
   border-radius: 8px;

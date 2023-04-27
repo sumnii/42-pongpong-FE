@@ -4,6 +4,7 @@ import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
 import { DmListArray } from "socket/passive/friendDmListType";
 import UserInfo from "./UserInfo";
 import * as S from "../style";
+import FriendList from "./FriendList";
 
 type UserListCase =
   | { listOf: "friend" | "player" | "observer" }
@@ -35,7 +36,7 @@ export default function UserList(props: UserListCase) {
                 listOf={props.listOf}
                 username={user.username}
                 userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
-                subLine={user.login ? "🟣 온라인" : "⚫️ 오프라인"}
+                subLine={user.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
                 muted={user.muted ? true : false}
               />
             );
@@ -63,13 +64,7 @@ export default function UserList(props: UserListCase) {
               />
             );
           })}
-        {!["participant", "banned", "dm"].includes(props.listOf) && (
-          <UserInfo
-            listOf={props.listOf}
-            username={profileQuery.data?.username}
-            subLine={profileQuery.data?.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
-          />
-        )}
+        {props.listOf === "friend" && <FriendList listOf={props.listOf} />}
       </S.UserList>
     </S.UserListLayout>
   );

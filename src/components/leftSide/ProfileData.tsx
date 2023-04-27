@@ -7,7 +7,7 @@ import { AuthContext } from "hooks/context/AuthContext";
 import { disconnectSocket } from "socket/socket";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
-import { getAvatar } from "api/user";
+import AddFriendBtn from "./AddFriendBtn";
 import * as S from "./style";
 
 interface userProps {
@@ -129,7 +129,7 @@ export function ProfileData(props: userProps) {
       <S.ButtonBox>
         {(!user || user.relation === "myself") && <S.Button onClick={onLogout}>로그아웃</S.Button>}
         {user && user?.relation === "friend" && <S.Button>친구 삭제</S.Button>}
-        {user && user.relation === "others" && <S.Button>친구 추가</S.Button>}
+        {user && user.relation === "others" && <AddFriendBtn username={user.username} />}
       </S.ButtonBox>
     </S.ProfileLayout>
   );

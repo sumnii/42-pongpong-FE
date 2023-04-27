@@ -9,7 +9,7 @@ import { UserItem } from "./user/style";
 import * as S from "./user/style";
 
 export default function MyProfile() {
-  const username = getUsername();
+  const username = getUsername();  
   const profileQuery = useQuery({
     queryKey: ["profile", username],
     queryFn: () => {
@@ -24,8 +24,7 @@ export default function MyProfile() {
     enabled: !!username,
   });
   const setProfileUser = useContext(ProfileContext);
-  const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal();
-
+  const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal(profileQuery?.data?.status);
   if (profileQuery.isLoading) return <UserItem />;
 
   return (

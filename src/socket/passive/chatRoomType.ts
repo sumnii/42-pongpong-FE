@@ -4,6 +4,7 @@ export type ChatData = {
   status: "plain" | "notice";
   from: string;
   content: string;
+  list?: HistoryArray;
 };
 
 export type HistoryData = {
@@ -30,7 +31,7 @@ export type UserListArray = {
   owner: boolean;
   admin: boolean;
   muted: boolean;
-  login: boolean;
+  status: string;
 }[];
 
 export type BanListArray = {

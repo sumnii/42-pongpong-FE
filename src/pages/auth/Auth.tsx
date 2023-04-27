@@ -34,15 +34,39 @@ function Auth() {
     }
   };
 
-  // TEST: 구독/해제 테스트
+  const subListener = (res: {status: string; type: string}) => {
+    console.log("구독", res.type);
+    if (res.status === "error") {
+      console.log("sub", res);
+    }
+  }
+
+  const unSubListener = (res: {status: string; type: string}) => {
+    console.log("구독해제", res.type);
+    if (res.status === "error") {
+      console.log("unsub", res);
+    }
+  }
+
   useEffect(() => {
-    socket.on("subscribeResult", (data) => console.log("구독", data));
-    socket.on("unsubscribeResult", (data) => console.log("구독해제", data));
+    socket.on("subscribeResult", subListener);
+    socket.on("unsubscribeResult", unSubListener);
     socket.on("error", errorListener);
     return () => {
-      socket.off("subscribeResult", (data) => console.log("구독", data));
-      socket.off("unsubscribeResult", (data) => console.log("구독해제", data));
+      socket.off("subscribeResult", subListener);
+      socket.off("unsubscribeResult", unSubListener);
       socket.off("error", errorListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.emit("subscribe", {
+      type: "chatInvitation",
+    });
+    return () => {
+      socket.emit("unsubscribe", {
+        type: "chatInvitation",
+      });
     };
   }, []);
 

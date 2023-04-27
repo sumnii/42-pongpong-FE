@@ -62,7 +62,7 @@ export const SendBtn = styled.button`
 `;
 
 export const Input = styled.input`
-  width: 80%;
+  width: 90%;
   padding: 12px 18px 12px;
   border: 1.5px solid lightgray;
   border-radius: 8px;

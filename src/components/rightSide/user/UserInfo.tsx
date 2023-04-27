@@ -98,6 +98,7 @@ export default function UserInfo({
           targetOper={userOper}
           targetMuted={muted}
           banned={banned}
+          subLine={subLine}
         />
       )}
       {isOpen && (

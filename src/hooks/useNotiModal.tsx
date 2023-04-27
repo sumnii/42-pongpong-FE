@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { getSocket } from "socket/socket";
-import { ChatData, ChatRoomData } from "socket/passive/chatRoomType";
 import Modal from "modal/layout/Modal";
 import NotificationModal from "modal/NotificationModal";
 
@@ -13,43 +11,39 @@ export type NotiType = {
   gameId?: number;
 };
 
-export default function useNotiModal() {
-  const target = useLocation().pathname.split("/");
+type InvitationType = {
+  type: string;
+  roomId: number;
+  from: string;
+};
+
+export default function useNotiModal(status: string) {
   const socket = getSocket();
-  const [myChat, setMyChat] = useState<ChatRoomData[]>([]);
   const [noti, setNoti] = useState<NotiType[]>([]);
   const [newNoti, setNewNoti] = useState(false);
   const [showNotiModal, setShowNotiModal] = useState(false);
-  const locPage = target[1];
-  const locRoom = target[2];
 
-  const listener = (res: ChatData) => {
-    if (locPage !== "chat" || locRoom !== String(res.roomId)) {
-      myChat.map((chat) => {
-        if (chat.roomId === res.roomId) {
-          const data: NotiType = {
-            title: "참여하고 있는 채팅방에 새로운 메시지",
-            chatId: res.roomId,
-          };
-          setNoti([data, ...noti]);
-          setNewNoti(true);
-        }
-      });
+  const listener = (res: InvitationType) => {
+    if (res.type === "chatInvitation") {
+      setNoti((prev) => [
+        ...prev,
+        {
+          title: `${res.from} 님으로 부터 #${res.roomId} 채팅방에 초대 되었습니다.`,
+          chatId: res.roomId,
+          chatTitle: "초대된 ",
+        },
+      ]);
+      setNewNoti(true);
+      if (status === "login") setShowNotiModal(true); // 게임 중 일때는 팝업 x
     }
   };
 
-  const myChatListener = (res: ChatRoomData[]) => {
-    setMyChat(res);
-  };
-
   useEffect(() => {
-    socket.on("chat", listener);
-    socket.on("updateMyChatRoomList", myChatListener);
+    socket.on("message", listener);
     return () => {
-      socket.off("chat", listener);
-      socket.off("updateMyChatRoomList", myChatListener);
+      socket.off("message", listener);
     };
-  }, []);
+  });
 
   const closeModalHandler = () => {
     setShowNotiModal(false);
@@ -64,7 +58,7 @@ export default function useNotiModal() {
   return {
     showNotiModal,
     NotiModal: (
-      <Modal set={"noti"} setView={closeModalHandler}>
+      <Modal set={"noti"} setView={onOpenNotiModal}>
         <NotificationModal close={closeModalHandler} notiList={noti} />
       </Modal>
     ),

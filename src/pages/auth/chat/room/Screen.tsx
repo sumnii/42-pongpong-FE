@@ -3,15 +3,23 @@ import { ChatData } from "socket/passive/chatRoomType";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
 
-export default function Screen(props: { room: number; initialChat: ChatData[] }) {
+export default function Screen(props: { room: number }) {
   const socket = getSocket();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [screen, setScreen] = useState(props.initialChat);
+  const [screen, setScreen] = useState<ChatData[]>([]);
   let keyCnt = 0;
 
   function listener(res: ChatData) {
     if (res.roomId !== Number(props.room)) return;
-    if (res.type === "chat") setScreen((prevScreen) => [...prevScreen, res]);
+    if (res.type === "chat") {
+      setScreen((prevScreen) => [...prevScreen, res])
+    } else if (res.type === "history") {
+      const historyChat: ChatData[] = [];
+      res.list?.map((chat) => {
+        historyChat.push({ ...chat, type: "chat", roomId: props.room });
+      });
+      setScreen(historyChat);
+    }
   }
 
   useEffect(() => {

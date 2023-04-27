@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { useOper, onProfile } from "hooks/useOper";
 import { UserListContext } from "hooks/context/UserListContext";
+import InviteBtn from "./InviteBtn";
 import * as S from "./style";
 
 export default function UserDropMenu(props: {
@@ -12,6 +13,7 @@ export default function UserDropMenu(props: {
   targetOper?: string;
   targetMuted?: boolean;
   banned?: boolean;
+  subLine?: string;
 }) {
   const setProfileUser = useContext(ProfileContext);
   const roomId = Number(useParams().roomId);
@@ -23,6 +25,7 @@ export default function UserDropMenu(props: {
   const onKick = useOper("kick", roomId, props.targetUser, props.onClose);
   const onBan = useOper("ban", roomId, props.targetUser, props.onClose);
   const onUnban = useOper("unban", roomId, props.targetUser, props.onClose);
+  const isOnline = props.subLine?.split(" ")[1] === "온라인" ? true : false;
 
   function handleDm() {
     props.onDmOpen();
@@ -76,6 +79,12 @@ export default function UserDropMenu(props: {
           ) : (
             <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
           ))}
+        {isOnline &&
+          myOper && myOper !== "participant" &&
+          !props.targetOper &&
+          !props.banned && (
+            <InviteBtn roomId={roomId} username={props.targetUser} close={props.onClose} />
+          )}
       </S.DropMenuLayout>
     </>
   );
