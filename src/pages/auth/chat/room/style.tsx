@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
 import * as color from "style/color";
+import { AiOutlineSetting } from "react-icons/ai";
 
 export const PageLayout = styled.div`
   height: 100%;
@@ -69,3 +70,15 @@ export const Input = styled.input`
   transition: border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
   margin-right: 5px;
 `;
+
+/* SettingBtn */
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const SettingBtnIcon = styled(AiOutlineSetting)`
+  padding: 5px 0;
+  cursor: pointer;
+`
