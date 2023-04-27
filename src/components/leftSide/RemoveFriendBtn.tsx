@@ -11,7 +11,7 @@ export default function RemoveFrendBtn(props: { username: string }) {
   const listener = (res: ChatRoomResponse) => {
     if (res.status === "approved") {
       alert("친구 취소 했습니다.");
-      queryCli.refetchQueries(["profile", props.username]);
+      queryCli.resetQueries(["profile", props.username]);
     } else if (res.status === "warning") {
       alert(res.detail);
     } else {
