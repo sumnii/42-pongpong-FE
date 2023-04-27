@@ -16,6 +16,7 @@ type UserInfoProps = {
   subLine: string;
   muted?: boolean;
   banned?: boolean;
+  blocked?: boolean;
 };
 
 export default function UserInfo({
@@ -25,6 +26,7 @@ export default function UserInfo({
   subLine,
   muted,
   banned,
+  blocked,
 }: UserInfoProps) {
   const me = getUsername() === username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
@@ -83,7 +85,7 @@ export default function UserInfo({
       )}
       <S.UserInfoText clickable={listOf === "dm"}>
         {username} {userOper === "owner" ? "👑" : userOper === "admin" ? "🎩" : ""}
-        {muted ? " 🤐" : ""}
+        {muted ? " 🤐" : ""} {blocked ? " 🚫" : ""}
         <br />
         {listOf === "dm" ? "✉️ " : ""}
         {subLine}
@@ -97,6 +99,7 @@ export default function UserInfo({
           targetUser={username}
           targetOper={userOper}
           targetMuted={muted}
+          targetBlocked={blocked}
           banned={banned}
           subLine={subLine}
         />
