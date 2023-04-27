@@ -35,14 +35,12 @@ function Auth() {
   };
 
   const subListener = (res: {status: string; type: string}) => {
-    console.log("sub", res.type);
     if (res.status === "error") {
       console.log("sub", res);
     }
   }
 
   const unSubListener = (res: {status: string; type: string}) => {
-    console.log("unsub", res.type);
     if (res.status === "error") {
       console.log("unsub", res);
     }
