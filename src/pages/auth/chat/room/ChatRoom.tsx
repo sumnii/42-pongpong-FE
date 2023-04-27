@@ -10,6 +10,7 @@ import { getSocket } from "socket/socket";
 import RightSide from "@rightSide/RightSide";
 import * as T from "socket/passive/chatRoomType";
 import * as S from "./style";
+import SettingBtn from "./SettingBtn";
 
 export default function ChatRoom() {
   const navigate = useNavigate();
@@ -59,10 +60,13 @@ export default function ChatRoom() {
     <>
       <S.PageLayout>
         <S.HeaderBox>
-          <S.H2>
-            {" "}
-            #{roomId} {target.get("title")} 채팅방 입장완료
-          </S.H2>
+          <S.TitleWrapper>
+            <S.H2>
+              {" "}
+              #{roomId} {target.get("title")} 채팅방 입장완료
+            </S.H2>
+            {myOper.current === "owner" && <SettingBtn />}
+          </S.TitleWrapper>
           <ExitBtn room={Number(roomId)} />
         </S.HeaderBox>
         <S.MainBox>

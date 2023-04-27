@@ -9,6 +9,7 @@ import NotFound from "pages/NotFound";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ChatList = loadable(() => {
   return import("@page/chat/list/ChatList");
@@ -26,6 +27,7 @@ const GameRoom = loadable(() => {
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
   const socket = getSocket();
+  const queryClient = useQueryClient();
 
   const errorListener = (res: { status: string; detail: string }) => {
     if (res.status === "error") {
@@ -38,6 +40,10 @@ function Auth() {
     console.log("구독", res.type);
     if (res.status === "error") {
       console.log("sub", res);
+    } else {
+      if (res.type === "chatInvitation") {
+        queryClient.invalidateQueries(["profile", getUsername()]);
+      }
     }
   }
 

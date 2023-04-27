@@ -25,7 +25,7 @@ export const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 `;
 
@@ -282,3 +282,16 @@ export const SendBtn = styled(RiSendPlane2Line)`
   height: 30px;
   color: ${darkMain};
 `;
+
+/* 
+  setting pw chat room
+*/
+
+export const SettingPwLayout = styled.div`
+  position: relative;
+  width: 100%;
+  text-align: center;
+  background: white;
+  font-size: 12px;
+  border-radius: 20px;
+`

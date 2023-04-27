@@ -11,7 +11,7 @@ export default function AddFriendBtn(props: { username: string }) {
   const listener = (res: ChatRoomResponse) => {
     if (res.status === "approved") {
       alert("친구가 되었습니다");
-      queryCli.invalidateQueries(["profile", props.username]);
+      queryCli.resetQueries(["profile", props.username]);
     } else if (res.status === "warning") {
       alert(res.detail);
     } else {
@@ -31,5 +31,6 @@ export default function AddFriendBtn(props: { username: string }) {
       username: props.username,
     });
   };
+  
   return <S.Button onClick={addBtnHandler}>친구 추가</S.Button>;
 }

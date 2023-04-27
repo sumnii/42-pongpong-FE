@@ -1,5 +1,4 @@
 import UserInfo from "./UserInfo";
-import * as S from "../style";
 import { useEffect, useState } from "react";
 import { getSocket } from "socket/socket";
 
