@@ -17,7 +17,7 @@ type InvitationType = {
   from: string;
 };
 
-export default function useNotiModal() {
+export default function useNotiModal(status: string) {
   const socket = getSocket();
   const [noti, setNoti] = useState<NotiType[]>([]);
   const [newNoti, setNewNoti] = useState(false);
@@ -34,7 +34,7 @@ export default function useNotiModal() {
         },
       ]);
       setNewNoti(true);
-      setShowNotiModal(true);
+      if (status === "login") setShowNotiModal(true); // 게임 중 일때는 팝업 x
     }
   };
 
@@ -43,7 +43,7 @@ export default function useNotiModal() {
     return () => {
       socket.off("message", listener);
     };
-  }, []);
+  });
 
   const closeModalHandler = () => {
     setShowNotiModal(false);

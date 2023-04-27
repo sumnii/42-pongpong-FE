@@ -34,13 +34,15 @@ function Auth() {
     }
   };
 
-  const subListener = (res: {status: string; detail: string}) => {
+  const subListener = (res: {status: string; type: string}) => {
+    console.log("sub", res.type);
     if (res.status === "error") {
       console.log("sub", res);
     }
   }
 
-  const unSubListener = (res: {status: string; detail: string}) => {
+  const unSubListener = (res: {status: string; type: string}) => {
+    console.log("unsub", res.type);
     if (res.status === "error") {
       console.log("unsub", res);
     }
@@ -54,6 +56,17 @@ function Auth() {
       socket.off("subscribeResult", subListener);
       socket.off("unsubscribeResult", unSubListener);
       socket.off("error", errorListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.emit("subscribe", {
+      type: "chatInvitation",
+    });
+    return () => {
+      socket.emit("unsubscribe", {
+        type: "chatInvitation",
+      });
     };
   }, []);
 

@@ -53,7 +53,7 @@ export default function ChatRoom() {
     return () => {
       socket.emit("unsubscribe", { type: "chatRoom", roomId: Number(roomId) });
     };
-  }, []);
+  }, [roomId]);
 
   return (
     <>

@@ -17,10 +17,6 @@ function NotificationModal(props: modalProps) {
       pathname: `/chat/${target[0]}`,
       search: `title=${target[1]}`,
     });
-    socket.emit("subscribe", {
-      type: "chatRoom",
-      roomId: Number(target[0]),
-    })
     props.close();
   };
 
