@@ -24,7 +24,7 @@ export default function MyProfile() {
     enabled: !!username,
   });
   const setProfileUser = useContext(ProfileContext);
-  const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal(profileQuery.data.status);
+  const { showNotiModal, NotiModal, onOpenNotiModal, newNoti } = useNotiModal(profileQuery?.data?.status);
   if (profileQuery.isLoading) return <UserItem />;
 
   return (
