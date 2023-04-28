@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "api/user";
+import { useContext } from "react";
 import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
 import { DmListArray } from "socket/passive/friendDmListType";
 import UserInfo from "./UserInfo";
-import * as S from "../style";
 import FriendList from "./FriendList";
+import { UserListContext } from "hooks/context/UserListContext";
+import * as S from "../style";
 
 type UserListCase =
   | { listOf: "friend" | "player" | "observer" }
@@ -13,16 +13,7 @@ type UserListCase =
   | { listOf: "banned"; list: BanListArray | null };
 
 export default function UserList(props: UserListCase) {
-  // 임시 쿼리. 친구 리스트 불러오는 api 필요
-  const profileQuery = useQuery({
-    queryKey: ["profile", "아무개"],
-    queryFn: () => {
-      return getProfile("아무개");
-    },
-  });
-
-  if (profileQuery.isLoading) return <S.UserListLayout></S.UserListLayout>;
-  if (profileQuery.isError) console.log(profileQuery.error);
+  const blockList = useContext(UserListContext)?.blocked;
 
   return (
     <S.UserListLayout>
@@ -30,6 +21,12 @@ export default function UserList(props: UserListCase) {
       <S.UserList>
         {props.listOf === "participant" &&
           props.list?.map((user) => {
+            const blocked = blockList?.find((data) => {
+              return data.username === user.username;
+            })
+              ? true
+              : false;
+
             return (
               <UserInfo
                 key={user.username}
@@ -38,6 +35,7 @@ export default function UserList(props: UserListCase) {
                 userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
                 subLine={user.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
                 muted={user.muted ? true : false}
+                blocked={blocked}
               />
             );
           })}

@@ -43,3 +43,9 @@ export type AffectedData = {
   roomId: number;
   from: string;
 };
+
+export type BlockData = {
+  type: "block";
+  roomId: number;
+  list: BanListArray;
+};
