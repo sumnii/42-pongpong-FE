@@ -5,7 +5,7 @@ import { useOper, onProfile } from "hooks/useOper";
 import { UserListContext } from "hooks/context/UserListContext";
 import { useOutsideClick } from "hooks/useOutsideClick";
 import InviteBtn from "./InviteBtn";
-import * as T from "../rightSideType";
+import * as T from "@rightSide/rightSideType";
 import * as S from "./style";
 
 const ModalLayout = forwardRef(function ModalLayout(
@@ -34,7 +34,6 @@ export default function UserDropMenu({
   menuFor,
   targetUser,
   targetStatus,
-  subline,
 }: T.DropMenuProps) {
   const setProfileUser = useContext(ProfileContext);
   const myOper = useContext(UserListContext)?.myOper;
@@ -48,7 +47,6 @@ export default function UserDropMenu({
   const onUnban = useOper("unban", roomId, targetUser, onClose);
   const onBlock = useOper("block", roomId, targetUser, onClose);
   const onUnblock = useOper("unblock", roomId, targetUser, onClose);
-  const isOnline = subline?.split(" ")[1] === "온라인" ? true : false;
   useOutsideClick({ modalRef: dropRef, onClose });
 
   function handleDm() {
@@ -72,11 +70,15 @@ export default function UserDropMenu({
   };
 
   const InviteGame = () => {
-    return isOnline ? <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox> : <></>;
+    return targetStatus?.status === "login" ? (
+      <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
+    ) : (
+      <></>
+    );
   };
 
   const InviteChat = () => {
-    return myOper !== "participant" && isOnline ? (
+    return myOper !== "participant" && targetStatus?.status === "login" ? (
       <InviteBtn roomId={roomId} username={targetUser} close={onClose} />
     ) : (
       <></>

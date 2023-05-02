@@ -10,26 +10,16 @@ import { getUsername } from "userAuth";
 import { getSocket } from "socket/socket";
 import { ExitDmResultType } from "socket/active/dmEventType";
 import * as S from "./style";
+import { TargetStatusType } from "@rightSide/rightSideType";
 
 type UserInfoProps = {
   listOf: string;
   username: string;
-  userOper?: string;
   subLine: string;
-  muted?: boolean;
-  banned?: boolean;
-  blocked?: boolean;
+  userStatus?: TargetStatusType;
 };
 
-export default function UserInfo({
-  listOf,
-  username,
-  userOper,
-  subLine,
-  muted,
-  banned,
-  blocked,
-}: UserInfoProps) {
+export default function UserInfo({ listOf, username, subLine, userStatus }: UserInfoProps) {
   const me = getUsername() === username;
   const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
     listOf: listOf,
@@ -87,8 +77,8 @@ export default function UserInfo({
         <S.ProfileImg src={String(avatarQuery.data)} clickable={listOf === "dm"} />
       )}
       <S.UserInfoText clickable={listOf === "dm"}>
-        {username} {userOper === "owner" ? "👑" : userOper === "admin" ? "🎩" : ""}
-        {muted ? " 🤐" : ""} {blocked ? " 🚫" : ""}
+        {username} {userStatus?.oper === "owner" ? "👑" : userStatus?.oper === "admin" ? "🎩" : ""}
+        {userStatus?.muted ? " 🤐" : ""} {userStatus?.blocked ? " 🚫" : ""}
         <br />
         {listOf === "dm" ? "✉️ " : ""}
         {subLine}
@@ -101,8 +91,7 @@ export default function UserInfo({
           onDmOpen={onOpen}
           targetUser={username}
           menuFor={listOf}
-          targetStatus={{ oper: userOper, muted, blocked }}
-          subline={subLine}
+          targetStatus={userStatus}
         />
       )}
       {isOpen && (

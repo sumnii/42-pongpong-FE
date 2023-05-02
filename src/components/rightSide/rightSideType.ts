@@ -3,6 +3,7 @@ export type ModalLayoutProps = {
 };
 
 export type TargetStatusType = {
+  status?: string;
   oper?: string;
   muted?: boolean;
   blocked?: boolean;
@@ -14,5 +15,4 @@ export type DropMenuProps = {
   menuFor: string;
   targetUser: string;
   targetStatus?: TargetStatusType;
-  subline: string;
 };

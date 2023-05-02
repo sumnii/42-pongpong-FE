@@ -44,6 +44,7 @@ export default function FriendList(props: { listOf: string }) {
             listOf={props.listOf}
             username={user.username}
             subLine={user.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
+            userStatus={{ status: user.status }}
           />
         );
       })}
