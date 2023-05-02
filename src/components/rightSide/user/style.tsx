@@ -27,7 +27,7 @@ export const LoadingImg = styled.img<{ clickable?: boolean }>`
   background-color: ${darkGray};
 `;
 
-export const ProfileImg = styled.img<{ clickable: boolean }>`
+export const ProfileImg = styled.img<{ clickable?: boolean }>`
   width: 50px;
   height: 50px;
   border-radius: 100%;
@@ -37,7 +37,7 @@ export const ProfileImg = styled.img<{ clickable: boolean }>`
   }}
 `;
 
-export const UserInfoText = styled.span<{ clickable: boolean }>`
+export const UserInfoText = styled.span<{ clickable?: boolean }>`
   max-width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;

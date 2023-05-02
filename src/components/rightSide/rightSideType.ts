@@ -1,3 +1,10 @@
+export type UserInfoProps = {
+  listOf: string;
+  username: string;
+  subLine: string;
+  userStatus?: TargetStatusType;
+};
+
 export type ModalLayoutProps = {
   children: React.ReactNode;
 };
