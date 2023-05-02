@@ -1,8 +1,9 @@
-import { useEffect, useRef, useContext, forwardRef } from "react";
+import { useRef, useContext, forwardRef } from "react";
 import { useParams } from "react-router-dom";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { useOper, onProfile } from "hooks/useOper";
 import { UserListContext } from "hooks/context/UserListContext";
+import { useOutsideClick } from "hooks/useOutsideClick";
 import InviteBtn from "./InviteBtn";
 import * as T from "../rightSideType";
 import * as S from "./style";
@@ -36,9 +37,9 @@ export default function UserDropMenu({
   subline,
 }: T.DropMenuProps) {
   const setProfileUser = useContext(ProfileContext);
+  const myOper = useContext(UserListContext)?.myOper;
   const roomId = Number(useParams().roomId);
   const dropRef = useRef<HTMLDivElement>(null);
-  const myOper = useContext(UserListContext)?.myOper;
   const onAppointAdmin = useOper("appointAdmin", roomId, targetUser, onClose);
   const onDismissAdmin = useOper("dismissAdmin", roomId, targetUser, onClose);
   const onMute = useOper("mute", roomId, targetUser, onClose);
@@ -48,6 +49,12 @@ export default function UserDropMenu({
   const onBlock = useOper("block", roomId, targetUser, onClose);
   const onUnblock = useOper("unblock", roomId, targetUser, onClose);
   const isOnline = subline?.split(" ")[1] === "온라인" ? true : false;
+  useOutsideClick({ modalRef: dropRef, onClose });
+
+  function handleDm() {
+    onDmOpen();
+    onClose();
+  }
 
   const DefaultMenu = () => {
     return (
@@ -109,24 +116,6 @@ export default function UserDropMenu({
   const UnBan = () => {
     return <S.DropMenuItemBox onClick={onUnban}>입장 금지 해제</S.DropMenuItemBox>;
   };
-
-  function handleDm() {
-    onDmOpen();
-    onClose();
-  }
-
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      console.log("클릭!", dropRef.current);
-      if (dropRef.current && e.target instanceof Element && !dropRef.current.contains(e.target))
-        onClose();
-    };
-
-    window.addEventListener("mousedown", handleClick);
-    return () => {
-      window.removeEventListener("mousedown", handleClick);
-    };
-  }, [dropRef]);
 
   switch (menuFor) {
     case "friend":
