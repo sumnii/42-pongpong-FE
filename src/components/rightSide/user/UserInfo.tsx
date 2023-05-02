@@ -8,11 +8,11 @@ import DmModal from "modal/DmModal";
 import UserDropMenu from "./UserDropMenu";
 import { getUsername } from "userAuth";
 import { getSocket } from "socket/socket";
-import * as S from "./style";
 import { ExitDmResultType } from "socket/active/dmEventType";
+import * as S from "./style";
 
 type UserInfoProps = {
-  listOf?: string;
+  listOf: string;
   username: string;
   userOper?: string;
   subLine: string;
@@ -100,11 +100,9 @@ export default function UserInfo({
           onClose={onDropClose}
           onDmOpen={onOpen}
           targetUser={username}
-          targetOper={userOper}
-          targetMuted={muted}
-          targetBlocked={blocked}
-          banned={banned}
-          subLine={subLine}
+          menuFor={listOf}
+          targetStatus={{ oper: userOper, muted, blocked }}
+          subline={subLine}
         />
       )}
       {isOpen && (
