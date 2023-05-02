@@ -15,12 +15,11 @@ export function useOper(operator: string, roomId: number, targetUser: string, on
   const socket = getSocket();
 
   function handleResult(res: ChatRoomResponse) {
-    // TEST : 이벤트 결과 확인용
     if (res.status === "approved") {
       if (res.roomId === roomId) {
         onClose();
       }
-    } else console.log("오류", res);
+    } else console.log("oper error", res);
   }
 
   useEffect(() => {
@@ -31,8 +30,6 @@ export function useOper(operator: string, roomId: number, targetUser: string, on
   }, []);
 
   return function onOper() {
-    // TEST: 블락/언블락 테스트
-    console.log("emit 전송", roomId, targetUser);
     socket.emit(operator, {
       roomId,
       username: targetUser,

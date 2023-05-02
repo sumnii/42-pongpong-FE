@@ -32,8 +32,6 @@ export default function FriendAndDmBar() {
 
   function handleList(res: T.DmList) {
     if (res.type !== "dmList") return;
-    // TEST: 테스트중
-    console.log("dm 리스트", res, "현재 열림:", isOpen);
     const dmNode = document.getElementById("modal-root")?.firstChild;
     if (!dmNode) {
       isOpen === "dm" ? queryClient.invalidateQueries(["list", "dm"]) : setIsNewDm(true);

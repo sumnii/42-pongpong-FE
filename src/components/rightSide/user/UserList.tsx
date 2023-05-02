@@ -6,6 +6,7 @@ import FriendList from "./FriendList";
 import { UserListContext } from "hooks/context/UserListContext";
 import * as S from "../style";
 
+// TODO: 게임 구현 후 타입 파일로 보내기
 type UserListCase =
   | { listOf: "friend" | "player" | "observer" }
   | { listOf: "dm"; list: DmListArray | null }
@@ -32,10 +33,13 @@ export default function UserList(props: UserListCase) {
                 key={user.username}
                 listOf={props.listOf}
                 username={user.username}
-                userOper={user.owner ? "owner" : user.admin ? "admin" : "participant"}
                 subLine={user.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
-                muted={user.muted ? true : false}
-                blocked={blocked}
+                userStatus={{
+                  status: user.status,
+                  oper: user.owner ? "owner" : user.admin ? "admin" : "participant",
+                  muted: user.muted,
+                  blocked,
+                }}
               />
             );
           })}
@@ -47,7 +51,6 @@ export default function UserList(props: UserListCase) {
                 listOf={props.listOf}
                 username={user.username}
                 subLine="❌ 입장금지"
-                banned
               />
             );
           })}

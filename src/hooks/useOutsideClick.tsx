@@ -15,5 +15,5 @@ export function useOutsideClick({ modalRef, onClose }: OutSideClickProps) {
     return () => {
       window.removeEventListener("mousedown", handleClose);
     };
-  }, []);
+  }, [modalRef]);
 }

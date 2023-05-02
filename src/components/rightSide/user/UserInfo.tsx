@@ -8,36 +8,17 @@ import DmModal from "modal/DmModal";
 import UserDropMenu from "./UserDropMenu";
 import { getUsername } from "userAuth";
 import { getSocket } from "socket/socket";
-import * as S from "./style";
 import { ExitDmResultType } from "socket/active/dmEventType";
+import * as T from "@rightSide/rightSideType";
+import * as S from "./style";
 
-type UserInfoProps = {
-  listOf?: string;
-  username: string;
-  userOper?: string;
-  subLine: string;
-  muted?: boolean;
-  banned?: boolean;
-  blocked?: boolean;
-};
-
-export default function UserInfo({
-  listOf,
-  username,
-  userOper,
-  subLine,
-  muted,
-  banned,
-  blocked,
-}: UserInfoProps) {
+export default function UserInfo({ listOf, username, subLine, userStatus }: T.UserInfoProps) {
   const me = getUsername() === username;
-  const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({
-    listOf: listOf,
-    username: username,
-  });
+  const { onDropOpen, onDropClose, dropIsOpen } = useDropModal({ listOf, username });
   const { Modal, isOpen, onOpen, onClose } = useModal();
   const { isMouseEnter, onLeave } = useMouseOver({ listOf, user: username });
   const queryClient = useQueryClient();
+  const socket = getSocket();
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${username}`],
@@ -45,8 +26,6 @@ export default function UserInfo({
       if (username) return getAvatar(username);
     },
   });
-
-  const socket = getSocket();
 
   function exitDmHandler(res: ExitDmResultType) {
     if (res.username !== username) return;
@@ -74,44 +53,53 @@ export default function UserInfo({
     }
   }
 
-  return (
-    <S.UserItem
-      key={username}
-      id={username + "info"}
-      clickable={listOf === "dm"}
-      onClick={onDmOpen}
-    >
-      {avatarQuery.isLoading ? (
-        <S.LoadingImg />
-      ) : (
-        <S.ProfileImg src={String(avatarQuery.data)} clickable={listOf === "dm"} />
-      )}
-      <S.UserInfoText clickable={listOf === "dm"}>
-        {username} {userOper === "owner" ? "👑" : userOper === "admin" ? "🎩" : ""}
-        {muted ? " 🤐" : ""} {blocked ? " 🚫" : ""}
-        <br />
-        {listOf === "dm" ? "✉️ " : ""}
-        {subLine}
-      </S.UserInfoText>
-      {isMouseEnter && <S.ExitDmIcon onClick={onDmExit} />}
-      {listOf !== "dm" && !me && <S.KebabIcon onClick={onDropOpen} />}
-      {dropIsOpen && (
-        <UserDropMenu
-          onClose={onDropClose}
-          onDmOpen={onOpen}
-          targetUser={username}
-          targetOper={userOper}
-          targetMuted={muted}
-          targetBlocked={blocked}
-          banned={banned}
-          subLine={subLine}
-        />
-      )}
-      {isOpen && (
-        <Modal key={username}>
-          <DmModal targetUser={username} onClose={onClose} />
-        </Modal>
-      )}
-    </S.UserItem>
-  );
+  switch (listOf) {
+    case "dm":
+      return (
+        <S.UserItem key={username} id={username + "info"} clickable onClick={onDmOpen}>
+          {avatarQuery.isLoading ? (
+            <S.LoadingImg />
+          ) : (
+            <S.ProfileImg src={String(avatarQuery.data)} clickable />
+          )}
+          <S.UserInfoText clickable>
+            {username} <br /> {`✉️ ${subLine}`}
+          </S.UserInfoText>
+          {isMouseEnter && <S.ExitDmIcon onClick={onDmExit} />}
+          {isOpen && (
+            <Modal key={username}>
+              <DmModal targetUser={username} onClose={onClose} />
+            </Modal>
+          )}
+        </S.UserItem>
+      );
+
+    default:
+      return (
+        <S.UserItem key={username} id={username + "info"}>
+          {avatarQuery.isLoading ? (
+            <S.LoadingImg />
+          ) : (
+            <S.ProfileImg src={String(avatarQuery.data)} />
+          )}
+          <S.UserInfoText>
+            {username}{" "}
+            {userStatus?.oper === "owner" ? "👑" : userStatus?.oper === "admin" ? "🎩" : ""}
+            {userStatus?.muted ? " 🤐" : ""} {userStatus?.blocked ? " 🚫" : ""}
+            <br />
+            {subLine}
+          </S.UserInfoText>
+          {me || <S.KebabIcon onClick={onDropOpen} />}
+          {dropIsOpen && (
+            <UserDropMenu
+              onClose={onDropClose}
+              onDmOpen={onOpen}
+              targetUser={username}
+              menuFor={listOf}
+              targetStatus={userStatus}
+            />
+          )}
+        </S.UserItem>
+      );
+  }
 }

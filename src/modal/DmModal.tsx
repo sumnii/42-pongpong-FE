@@ -23,14 +23,11 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
 
   function listener(res: T.DmHistoryData | T.DmResponse) {
     if (res.type === "history" && dmChat.length === 0) {
-      // TEST: DM 구현중
-      console.log("dm 히스토리", res);
       res.list.map((chat) => {
         setDmChat((prevChat) => [...prevChat, chat]);
       });
       setIsLoading(false);
     } else if (res.type === "dm") {
-      console.log("dm", res);
       setDmChat((prevChat) => [...prevChat, { from: res.from, content: res.content }]);
     }
   }
@@ -55,19 +52,15 @@ export default function DmModal({ targetUser, onClose }: DmModalProps) {
   }, [isLoading]);
 
   useEffect(() => {
-    console.log("마운트");
     socket.emit("subscribe", {
       type: "dm",
       username: targetUser,
     });
     socket.on("dmResult", (res) => {
-      console.log("dm 전송 결과", res);
-      // TEST: DM 전송에서 발생할 에러 핸들링
-      if (res.status !== "approved") console.log("DM 오류", res);
+      if (res.status !== "approved") console.log("DM error", res);
     });
 
     return () => {
-      console.log("언마운트");
       socket.emit("unsubscribe", {
         type: "dm",
         username: targetUser,
