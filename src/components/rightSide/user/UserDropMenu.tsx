@@ -1,17 +1,14 @@
-import { useEffect, useRef, useContext, useState, forwardRef } from "react";
+import { useEffect, useRef, useContext, forwardRef } from "react";
 import { useParams } from "react-router-dom";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { useOper, onProfile } from "hooks/useOper";
 import { UserListContext } from "hooks/context/UserListContext";
 import InviteBtn from "./InviteBtn";
+import * as T from "../rightSideType";
 import * as S from "./style";
 
-type ModalLayoutProps = {
-  children: React.ReactNode;
-};
-
 const ModalLayout = forwardRef(function ModalLayout(
-  props: ModalLayoutProps,
+  props: T.ModalLayoutProps,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
   return (
@@ -22,21 +19,7 @@ const ModalLayout = forwardRef(function ModalLayout(
   );
 });
 
-type TargetStatusType = {
-  oper?: string;
-  muted?: boolean;
-  blocked?: boolean;
-};
-
-type DropMenuProps = {
-  onClose: () => void;
-  onDmOpen: () => void;
-  menuFor: string;
-  targetUser: string;
-  targetStatus?: TargetStatusType;
-  subline: string;
-};
-
+// TEST: 게임까지 구현 완료 후 삭제하기
 // 전체 필요한것 : onClose / onDmOpen / setProfile / menuFor(friend/participant/banned/player/observer) / targetUser
 // friend : 기본[프로필/게임신청/DM 보내기] + 채팅초대 : targetUser, isOnline(게임신청/채팅초대 block)
 // participant : 기본 + [차단] + 권한[음소거/내보내기/입장금지] + 방장[부방장 지정] : userOper, targetStatus(oper, muted, blocked, isOnline)
@@ -51,7 +34,7 @@ export default function UserDropMenu({
   targetUser,
   targetStatus,
   subline,
-}: DropMenuProps) {
+}: T.DropMenuProps) {
   const setProfileUser = useContext(ProfileContext);
   const roomId = Number(useParams().roomId);
   const dropRef = useRef<HTMLDivElement>(null);
