@@ -54,110 +54,90 @@ export default function UserDropMenu({
     onClose();
   }
 
-  const DefaultMenu = () => {
-    return (
-      <>
-        <S.DropMenuItemBox
-          onClick={() => {
-            setProfileUser && onProfile(targetUser, setProfileUser, onClose);
-          }}
-        >
-          프로필
-        </S.DropMenuItemBox>
-        <S.DropMenuItemBox onClick={handleDm}>DM 보내기</S.DropMenuItemBox>
-      </>
-    );
-  };
+  const DefaultMenu = (
+    <>
+      <S.DropMenuItemBox
+        onClick={() => {
+          setProfileUser && onProfile(targetUser, setProfileUser, onClose);
+        }}
+      >
+        프로필
+      </S.DropMenuItemBox>
+      <S.DropMenuItemBox onClick={handleDm}>DM 보내기</S.DropMenuItemBox>
+    </>
+  );
 
-  const InviteGame = () => {
-    return targetStatus?.status === "login" ? (
-      <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox>
-    ) : (
-      <></>
-    );
-  };
+  const InviteGame =
+    targetStatus?.status === "login" ? <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox> : <></>;
 
-  const InviteChat = () => {
-    return myOper !== "participant" && targetStatus?.status === "login" ? (
+  const InviteChat =
+    myOper !== "participant" && targetStatus?.status === "login" ? (
       <InviteBtn roomId={roomId} username={targetUser} close={onClose} />
     ) : (
       <></>
     );
-  };
 
-  const BlockInChat = () => {
-    return targetStatus?.blocked ? (
-      <S.DropMenuItemBox onClick={onUnblock}>차단해제</S.DropMenuItemBox>
-    ) : (
-      <S.DropMenuItemBox onClick={onBlock}>차단</S.DropMenuItemBox>
-    );
-  };
+  const BlockInChat = targetStatus?.blocked ? (
+    <S.DropMenuItemBox onClick={onUnblock}>차단해제</S.DropMenuItemBox>
+  ) : (
+    <S.DropMenuItemBox onClick={onBlock}>차단</S.DropMenuItemBox>
+  );
 
-  const ForAdminInChat = () => {
-    return (
-      <>
-        {targetStatus?.muted ? (
-          <S.DropMenuItemBox disabled>음소거중</S.DropMenuItemBox>
-        ) : (
-          <S.DropMenuItemBox onClick={onMute}>음소거</S.DropMenuItemBox>
-        )}
-        <S.DropMenuItemBox onClick={onKick}>내보내기</S.DropMenuItemBox>
-        <S.DropMenuItemBox onClick={onBan}>입장 금지</S.DropMenuItemBox>
-      </>
-    );
-  };
+  const ForAdminInChat = (
+    <>
+      {targetStatus?.muted ? (
+        <S.DropMenuItemBox disabled>음소거중</S.DropMenuItemBox>
+      ) : (
+        <S.DropMenuItemBox onClick={onMute}>음소거</S.DropMenuItemBox>
+      )}
+      <S.DropMenuItemBox onClick={onKick}>내보내기</S.DropMenuItemBox>
+      <S.DropMenuItemBox onClick={onBan}>입장 금지</S.DropMenuItemBox>
+    </>
+  );
 
-  const ForOwnerInChat = () => {
-    return targetStatus?.oper === "admin" ? (
+  const ForOwnerInChat =
+    targetStatus?.oper === "admin" ? (
       <S.DropMenuItemBox onClick={onDismissAdmin}>부방장 해제</S.DropMenuItemBox>
     ) : (
       <S.DropMenuItemBox onClick={onAppointAdmin}>부방장 지정</S.DropMenuItemBox>
     );
-  };
 
-  const UnBan = () => {
-    return <S.DropMenuItemBox onClick={onUnban}>입장 금지 해제</S.DropMenuItemBox>;
-  };
+  const UnBan = <S.DropMenuItemBox onClick={onUnban}>입장 금지 해제</S.DropMenuItemBox>;
 
   switch (menuFor) {
     case "friend":
       return (
         <ModalLayout ref={dropRef}>
-          <DefaultMenu />
-          <InviteGame />
-          <InviteChat />
+          {DefaultMenu}
+          {InviteGame}
+          {InviteChat}
         </ModalLayout>
       );
     case "participant":
       return (
         <ModalLayout ref={dropRef}>
-          <DefaultMenu />
-          <InviteGame />
-          <BlockInChat />
-          {(myOper === "owner" || (myOper === "admin" && targetStatus?.oper === "participant")) && (
-            <ForAdminInChat />
-          )}
-          {myOper === "owner" && <ForOwnerInChat />}
+          {DefaultMenu}
+          {InviteGame}
+          {BlockInChat}
+          {(myOper === "owner" || (myOper === "admin" && targetStatus?.oper === "participant")) &&
+            ForAdminInChat}
+          {myOper === "owner" && ForOwnerInChat}
         </ModalLayout>
       );
     case "banned":
       return (
         <ModalLayout ref={dropRef}>
-          <DefaultMenu />
-          <UnBan />
+          {DefaultMenu}
+          {UnBan}
         </ModalLayout>
       );
     case "player":
-      return (
-        <ModalLayout ref={dropRef}>
-          <DefaultMenu />
-        </ModalLayout>
-      );
+      return <ModalLayout ref={dropRef}>{DefaultMenu}</ModalLayout>;
     case "observer":
       return (
         <ModalLayout ref={dropRef}>
-          <DefaultMenu />
-          <InviteGame />
+          {DefaultMenu}
+          {InviteGame}
         </ModalLayout>
       );
     default:
