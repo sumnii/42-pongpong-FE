@@ -28,9 +28,7 @@ export default function ChatRoom() {
   function handleChatRoom(
     res: T.ChatData | T.HistoryData | T.ChatRoomData | T.AffectedData | T.BlockData,
   ) {
-    // TEST: 채팅방 내 전체 이벤트 리스너
     if (res.roomId !== Number(roomId) || res.type === "chat") return;
-    console.log("채팅방", res);
     if (res.type === "chatRoom") {
       const myRoomInfo = res.userList.filter((user) => user.username === getUsername())[0];
       if (myRoomInfo?.owner) myOper.current = "owner";

@@ -6,6 +6,7 @@ import FriendList from "./FriendList";
 import { UserListContext } from "hooks/context/UserListContext";
 import * as S from "../style";
 
+// TODO: 게임 구현 후 타입 파일로 보내기
 type UserListCase =
   | { listOf: "friend" | "player" | "observer" }
   | { listOf: "dm"; list: DmListArray | null }
