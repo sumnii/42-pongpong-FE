@@ -3,10 +3,14 @@ import { isAuth } from "userAuth";
 import GameItem from "./GameItem";
 import * as S from "./style";
 import RightSide from "@rightSide/RightSide";
+import { useEffect } from "react";
+import { getSocket } from "socket/socket";
 
 export default function GameList() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
+
+  const socket = getSocket();
 
   let gameCnt = 0;
   // 임시 더미데이터
@@ -26,6 +30,24 @@ export default function GameList() {
       player2Score: 2,
     },
   ];
+
+  function gameRoomListListener(res) {
+    // TODO: 핸들러
+  }
+
+  useEffect(() => {
+    socket.emit("subcribe", { type: "gameRoomList" });
+    return () => {
+      socket.emit("unsubcribe", { type: "gameRoomList" });
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("gameRoomList", gameRoomListListener);
+    return () => {
+      socket.emit("unsubcribe", gameRoomListListener);
+    };
+  }, []);
 
   return (
     <>
