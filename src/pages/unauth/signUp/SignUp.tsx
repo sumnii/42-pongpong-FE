@@ -13,7 +13,8 @@ export default function signUp() {
   const [idInput, setIdInput] = useState("");
   const [idCheck, setIdCheck] = useState("");
   const [pwInput, setPwInput] = useState("");
-  const [pwCheck, setPwCheck] = useState("");
+  const [pwRuleCheck, setPwRuleCheck] = useState("");
+  const [pwMatchCheck, setPwMatchCheck] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   const [phoneAuthInput, setPhoneAuthInput] = useState("");
   const [sendAuthBtn, setSendAuthBtn] = useState(false);
@@ -23,6 +24,9 @@ export default function signUp() {
   const [checkAuthBtn, setCheckAuthBtn] = useState(true);
   const [formCheck, setFormCheck] = useState("");
 
+  const passwdRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{8,}$/;
+  const phoneRegExp = /^[0-9]{0,13}$/;
+
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
     if (formCheck) setFormCheck("");
@@ -31,20 +35,28 @@ export default function signUp() {
 
   function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value);
+    // TEST: 테스트 기간동안 주석 처리 / 패스워드 정책 확인
+    if (event.target.value === "") setPwRuleCheck("");
+    else if (passwdRegExp.test(event.target.value)) setPwRuleCheck("");
+    else setPwRuleCheck("영문, 숫자, 특수문자($@!%*#?&) 조합으로 8자 이상 입력해 주세요.");
+
     if (formCheck) setFormCheck("");
-    if (pwCheck) setPwCheck("");
+    if (pwMatchCheck) setPwMatchCheck("");
   }
 
-  function onPwCheckHandler(event: eventChangeType) {
-    setPwCheck("패스워드가 일치하지 않습니다.");
+  function onPwMatchCheckHandler(event: eventChangeType) {
+    setPwMatchCheck("패스워드가 일치하지 않습니다.");
     if (pwInput == event.target.value) {
-      setPwCheck("패스워드가 일치합니다.");
+      setPwMatchCheck("패스워드가 일치합니다.");
     }
   }
 
   function onPhoneHandler(event: eventChangeType) {
-    setPhoneInput(event.target.value);
-    if (phoneCheck) setPhoneCheck("");
+    if (phoneRegExp.test(event.target.value)) {
+      setPhoneCheck("");
+      setPhoneInput(event.target.value);
+    } else setPhoneCheck("하이픈(-) 없이 숫자만 입력해 주세요.");
+    if (sendAuthBtn) setSendAuthBtn(false);
   }
 
   function onPhoneAuthHandler(event: eventChangeType) {
@@ -93,7 +105,7 @@ export default function signUp() {
     event.preventDefault();
     if (
       idCheck === "사용 가능한 아이디입니다." &&
-      pwCheck === "패스워드가 일치합니다." &&
+      pwMatchCheck === "패스워드가 일치합니다." &&
       phoneAuthCheck === "인증완료"
     ) {
       const userInfo: user.userInfoType = {
@@ -110,7 +122,8 @@ export default function signUp() {
       }
     } else {
       if (!(idCheck === "사용 가능한 아이디입니다.")) setFormCheck("아이디를 확인해주세요.");
-      else if (!(pwCheck === "패스워드가 일치합니다.")) setFormCheck("패스워드를 확인해주세요.");
+      else if (!(pwMatchCheck === "패스워드가 일치합니다."))
+        setFormCheck("패스워드를 확인해주세요.");
       else if (!(phoneAuthCheck === "인증완료")) setFormCheck("휴대폰 인증을 해주세요.");
     }
   }
@@ -138,7 +151,7 @@ export default function signUp() {
             <h2>회원가입</h2>
             <S.InputArea>
               <S.BtnWrapper>
-                <S.Input placeholder="아이디" onChange={onIdHandler}></S.Input>
+                <S.Input placeholder="아이디" maxLength={10} onChange={onIdHandler}></S.Input>
                 <S.Button type="button" onClick={onCheckIdHandler}>
                   중복확인
                 </S.Button>
@@ -156,6 +169,7 @@ export default function signUp() {
                   onChange={onPwHandler}
                 ></S.Input1>
               </S.BtnWrapper>
+              <S.Span color="red">{pwRuleCheck}</S.Span>
             </S.InputArea>
             <S.InputArea>
               <S.BtnWrapper>
@@ -163,20 +177,21 @@ export default function signUp() {
                   placeholder="패스워드 확인"
                   required
                   type="password"
-                  onChange={onPwCheckHandler}
+                  onChange={onPwMatchCheckHandler}
+                  disabled={pwInput.length === 0 || pwRuleCheck !== ""}
                 ></S.Input1>
               </S.BtnWrapper>
-              <S.Span color={pwCheck === "패스워드가 일치합니다." ? "green" : "red"}>
-                {pwCheck}
+              <S.Span color={pwMatchCheck === "패스워드가 일치합니다." ? "green" : "red"}>
+                {pwMatchCheck}
               </S.Span>
             </S.InputArea>
             <S.InputArea>
               <S.BtnWrapper>
                 <S.Input
                   placeholder="휴대폰 번호"
+                  value={phoneInput}
                   required
                   onChange={onPhoneHandler}
-                  disabled={sendAuthBtn}
                 ></S.Input>
                 <S.Button type="button" onClick={sendPhoneAuthHandler} disabled={sendAuthBtn}>
                   인증번호 받기
