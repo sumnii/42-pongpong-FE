@@ -99,6 +99,11 @@ export default function UserInfo({ listOf, username, subLine, userStatus }: T.Us
               targetStatus={userStatus}
             />
           )}
+          {isOpen && (
+            <Modal key={username}>
+              <DmModal targetUser={username} onClose={onClose} />
+            </Modal>
+          )}
         </S.UserItem>
       );
   }
