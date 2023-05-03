@@ -178,6 +178,7 @@ export default function signUp() {
                   required
                   type="password"
                   onChange={onPwMatchCheckHandler}
+                  disabled={pwInput.length === 0 || pwRuleCheck !== ""}
                 ></S.Input1>
               </S.BtnWrapper>
               <S.Span color={pwMatchCheck === "패스워드가 일치합니다." ? "green" : "red"}>
