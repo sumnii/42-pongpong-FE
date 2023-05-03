@@ -147,7 +147,7 @@ export default function signUp() {
             <h2>회원가입</h2>
             <S.InputArea>
               <S.BtnWrapper>
-                <S.Input placeholder="아이디" onChange={onIdHandler}></S.Input>
+                <S.Input placeholder="아이디" maxLength={10} onChange={onIdHandler}></S.Input>
                 <S.Button type="button" onClick={onCheckIdHandler}>
                   중복확인
                 </S.Button>
