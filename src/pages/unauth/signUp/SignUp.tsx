@@ -53,6 +53,7 @@ export default function signUp() {
   function onPhoneHandler(event: eventChangeType) {
     setPhoneInput(event.target.value);
     if (phoneCheck) setPhoneCheck("");
+    if (sendAuthBtn) setSendAuthBtn(false);
   }
 
   function onPhoneAuthHandler(event: eventChangeType) {
@@ -184,9 +185,9 @@ export default function signUp() {
               <S.BtnWrapper>
                 <S.Input
                   placeholder="휴대폰 번호"
+                  type="tel"
                   required
                   onChange={onPhoneHandler}
-                  disabled={sendAuthBtn}
                 ></S.Input>
                 <S.Button type="button" onClick={sendPhoneAuthHandler} disabled={sendAuthBtn}>
                   인증번호 받기
