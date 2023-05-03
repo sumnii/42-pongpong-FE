@@ -25,6 +25,7 @@ export default function signUp() {
   const [formCheck, setFormCheck] = useState("");
 
   const passwdRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+  const phoneRegExp = /^[0-9]{0,13}$/;
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
@@ -37,7 +38,7 @@ export default function signUp() {
     // TEST: 테스트 기간동안 주석 처리 / 패스워드 정책 확인
     if (event.target.value === "") setPwRuleCheck("");
     else if (passwdRegExp.test(event.target.value)) setPwRuleCheck("");
-    else setPwRuleCheck("영문, 숫자, 특수문자 조합으로 8자 이상 입력해주세요.");
+    else setPwRuleCheck("영문, 숫자, 특수문자 조합으로 8자 이상 입력해 주세요.");
 
     if (formCheck) setFormCheck("");
     if (pwMatchCheck) setPwMatchCheck("");
@@ -51,8 +52,10 @@ export default function signUp() {
   }
 
   function onPhoneHandler(event: eventChangeType) {
-    setPhoneInput(event.target.value);
-    if (phoneCheck) setPhoneCheck("");
+    if (phoneRegExp.test(event.target.value)) {
+      setPhoneCheck("");
+      setPhoneInput(event.target.value);
+    } else setPhoneCheck("하이픈(-) 없이 숫자만 입력해 주세요.");
     if (sendAuthBtn) setSendAuthBtn(false);
   }
 
@@ -185,7 +188,7 @@ export default function signUp() {
               <S.BtnWrapper>
                 <S.Input
                   placeholder="휴대폰 번호"
-                  type="tel"
+                  value={phoneInput}
                   required
                   onChange={onPhoneHandler}
                 ></S.Input>
