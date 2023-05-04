@@ -3,10 +3,15 @@ import { isAuth } from "userAuth";
 import GameItem from "./GameItem";
 import * as S from "./style";
 import RightSide from "@rightSide/RightSide";
+import { useState } from "react";
+import Modal from "modal/layout/Modal";
+import MatchGameModal from "modal/MatchGameModal";
 
 export default function GameList() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
+  const [showModal, setShowModal] = useState(false);
+  const [notice, setNotice] = useState("");
 
   let gameCnt = 0;
   // 임시 더미데이터
@@ -27,19 +32,25 @@ export default function GameList() {
     },
   ];
 
+  const openModalHandler = () => {
+    setShowModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       <S.PageLayout>
+        {showModal && (
+          <Modal setView={closeModalHandler}>
+            <MatchGameModal close={closeModalHandler} notice={notice} setNotice={setNotice} />
+          </Modal>
+        )}
         <S.HeaderBox>
           <S.H2>진행중인 게임</S.H2>
-          <S.MatchMakingBtn
-            onClick={() => {
-              // TODO: 모달 띄우기
-              alert("매치메이킹 모달!");
-            }}
-          >
-            매치메이킹 등록
-          </S.MatchMakingBtn>
+          <S.MatchMakingBtn onClick={openModalHandler}>매치메이킹 등록</S.MatchMakingBtn>
         </S.HeaderBox>
         <S.GameList>
           <S.GameItem head>
