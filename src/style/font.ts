@@ -29,7 +29,7 @@ export const h1 = `
 `;
 
 export const inBtn = `
-  ${body}
+  ${bodyBold}
   font-size: 1.0rem;
   line-height: 1.0rem;
 `;

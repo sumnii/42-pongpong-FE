@@ -21,6 +21,18 @@ const initialGameRoomList = [
     red: "서진",
     blue: "호쏭",
   },
+  {
+    roomId: 3,
+    rule: "arcade",
+    red: "서진",
+    blue: "호쏭",
+  },
+  {
+    roomId: 4,
+    rule: "arcade",
+    red: "서진",
+    blue: "호쏭",
+  },
 ];
 
 export default function GameList() {
@@ -65,16 +77,17 @@ export default function GameList() {
           </S.MatchMakingBtn>
         </S.HeaderBox>
         <S.GameList>
-          <S.GameItem head>
-            <GameItem no={"No"} p1={"P1"} p2={"P2"} head />
-          </S.GameItem>
           {gameRoomList &&
             gameRoomList.map((game) => {
               return (
                 // TODO: 내가 참여중인 게임은 관전 대신 재접속 띄우기?
-                <S.GameItem key={game.roomId}>
-                  <GameItem no={(gameCnt += 1)} p1={game.red} p2={game.blue} />
-                </S.GameItem>
+                <GameItem
+                  key={game.roomId}
+                  no={(gameCnt += 1)}
+                  rule={game.rule}
+                  p1={game.red}
+                  p2={game.blue}
+                />
               );
             })}
         </S.GameList>

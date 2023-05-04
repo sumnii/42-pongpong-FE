@@ -1,18 +1,19 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
 import * as button from "style/button";
+import * as color from "style/color";
 
 export const PageLayout = styled.div`
   height: 100%;
   padding: 5px 15px;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 `;
 
 export const HeaderBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0;
 `;
 
 export const H2 = styled.h2`
@@ -30,55 +31,82 @@ export const MatchMakingBtn = styled.button`
 
 export const GameList = styled.ul`
   padding: 0;
-`;
-
-export const GameItem = styled.li`
-  list-style: none;
-
-  height: 30px;
   display: flex;
-  align-items: center;
-  gap: 2px;
-
-  ${font.body}
-  ${(props: { head?: boolean }) => {
-    return props.head ? `font-weight: 600;` : "";
-  }}
+  flex-wrap: wrap;
+  gap: 15px;
 `;
 
 /*
  *      Game Item
  */
 
+export const GameItem = styled.li`
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+
+  width: calc((100% - 30px) / 3);
+  border: 1.5px solid;
+
+  ${font.body}
+`;
+
+export const GameHeaderBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px 0;
+  /* border-bottom: 1px solid; */
+`;
+
 export const No = styled.span`
-  width: 7%;
   text-align: center;
+  ${font.bodyBold}
+  margin-right: 5px;
 `;
 
-export const Player = styled.span`
-  width: 25%;
-  text-align: ${(props: { left?: boolean }) => {
-    return props.left ? "right" : "left";
-  }};
-`;
-
-export const Versus = styled.span`
-  width: 5%;
-  text-align: center;
-`;
-
-export const Score = styled.span`
-  width: 11.5%;
-  text-align: ${(props: { left?: boolean }) => {
-    return props.left ? "right" : "left";
-  }};
+export const Rule = styled.span`
+  text-align: left;
+  ${font.body}
+  margin-right: auto;
 `;
 
 export const EntryBtn = styled.button`
-  width: 10%;
   ${button.mini}
-  ${(props: { head?: boolean }) => {
-    return props.head ? "background-color: white; cursor: default;" : "";
+  width: 35px;
+  height: 22px;
+`;
+
+export const PlayersBox = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px;
+`;
+
+export const PlayerBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+`;
+
+export const PlayerAvatar = styled.div<{ red?: boolean; blue?: boolean }>`
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  ${(props) => {
+    if (props.red) return `border: 1px solid ${color.lightRed};`;
+    if (props.blue) return `border: 1px solid ${color.lightBlue};`;
   }}
-  margin: auto;
+`;
+
+export const PlayerName = styled.span`
+  text-align: center;
+  ${font.footer};
+`;
+
+export const Versus = styled.span`
+  text-align: center;
 `;

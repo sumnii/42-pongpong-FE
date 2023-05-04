@@ -1,32 +1,34 @@
-import { useNavigate } from "react-router-dom"
-import * as S from "./style"
+import { useNavigate } from "react-router-dom";
+import * as S from "./style";
 
-interface GameItemProps {
-  no: string | number
-  p1: string
-  p2: string
-  p1Score: string | number
-  p2Score: string | number
-  head?: boolean
-}
+type GameItemProps = {
+  no: number;
+  rule: string;
+  p1: string;
+  p2: string;
+};
 
-export default function GameItem(props: GameItemProps) {
-  const navigate = useNavigate()
+export default function GameItem({ no, rule, p1, p2 }: GameItemProps) {
+  const navigate = useNavigate();
 
   return (
-    <>
-      <S.No>{props.no}</S.No>
-      <S.Player left>{props.p1}</S.Player>
-      <S.Versus>vs</S.Versus>
-      <S.Player>{props.p2}</S.Player>
-      <S.Score left>{props.p1Score}</S.Score>
-      <S.Versus>:</S.Versus>
-      <S.Score>{props.p2Score}</S.Score>
-      {props.head ? (
-        <S.EntryBtn head />
-      ) : (
-        <S.EntryBtn onClick={() => navigate(`/game/${props.no}`)}>관전</S.EntryBtn>
-      )}
-    </>
-  )
+    <S.GameItem>
+      <S.GameHeaderBox>
+        <S.No>{no}</S.No>
+        <S.Rule>🚩 {rule}</S.Rule>
+        <S.EntryBtn onClick={() => navigate(`/game/${no}`)}>관전</S.EntryBtn>
+      </S.GameHeaderBox>
+      <S.PlayersBox>
+        <S.PlayerBox>
+          <S.PlayerAvatar red />
+          <S.PlayerName>{p1}</S.PlayerName>
+        </S.PlayerBox>
+        <S.Versus>vs</S.Versus>
+        <S.PlayerBox>
+          <S.PlayerAvatar blue />
+          <S.PlayerName>{p2}</S.PlayerName>
+        </S.PlayerBox>
+      </S.PlayersBox>
+    </S.GameItem>
+  );
 }
