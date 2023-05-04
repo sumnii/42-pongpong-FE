@@ -21,13 +21,15 @@ export default function Screen() {
   const [blueX, setBlueX] = useState(0);
   const [redX, setRedX] = useState(0);
   const [camp, setCamp] = useState("");
+  const [result, setResult] = useState("");
+  const [score, setScore] = useState<{blue: number; red: number}>({blue: 0, red: 0});
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
 
   const listener = (res: { type: string; status: any }) => {
-    if (res.status.roomId !== Number(gameId)) return;
     if (res.type === "game") {
+      if (res.status.roomId !== Number(gameId)) return;
       if (roomId !== res.status.roomId) {
         setRoomId(res.status.roomId);
         console.log(res.status);
@@ -47,10 +49,27 @@ export default function Screen() {
       setBallY(res.status.ballY);
       setBlueY(res.status.bluePaddleY);
       setRedY(res.status.redPaddleY);
+      if (score?.blue !== res.status.blueScore || score?.red !== res.status.redScore) {
+        setScore({
+          red: res.status.redScore,
+          blue: res.status.blueScore,
+        })
+      }
+    } else if (res.type === "win") {
+      setResult("승리");
+    } else if (res.type === "lose") {
+      setResult("패배")
     } else {
       console.log(res);
     }
   };
+
+  useEffect(() => {
+    socket.on("message", listener);
+    return () => {
+      socket.off("message", listener);
+    };
+  }, [roomId]);
 
   const keyDownHandler = (e: KeyboardEvent) => {
     if (e.keyCode === 38) {
@@ -102,20 +121,33 @@ export default function Screen() {
       ctx.closePath();
     }
   }
+
+  function drawResult() {
+    if (ctx && canvas && result) {
+      ctx.font = "25px Arial";
+      if (result === "승리") ctx.fillStyle = "#0095DD";
+      else if (result === "패배") ctx.fillStyle = "#FF0088";
+      ctx.fillText(result , 225, canvas.height / 3);
+    }
+  }
+
+  function drawScore() {
+    if (ctx && canvas) {
+      ctx.font = "25px Arial";
+      ctx.fillStyle = "#000000";
+      ctx.fillText(`${score.red} : ${score.blue}` , 235, 50);
+    }
+  }
   useEffect(() => {
     if (ctx && canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height); //clear
       drawBall(ballX, ballY, ballRadius);
       drawBluePaddle(blueX, blueY, blueWidth, blueHeight);
       drawRedPaddle(redX, redY, redWidth, redHeight);
+      drawScore();
+      drawResult();
     }
   }, [ballX, ballY, redY, blueY]);
 
-  useEffect(() => {
-    socket.on("message", listener);
-    return () => {
-      socket.off("message", listener);
-    };
-  }, [roomId]);
   return <S.Canvas ref={canvasRef} width={540} height={360}></S.Canvas>;
 }
