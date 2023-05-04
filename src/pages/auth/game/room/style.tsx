@@ -21,3 +21,9 @@ export const H2 = styled.h2`
   margin: 0;
   padding: 5px 0;
 `;
+
+export const Canvas = styled.canvas`
+  background: #eee;
+  display: block;
+  margin: 0 auto;
+`
