@@ -26,6 +26,8 @@ export default function MatchGameModal(props: modalProps) {
       navigate(`/game/${res.roomId}`);
     } else if (res.status === "searching") {
       props.setNotice("게임 찾는 중...");
+    } else if (res.status === "error") {
+      alert(res.detail);
     }
   };
 
