@@ -35,6 +35,18 @@ const initialGameRoomList = [
     red: "서진",
     blue: "호쏭",
   },
+  {
+    roomId: 3,
+    rule: "arcade",
+    red: "서진",
+    blue: "호쏭",
+  },
+  {
+    roomId: 4,
+    rule: "arcade",
+    red: "서진",
+    blue: "호쏭",
+  },
 ];
 
 export default function GameList() {
