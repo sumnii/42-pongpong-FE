@@ -22,18 +22,15 @@ export default function Screen() {
   const [redX, setRedX] = useState(0);
   const [camp, setCamp] = useState("");
   const [result, setResult] = useState("");
-  const [score, setScore] = useState<{blue: number; red: number}>({blue: 0, red: 0});
+  const [score, setScore] = useState<{ blue: number; red: number }>({ blue: 0, red: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
 
-  const listener = (res: { type: string; status: any }) => {
+  const listener = (res: { type: string; roomId?: number; status: any }) => {
     if (res.type === "game") {
       if (res.status.roomId !== Number(gameId)) return;
-      if (roomId !== res.status.roomId) {
-        setRoomId(res.status.roomId);
-        console.log(res.status);
-      }
+      if (roomId !== res.status.roomId) setRoomId(res.status.roomId);
       if (camp === "") {
         if (username === res.status.blueUser) setCamp("blue");
         else if (username === res.status.redUser) setCamp("red");
@@ -49,16 +46,22 @@ export default function Screen() {
       setBallY(res.status.ballY);
       setBlueY(res.status.bluePaddleY);
       setRedY(res.status.redPaddleY);
-      if (score?.blue !== res.status.blueScore || score?.red !== res.status.redScore) {
+      if (score.blue !== res.status.blueScore || score.red !== res.status.redScore) {
         setScore({
           red: res.status.redScore,
           blue: res.status.blueScore,
-        })
+        });
       }
     } else if (res.type === "win") {
-      setResult("승리");
+      if (res.roomId !== Number(gameId)) return;
+      if (score.blue === 5 || score.red === 5) {
+        setResult("승리");
+      } else {
+        setResult("상대방이 나갔습니다")
+      }
     } else if (res.type === "lose") {
-      setResult("패배")
+      if (res.roomId !== Number(gameId)) return;
+      setResult("패배");
     } else {
       console.log(res);
     }
@@ -69,7 +72,7 @@ export default function Screen() {
     return () => {
       socket.off("message", listener);
     };
-  }, [roomId]);
+  }, [roomId, score]);
 
   const keyDownHandler = (e: KeyboardEvent) => {
     if (e.keyCode === 38) {
@@ -124,10 +127,11 @@ export default function Screen() {
 
   function drawResult() {
     if (ctx && canvas && result) {
-      ctx.font = "25px Arial";
+      ctx.font = "35px Arial";
+      ctx.textAlign = "center";
       if (result === "승리") ctx.fillStyle = "#0095DD";
       else if (result === "패배") ctx.fillStyle = "#FF0088";
-      ctx.fillText(result , 225, canvas.height / 3);
+      ctx.fillText(result, canvas.width / 2, canvas.height / 3);
     }
   }
 
@@ -135,9 +139,11 @@ export default function Screen() {
     if (ctx && canvas) {
       ctx.font = "25px Arial";
       ctx.fillStyle = "#000000";
-      ctx.fillText(`${score.red} : ${score.blue}` , 235, 50);
+      ctx.textAlign = "center";
+      ctx.fillText(`${score.red} : ${score.blue}`, canvas.width / 2, canvas.height / 10);
     }
   }
+
   useEffect(() => {
     if (ctx && canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height); //clear
@@ -147,7 +153,7 @@ export default function Screen() {
       drawScore();
       drawResult();
     }
-  }, [ballX, ballY, redY, blueY]);
+  }, [ballX, ballY, redY, blueY, result]);
 
   return <S.Canvas ref={canvasRef} width={540} height={360}></S.Canvas>;
 }
