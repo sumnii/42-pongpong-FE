@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getSocket } from "socket/socket";
 import { getUsername } from "userAuth";
 import * as S from "./style";
 
-export default function Screen() {
+type PropsType = {
+  result: string;
+  setResult: Dispatch<SetStateAction<string>>;
+}
+
+export default function Screen(props: PropsType) {
   const { gameId } = useParams();
   const socket = getSocket();
   const username = getUsername();
@@ -21,7 +26,6 @@ export default function Screen() {
   const [blueX, setBlueX] = useState(0);
   const [redX, setRedX] = useState(0);
   const [camp, setCamp] = useState("");
-  const [result, setResult] = useState("");
   const [score, setScore] = useState<{ blue: number; red: number }>({ blue: 0, red: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvas = canvasRef.current;
@@ -55,13 +59,13 @@ export default function Screen() {
     } else if (res.type === "win") {
       if (res.roomId !== Number(gameId)) return;
       if (score.blue === 5 || score.red === 5) {
-        setResult("승리");
+        props.setResult("승리");
       } else {
-        setResult("상대방이 나갔습니다")
+        props.setResult("상대방이 나갔습니다")
       }
     } else if (res.type === "lose") {
       if (res.roomId !== Number(gameId)) return;
-      setResult("패배");
+      props.setResult("패배");
     } else {
       console.log(res);
     }
@@ -126,12 +130,12 @@ export default function Screen() {
   }
 
   function drawResult() {
-    if (ctx && canvas && result) {
+    if (ctx && canvas && props.result) {
       ctx.font = "35px Arial";
       ctx.textAlign = "center";
-      if (result === "승리") ctx.fillStyle = "#0095DD";
-      else if (result === "패배") ctx.fillStyle = "#FF0088";
-      ctx.fillText(result, canvas.width / 2, canvas.height / 3);
+      if (props.result === "승리") ctx.fillStyle = "#0095DD";
+      else if (props.result === "패배") ctx.fillStyle = "#FF0088";
+      ctx.fillText(props.result, canvas.width / 2, canvas.height / 3);
     }
   }
 
@@ -153,7 +157,7 @@ export default function Screen() {
       drawScore();
       drawResult();
     }
-  }, [ballX, ballY, redY, blueY, result]);
+  }, [ballX, ballY, redY, blueY, props.result]);
 
   return <S.Canvas ref={canvasRef} width={540} height={360}></S.Canvas>;
 }

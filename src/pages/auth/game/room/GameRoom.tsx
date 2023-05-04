@@ -13,30 +13,39 @@ export default function GameRoom() {
   if (Number.isNaN(Number(gameId))) navigate("/404");
   const socket = getSocket();
   const roomId = Number(gameId);
+  const [result, setResult] = useState("");
 
   const listener = (res: { type: string; status: any }) => {
-    console.log(res);
+    if (res.status === "approved") {
+      navigate("/game/list");
+    } else {
+      console.log(res);
+    }
   };
 
   useEffect(() => {
     socket.on("exitGameRoomResult", listener);
     socket.emit("subscribe", {
       type: "gameRoom",
-      roomId: roomId
+      roomId: roomId,
     });
     return () => {
       socket.off("exitGameRoomResult", listener);
       socket.emit("unsubscribe", {
         type: "gameRoom",
-        roomId: roomId
+        roomId: roomId,
       });
     };
   }, [roomId]);
 
   const exitGameHandler = () => {
-    socket.emit("exitGameRoom", {
-      roomId: roomId,
-    });
+    if (result) {
+      navigate("/game/list");
+    } else {
+      socket.emit("exitGameRoom", {
+        roomId: roomId,
+      });
+    }
   };
 
   return (
@@ -44,9 +53,9 @@ export default function GameRoom() {
       <S.PageLayout>
         <S.HeaderBox>
           <S.H2>{gameId}번 게임방 접속 완료</S.H2>
+          <button onClick={exitGameHandler}>나가기</button>
         </S.HeaderBox>
-        <button onClick={exitGameHandler}>나가기</button>
-        <Screen />
+        <Screen result={result} setResult={setResult} />
       </S.PageLayout>
       <RightSide />
     </>
