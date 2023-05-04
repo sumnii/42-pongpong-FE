@@ -1,38 +1,39 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
 import GameItem from "./GameItem";
-import * as S from "./style";
 import RightSide from "@rightSide/RightSide";
-import { useEffect } from "react";
 import { getSocket } from "socket/socket";
+import * as T from "socket/passive/gameType";
+import * as S from "./style";
+
+// 임시 더미데이터
+const initialGameRoomList = [
+  {
+    roomId: 1,
+    rule: "arcade",
+    red: "숨송",
+    blue: "아무개",
+  },
+  {
+    roomId: 2,
+    rule: "arcade",
+    red: "서진",
+    blue: "호쏭",
+  },
+];
 
 export default function GameList() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
 
   const socket = getSocket();
-
+  const [gameRoomList, setGameRoomList] = useState<T.GameRoomListArray>(initialGameRoomList);
   let gameCnt = 0;
-  // 임시 더미데이터
-  const gameData = [
-    {
-      id: 1,
-      player1: "숨송",
-      player2: "아무개",
-      player1Score: 3,
-      player2Score: 4,
-    },
-    {
-      id: 2,
-      player1: "서진",
-      player2: "호쏭",
-      player1Score: 2,
-      player2Score: 2,
-    },
-  ];
 
-  function gameRoomListListener(res) {
-    // TODO: 핸들러
+  function gameRoomListListener(res: T.GameRoomListData) {
+    if (res.type !== "gameRoomList") return;
+    setGameRoomList(res.list);
   }
 
   useEffect(() => {
@@ -65,22 +66,17 @@ export default function GameList() {
         </S.HeaderBox>
         <S.GameList>
           <S.GameItem head>
-            <GameItem no={"No"} p1={"P1"} p2={"P2"} p1Score={"P1"} p2Score={"P2"} head />
+            <GameItem no={"No"} p1={"P1"} p2={"P2"} head />
           </S.GameItem>
-          {gameData.map((game) => {
-            return (
-              // TODO: 내가 참여중인 게임은 관전 대신 재접속 띄우기?
-              <S.GameItem key={game.id}>
-                <GameItem
-                  no={(gameCnt += 1)}
-                  p1={game.player1}
-                  p2={game.player2}
-                  p1Score={game.player1Score}
-                  p2Score={game.player2Score}
-                />
-              </S.GameItem>
-            );
-          })}
+          {gameRoomList &&
+            gameRoomList.map((game) => {
+              return (
+                // TODO: 내가 참여중인 게임은 관전 대신 재접속 띄우기?
+                <S.GameItem key={game.roomId}>
+                  <GameItem no={(gameCnt += 1)} p1={game.red} p2={game.blue} />
+                </S.GameItem>
+              );
+            })}
         </S.GameList>
       </S.PageLayout>
       <RightSide />
