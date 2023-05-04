@@ -74,20 +74,6 @@ export default function GameList() {
     setShowModal(false);
   };
 
-  useEffect(() => {
-    socket.emit("subcribe", { type: "gameRoomList" });
-    return () => {
-      socket.emit("unsubcribe", { type: "gameRoomList" });
-    };
-  }, []);
-
-  useEffect(() => {
-    socket.on("gameRoomList", gameRoomListListener);
-    return () => {
-      socket.emit("unsubcribe", gameRoomListListener);
-    };
-  }, []);
-
   return (
     <>
       <S.PageLayout>
