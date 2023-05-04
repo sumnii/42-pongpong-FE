@@ -295,3 +295,16 @@ export const SettingPwLayout = styled.div`
   font-size: 12px;
   border-radius: 20px;
 `
+
+/* 
+  match game
+*/
+
+export const MatchGameLayout = styled.div`
+  position: relative;
+  width: 100%;
+  text-align: center;
+  background: white;
+  font-size: 12px;
+  border-radius: 20px;
+`
