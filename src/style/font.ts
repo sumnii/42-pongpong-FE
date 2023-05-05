@@ -36,6 +36,6 @@ export const inBtn = `
 
 export const footer = `
   ${body}
-  font-size: 1.0rem;
+  font-size: 1.1rem;
   line-height: 1.4rem;
 `;

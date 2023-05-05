@@ -57,7 +57,6 @@ export const GameHeaderBox = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 5px 10px 0;
-  /* border-bottom: 1px solid; */
 `;
 
 export const No = styled.span`
@@ -92,19 +91,21 @@ export const PlayerBox = styled.div`
   gap: 5px;
 `;
 
-export const PlayerAvatar = styled.div<{ red?: boolean; blue?: boolean }>`
-  width: 45px;
-  height: 45px;
+export const PlayerAvatar = styled.img<{ red?: boolean; blue?: boolean }>`
+  width: 5vw;
+  height: 5vw;
   border-radius: 50%;
   ${(props) => {
-    if (props.red) return `border: 1px solid ${color.lightRed};`;
-    if (props.blue) return `border: 1px solid ${color.lightBlue};`;
+    if (props.red) return `border: 1.5px solid ${color.lightRed};`;
+    if (props.blue) return `border: 1.5px solid ${color.lightBlue};`;
   }}
 `;
 
 export const PlayerName = styled.span`
+  width: 6vw;
   text-align: center;
   ${font.footer};
+  line-height: 1.3;
 `;
 
 export const Versus = styled.span`
