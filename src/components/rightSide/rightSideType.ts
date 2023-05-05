@@ -19,6 +19,7 @@ export type TargetStatusType = {
 export type DropMenuProps = {
   onClose: () => void;
   onDmOpen: () => void;
+  onInviteGameOpen: () => void;
   menuFor: string;
   targetUser: string;
   targetStatus?: TargetStatusType;
