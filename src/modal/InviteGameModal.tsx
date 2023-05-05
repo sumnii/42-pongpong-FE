@@ -22,16 +22,20 @@ export default function InviteGameModal(props: modalProps) {
 
   const listener = (res: any) => {
     console.log(res);
-    if (res.username !== props.targetUser) return ;
+    
     setStatus(res.status);
+    if (res.status === "error") {
+      alert(res.detail);
+    } else if (res.status === "warning") {
+      setNotice(res.detail);
+    }
+    if (res.username !== props.targetUser) return ;
     if (res.status === "waiting") {
       setNotice(`${res.username}님 수락 기다리는 중...`);
     } else if (res.status === "accept") {
       //navigate(`/game/${res.roomId}`); // game roomId x
     } else if (res.status === "decline") {
       setNotice(`${res.username}님과의 게임이 성사되지 않았습니다.`)
-    } else if (res.status === "error") {
-      alert(res.detail);
     }
   };
 
