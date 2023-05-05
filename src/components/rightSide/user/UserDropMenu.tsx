@@ -77,7 +77,7 @@ export default function UserDropMenu({
     targetStatus?.status === "login" ? <S.DropMenuItemBox onClick={handleInviteGame}>게임 신청</S.DropMenuItemBox> : <></>;
 
   const InviteChat =
-    myOper !== "participant" && targetStatus?.status === "login" ? (
+    roomId && myOper !== "participant" && targetStatus?.status === "login" ? (
       <InviteBtn roomId={roomId} username={targetUser} close={onClose} />
     ) : (
       <></>
