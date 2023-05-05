@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import * as S from "./style"
 
 type modalProps = {
@@ -7,12 +8,13 @@ type modalProps = {
 }
 
 export default function Modal(props: modalProps) {
-  return (
+  const modalRoot = document.getElementById("modal-root");
+  return createPortal(
     <>
-      <S.Backdrop onClick={props.setView}/>
+      <S.Backdrop onClick={props.setView} />
       <S.Modal id={props.set} open>
         {props.children}
       </S.Modal>
-    </>
+    </>, modalRoot as Element
   )
 }
