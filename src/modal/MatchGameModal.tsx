@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from "./layout/style";
 import { useNavigate } from "react-router-dom";
 import { getSocket } from "socket/socket";

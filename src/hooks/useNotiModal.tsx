@@ -4,11 +4,13 @@ import Modal from "modal/layout/Modal";
 import NotificationModal from "modal/NotificationModal";
 
 export type NotiType = {
+  type: string;
   title: string;
   chatId?: number;
   chatTitle?: string;
   dmId?: number;
   gameId?: number;
+  from?: string;
 };
 
 type InvitationType = {
@@ -28,6 +30,7 @@ export default function useNotiModal(status: string) {
       setNoti((prev) => [
         ...prev,
         {
+          type: "chat",
           title: `${res.from} 님으로 부터 #${res.roomId} 채팅방에 초대 되었습니다.`,
           chatId: res.roomId,
           chatTitle: "초대된 ",
@@ -35,6 +38,17 @@ export default function useNotiModal(status: string) {
       ]);
       setNewNoti(true);
       if (status === "login") setShowNotiModal(true); // 게임 중 일때는 팝업 x
+    } else if (res.type === "gameInvitation") {
+      setNoti((prev) => [
+        ...prev,
+        {
+          type: "game",
+          title: `${res.from} 님으로 부터 게임 신청이 왔습니다.`,
+          from: res.from,
+        },
+      ]);
+      setNewNoti(true);
+      if (status === "login") setShowNotiModal(true);
     }
   };
 

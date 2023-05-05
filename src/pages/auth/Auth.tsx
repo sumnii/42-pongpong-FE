@@ -69,9 +69,15 @@ function Auth() {
     socket.emit("subscribe", {
       type: "chatInvitation",
     });
+    socket.emit("subscribe", {
+      type: "gameInvitation",
+    });
     return () => {
       socket.emit("unsubscribe", {
         type: "chatInvitation",
+      });
+      socket.emit("unsubscribe", {
+        type: "gameInvitation",
       });
     };
   }, []);
