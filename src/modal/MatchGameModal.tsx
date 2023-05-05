@@ -10,6 +10,7 @@ type modalProps = {
 export default function MatchGameModal(props: modalProps) {
   const [option, setOption] = useState("");
   const [notice, setNotice] = useState("");
+  const [status, setStatus] = useState("");
   const socket = getSocket();
   const navigate = useNavigate();
 
@@ -20,20 +21,31 @@ export default function MatchGameModal(props: modalProps) {
 
   const listener = (res: any) => {
     console.log(res);
-    setNotice("");
+    setStatus(res.status);
     if (res.status === "match") {
       navigate(`/game/${res.roomId}`);
     } else if (res.status === "searching") {
       setNotice("게임 찾는 중...");
     } else if (res.status === "error") {
       alert(res.detail);
+    } else {
+      console.log(res);
+    }
+  };
+
+  const cancelListener = (res: any) => {
+    console.log(res);
+    if (res.status === "approved") {
+      props.close();
     }
   };
 
   useEffect(() => {
     socket.on("searchGameResult", listener);
+    socket.on("cancleSearchResult", cancelListener);
     return () => {
       socket.off("searchGameResult", listener);
+      socket.off("cancleSearchResult", cancelListener);
     };
   });
 
@@ -46,6 +58,13 @@ export default function MatchGameModal(props: modalProps) {
     } else {
       setNotice("옵션을 선택해주세요.");
     }
+  }
+
+  function cancelHandler() {
+    console.log(option)
+    socket.emit("cancleSearch", {
+      rule: option,
+    })
   }
 
   return (
@@ -62,8 +81,8 @@ export default function MatchGameModal(props: modalProps) {
         </S.Wrapper>
         <S.Span color="red">{notice}</S.Span>
         <S.Wrapper>
-          <S.ModalButton2 type="submit">확인</S.ModalButton2>
-          <S.ModalButton2 type="button" onClick={props.close}>
+          <S.ModalButton2 type="submit" disabled={status === "searching"}>확인</S.ModalButton2>
+          <S.ModalButton2 type="button" onClick={cancelHandler}>
             취소
           </S.ModalButton2>
         </S.Wrapper>
