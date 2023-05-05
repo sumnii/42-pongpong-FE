@@ -20,8 +20,8 @@ const initialGameRoomList = [
   {
     roomId: 2,
     rule: "arcade",
-    red: "서진",
-    blue: "호쏭",
+    red: "sumsong",
+    blue: "안녕하세요안녕하세요",
   },
   {
     roomId: 3,
@@ -53,16 +53,16 @@ export default function GameList() {
   }
 
   useEffect(() => {
-    socket.emit("subcribe", { type: "gameRoomList" });
+    socket.emit("subscribe", { type: "gameRoomList" });
     return () => {
-      socket.emit("unsubcribe", { type: "gameRoomList" });
+      socket.emit("unsubscribe", { type: "gameRoomList" });
     };
   }, []);
 
   useEffect(() => {
     socket.on("gameRoomList", gameRoomListListener);
     return () => {
-      socket.emit("unsubcribe", gameRoomListListener);
+      socket.off("gameRoomList", gameRoomListListener);
     };
   }, []);
 
