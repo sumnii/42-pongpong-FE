@@ -39,7 +39,7 @@ export async function getAvatar(username: string) {
     const res = await axios.get<Blob>(`/user/avatar/${username}`, {
       responseType: "blob",
     });
-    return window.URL.createObjectURL(res.data);
+    return URL.createObjectURL(res.data);
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {
       console.error(err.response);
