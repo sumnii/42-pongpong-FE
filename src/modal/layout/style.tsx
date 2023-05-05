@@ -53,10 +53,17 @@ export const Button = styled.button`
   border: 1px solid lightgray;
   line-height: 1.5;
 `;
+
 export const Span = styled.span`
   font-size: 11px;
   color: ${(props) => props.color};
   cursor: pointer;
+`;
+
+export const Span2 = styled.span`
+  font-size: 11px;
+  color: ${(props) => props.color};
+  position: absolute;
 `;
 
 export const ModalButton2 = styled(Button)`
@@ -130,6 +137,7 @@ export const Wrapper = styled.div`
   margin: 5% 0;
   display: flex;
   justify-content: space-around;
+  align-items: center;
 `;
 
 /*

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as S from "./layout/style";
 import { useNavigate } from "react-router-dom";
 import { getSocket } from "socket/socket";
+import LoadingCircle from "components/LoadingCircle";
 
 type modalProps = {
   close: () => void;
@@ -48,6 +49,8 @@ export default function InviteGameModal(props: modalProps) {
 
   function setHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
+    setNotice("");
+    setStatus("waiting");
     if (option) {
       socket.emit("inviteGame", {
         username: props.targetUser,
@@ -70,7 +73,10 @@ export default function InviteGameModal(props: modalProps) {
             <option value="arcade">특별 게임</option>
           </select>
         </S.Wrapper>
-        <S.Span color="red">{notice}</S.Span>
+        <S.Wrapper>
+          <S.Span2 color="red">{notice}</S.Span2>
+          {notice && status === "waiting" && <LoadingCircle w={30} h={30} />}
+        </S.Wrapper>
         <S.Wrapper>
           <S.ModalButton2 type="submit" disabled={status === "waiting"}>
             확인

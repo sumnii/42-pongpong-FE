@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as S from "./layout/style";
 import { useNavigate } from "react-router-dom";
 import { getSocket } from "socket/socket";
+import LoadingCircle from "components/LoadingCircle";
 
 type modalProps = {
   close: () => void;
@@ -51,6 +52,7 @@ export default function MatchGameModal(props: modalProps) {
 
   function setHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
+    setStatus("searching");
     if (option) {
       socket.emit("searchGame", {
         rule: option,
@@ -79,7 +81,10 @@ export default function MatchGameModal(props: modalProps) {
             <option value="arcade">특별 게임</option>
           </select>
         </S.Wrapper>
-        <S.Span color="red">{notice}</S.Span>
+        <S.Wrapper>
+          <S.Span2 color="red">{notice}</S.Span2>
+          {notice && status === "searching" && <LoadingCircle w={30} h={30} />}
+        </S.Wrapper>
         <S.Wrapper>
           <S.ModalButton2 type="submit" disabled={status === "searching"}>확인</S.ModalButton2>
           <S.ModalButton2 type="button" onClick={cancelHandler}>
