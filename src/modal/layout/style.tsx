@@ -25,7 +25,7 @@ export const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
+  ${(props) => (props.id !== "noBack" ? "background-color: rgba(0, 0, 0, 0.4);" : "")}
   z-index: 1;
 `;
 
@@ -294,7 +294,7 @@ export const SettingPwLayout = styled.div`
   background: white;
   font-size: 12px;
   border-radius: 20px;
-`
+`;
 
 /* 
   match game
@@ -307,4 +307,22 @@ export const MatchGameLayout = styled.div`
   background: white;
   font-size: 12px;
   border-radius: 20px;
-`
+`;
+
+/* 
+  accept game
+*/
+
+export const AcceptGameLayout = styled.div`
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background: white;
+  font-size: 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+`;
+

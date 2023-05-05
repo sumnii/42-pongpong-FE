@@ -2,7 +2,8 @@ import { useState } from "react";
 import Modal from "modal/layout/Modal";
 
 type ModalProps = {
-  children: React.ReactElement
+  children: React.ReactElement;
+  back?: string;
 };
 
 export default function useGameModal() {
@@ -18,7 +19,7 @@ export default function useGameModal() {
 
   function GameModal(props: ModalProps) {
     return (
-      <Modal setView={onOpen}>
+      <Modal setView={onOpen} back={props.back}>
         {props.children}
       </Modal>
     );
