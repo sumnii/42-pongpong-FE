@@ -72,7 +72,7 @@ export default function MatchGameModal(props: modalProps) {
       <h2>게임 매치 등록하기</h2>
       <form onSubmit={setHandler}>
         <S.Wrapper>
-          <select onChange={setStatusHandler}>
+          <select onChange={setStatusHandler} disabled={status === "searching"}>
             <option value="opt">-- 옵션을 선택해주세요 --</option>
             <option value="normal">일반 게임</option>
             <option value="rank">랭크 게임</option>

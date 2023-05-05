@@ -22,20 +22,20 @@ export default function InviteGameModal(props: modalProps) {
 
   const listener = (res: any) => {
     console.log(res);
-    
+
     setStatus(res.status);
     if (res.status === "error") {
       alert(res.detail);
     } else if (res.status === "warning") {
       setNotice(res.detail);
     }
-    if (res.username !== props.targetUser) return ;
+    if (res.username !== props.targetUser) return;
     if (res.status === "waiting") {
       setNotice(`${res.username}님 수락 기다리는 중...`);
     } else if (res.status === "accept") {
       //navigate(`/game/${res.roomId}`); // game roomId x
     } else if (res.status === "decline") {
-      setNotice(`${res.username}님과의 게임이 성사되지 않았습니다.`)
+      setNotice(`${res.username}님과의 게임이 성사되지 않았습니다.`);
     }
   };
 
@@ -63,7 +63,7 @@ export default function InviteGameModal(props: modalProps) {
       <h2>{props.targetUser} 에게 게임 신청 하기</h2>
       <form onSubmit={setHandler}>
         <S.Wrapper>
-          <select onChange={setStatusHandler}>
+          <select onChange={setStatusHandler} disabled={status === "waiting"}>
             <option value="opt">-- 옵션을 선택해주세요 --</option>
             <option value="normal">일반 게임</option>
             <option value="rank">랭크 게임</option>
@@ -72,7 +72,9 @@ export default function InviteGameModal(props: modalProps) {
         </S.Wrapper>
         <S.Span color="red">{notice}</S.Span>
         <S.Wrapper>
-          <S.ModalButton2 type="submit" disabled={status === "waiting"}>확인</S.ModalButton2>
+          <S.ModalButton2 type="submit" disabled={status === "waiting"}>
+            확인
+          </S.ModalButton2>
           <S.ModalButton2 type="button" disabled={status === "waiting"} onClick={props.close}>
             취소
           </S.ModalButton2>
