@@ -12,7 +12,7 @@ import { ExitDmResultType } from "socket/active/dmEventType";
 import * as T from "@rightSide/rightSideType";
 import * as S from "./style";
 import InviteGameModal from "modal/InviteGameModal";
-import useInviteGameModal from "hooks/useInviteGameModal";
+import useGameModal from "hooks/useGameModal";
 
 export default function UserInfo({ listOf, username, subLine, userStatus }: T.UserInfoProps) {
   const me = getUsername() === username;
@@ -21,7 +21,7 @@ export default function UserInfo({ listOf, username, subLine, userStatus }: T.Us
   const { isMouseEnter, onLeave } = useMouseOver({ listOf, user: username });
   const queryClient = useQueryClient();
   const socket = getSocket();
-  const InviteGame = useInviteGameModal();
+  const InviteGame = useGameModal();
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${username}`],
@@ -110,9 +110,9 @@ export default function UserInfo({ listOf, username, subLine, userStatus }: T.Us
           )}
           {
             InviteGame.isOpen && (
-              <InviteGame.InviteModal key={username}>
+              <InviteGame.GameModal key={username}>
                 <InviteGameModal targetUser={username} close={InviteGame.onClose} />
-              </InviteGame.InviteModal>
+              </InviteGame.GameModal>
             )
           }
         </S.UserItem>

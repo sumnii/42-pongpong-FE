@@ -5,7 +5,7 @@ type ModalProps = {
   children: React.ReactElement
 };
 
-export default function useInviteGameModal() {
+export default function useGameModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   function onOpen() {
@@ -16,7 +16,7 @@ export default function useInviteGameModal() {
     setIsOpen(false);
   }
 
-  function InviteModal(props: ModalProps) {
+  function GameModal(props: ModalProps) {
     return (
       <Modal setView={onOpen}>
         {props.children}
@@ -25,7 +25,7 @@ export default function useInviteGameModal() {
   }
 
   return {
-    InviteModal,
+    GameModal,
     isOpen,
     onOpen,
     onClose,
