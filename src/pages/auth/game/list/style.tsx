@@ -102,7 +102,7 @@ export const PlayerAvatar = styled.img<{ red?: boolean; blue?: boolean }>`
 `;
 
 export const PlayerName = styled.span`
-  width: 6vw;
+  width: 7vw;
   text-align: center;
   ${font.footer};
   line-height: 1.3;
