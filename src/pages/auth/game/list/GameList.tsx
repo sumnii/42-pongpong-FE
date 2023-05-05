@@ -3,15 +3,13 @@ import { isAuth } from "userAuth";
 import GameItem from "./GameItem";
 import * as S from "./style";
 import RightSide from "@rightSide/RightSide";
-import { useState } from "react";
-import Modal from "modal/layout/Modal";
 import MatchGameModal from "modal/MatchGameModal";
+import useGameModal from "hooks/useGameModal";
 
 export default function GameList() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
-  const [showModal, setShowModal] = useState(false);
-  const [notice, setNotice] = useState("");
+  const G = useGameModal();
 
   let gameCnt = 0;
   // 임시 더미데이터
@@ -32,25 +30,17 @@ export default function GameList() {
     },
   ];
 
-  const openModalHandler = () => {
-    setShowModal(true);
-  };
-
-  const closeModalHandler = () => {
-    setShowModal(false);
-  };
-
   return (
     <>
       <S.PageLayout>
-        {showModal && (
-          <Modal setView={closeModalHandler}>
-            <MatchGameModal close={closeModalHandler} notice={notice} setNotice={setNotice} />
-          </Modal>
+        {G.isOpen && (
+          <G.GameModal>
+            <MatchGameModal close={G.onClose} />
+          </G.GameModal>
         )}
         <S.HeaderBox>
           <S.H2>진행중인 게임</S.H2>
-          <S.MatchMakingBtn onClick={openModalHandler}>매치메이킹 등록</S.MatchMakingBtn>
+          <S.MatchMakingBtn onClick={G.onOpen}>매치메이킹 등록</S.MatchMakingBtn>
         </S.HeaderBox>
         <S.GameList>
           <S.GameItem head>

@@ -1,31 +1,30 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import * as S from "./layout/style";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getSocket } from "socket/socket";
 
 type modalProps = {
   close: () => void;
-  notice: string;
-  setNotice: Dispatch<SetStateAction<string>>;
 };
 
 export default function MatchGameModal(props: modalProps) {
   const [option, setOption] = useState("");
+  const [notice, setNotice] = useState("");
   const socket = getSocket();
   const navigate = useNavigate();
 
   function setStatusHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     setOption(e.target.value);
-    if (props.notice) props.setNotice("");
+    if (notice) setNotice("");
   }
 
   const listener = (res: any) => {
     console.log(res);
-    props.setNotice("");
+    setNotice("");
     if (res.status === "match") {
       navigate(`/game/${res.roomId}`);
     } else if (res.status === "searching") {
-      props.setNotice("게임 찾는 중...");
+      setNotice("게임 찾는 중...");
     } else if (res.status === "error") {
       alert(res.detail);
     }
@@ -45,7 +44,7 @@ export default function MatchGameModal(props: modalProps) {
         rule: option,
       });
     } else {
-      props.setNotice("옵션을 선택해주세요.");
+      setNotice("옵션을 선택해주세요.");
     }
   }
 
@@ -61,7 +60,7 @@ export default function MatchGameModal(props: modalProps) {
             <option value="arcade">특별 게임</option>
           </select>
         </S.Wrapper>
-        <S.Span color="red">{props.notice}</S.Span>
+        <S.Span color="red">{notice}</S.Span>
         <S.Wrapper>
           <S.ModalButton2 type="submit">확인</S.ModalButton2>
           <S.ModalButton2 type="button" onClick={props.close}>
