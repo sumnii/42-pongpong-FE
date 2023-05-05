@@ -11,6 +11,7 @@ type modalProps = {
 export default function InviteGameModal(props: modalProps) {
   const [option, setOption] = useState("");
   const [notice, setNotice] = useState("");
+  const [status, setStatus] = useState("");
   const socket = getSocket();
   const navigate = useNavigate();
 
@@ -21,11 +22,14 @@ export default function InviteGameModal(props: modalProps) {
 
   const listener = (res: any) => {
     console.log(res);
-    setNotice("");
-    if (res.status === "match") {
-      navigate(`/game/${res.roomId}`);
-    } else if (res.status === "searching") {
-      setNotice("게임 수락 대기 중...");
+    if (res.username !== props.targetUser) return ;
+    setStatus(res.status);
+    if (res.status === "waiting") {
+      setNotice(`${res.username}님 수락 기다리는 중...`);
+    } else if (res.status === "accept") {
+      //navigate(`/game/${res.roomId}`); // game roomId x
+    } else if (res.status === "decline") {
+      setNotice(`${res.username}님과의 게임이 성사되지 않았습니다.`)
     } else if (res.status === "error") {
       alert(res.detail);
     }
@@ -64,8 +68,8 @@ export default function InviteGameModal(props: modalProps) {
         </S.Wrapper>
         <S.Span color="red">{notice}</S.Span>
         <S.Wrapper>
-          <S.ModalButton2 type="submit">확인</S.ModalButton2>
-          <S.ModalButton2 type="button" onClick={props.close}>
+          <S.ModalButton2 type="submit" disabled={status === "waiting"}>확인</S.ModalButton2>
+          <S.ModalButton2 type="button" disabled={status === "waiting"} onClick={props.close}>
             취소
           </S.ModalButton2>
         </S.Wrapper>

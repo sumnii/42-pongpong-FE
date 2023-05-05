@@ -3,7 +3,7 @@ import { isAuth } from "userAuth";
 import * as S from "./style";
 import RightSide from "@rightSide/RightSide";
 import { getSocket } from "socket/socket";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Screen from "./Screen";
 
 export default function GameRoom() {
