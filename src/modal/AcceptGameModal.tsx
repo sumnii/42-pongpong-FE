@@ -17,7 +17,7 @@ export default function AcceptGameModal(props: modalProps) {
   const acceptListener = (res: any) => {
     console.log("accept", res);
     if (res.status === "approved") {
-      //navigate() // 서버 gameroomId 미구현
+      navigate(`/game/${res.roomId}`)
       props.close();
       props.parentClose();
     }
