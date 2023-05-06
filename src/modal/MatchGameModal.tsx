@@ -64,9 +64,13 @@ export default function MatchGameModal(props: modalProps) {
 
   function cancelHandler() {
     console.log(option)
-    socket.emit("cancleSearch", {
-      rule: option,
-    })
+    if (status) {
+      socket.emit("cancleSearch", {
+        rule: option,
+      })
+    } else {
+      props.close();
+    }
   }
 
   return (
