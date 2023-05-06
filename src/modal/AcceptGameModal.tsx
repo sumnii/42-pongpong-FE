@@ -17,9 +17,13 @@ export default function AcceptGameModal(props: modalProps) {
   const acceptListener = (res: any) => {
     console.log("accept", res);
     if (res.status === "approved") {
-      navigate(`/game/${res.roomId}`)
+      navigate(`/game/${res.roomId}`);
       props.close();
       props.parentClose();
+    } else if (res.status === "warning") {
+      setNotice(res.detail);
+    } else {
+      console.log(res);
     }
   };
 
@@ -27,6 +31,10 @@ export default function AcceptGameModal(props: modalProps) {
     console.log("decline", res);
     if (res.status === "approved") {
       props.close();
+    } else if (res.status === "warning") {
+      setNotice(res.detail);
+    } else {
+      console.log(res);
     }
   };
 
@@ -40,23 +48,29 @@ export default function AcceptGameModal(props: modalProps) {
   }, []);
 
   const acceptHandler = () => {
-    socket.emit("acceptGame", {
-      username: props.targetUser,
-    });
-    //props.close();
-    //props.parentClose();
+    if (notice) {
+      props.close();
+    } else {
+      socket.emit("acceptGame", {
+        username: props.targetUser,
+      });
+    }
   };
 
   const declineHandler = () => {
-    //props.close();
-    socket.emit("declineGame", {
-      username: props.targetUser,
-    });
+    if (notice) {
+      props.close();
+    } else {
+      socket.emit("declineGame", {
+        username: props.targetUser,
+      });
+    }
   };
 
   return (
     <S.AcceptGameLayout>
       <h2>{props.targetUser}님의 게임 수락하시겠습니까?</h2>
+      <S.Span2 color="red">{notice}</S.Span2>
       <S.Wrapper>
         <S.ModalButton2 onClick={acceptHandler}>확인</S.ModalButton2>
         <S.ModalButton2 onClick={declineHandler}>취소</S.ModalButton2>
