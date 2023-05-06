@@ -6,9 +6,10 @@ import LoadingCircle from "components/LoadingCircle";
 
 type modalProps = {
   close: () => void;
+  targetUser: string;
 };
 
-export default function MatchGameModal(props: modalProps) {
+export default function InviteGameModal(props: modalProps) {
   const [option, setOption] = useState("");
   const [notice, setNotice] = useState("");
   const [status, setStatus] = useState("");
@@ -22,39 +23,37 @@ export default function MatchGameModal(props: modalProps) {
 
   const listener = (res: any) => {
     console.log(res);
-    setStatus(res.status);
-    if (res.status === "match") {
-      navigate(`/game/${res.roomId}`);
-    } else if (res.status === "searching") {
-      setNotice("게임 찾는 중...");
-    } else if (res.status === "error") {
-      alert(res.detail);
-    } else {
-      console.log(res);
-    }
-  };
 
-  const cancelListener = (res: any) => {
-    console.log(res);
-    if (res.status === "approved") {
-      props.close();
+    setStatus(res.status);
+    if (res.status === "error") {
+      alert(res.detail);
+    } else if (res.status === "warning") {
+      setNotice(res.detail);
+    }
+    if (res.username !== props.targetUser) return;
+    if (res.status === "waiting") {
+      setNotice(`${res.username}님 수락 기다리는 중...`);
+    } else if (res.status === "accept") {
+      navigate(`/game/${res.roomId}`);
+    } else if (res.status === "decline") {
+      setNotice(`${res.username}님과의 게임이 성사되지 않았습니다.`);
     }
   };
 
   useEffect(() => {
-    socket.on("searchGameResult", listener);
-    socket.on("cancleSearchResult", cancelListener);
+    socket.on("inviteGameResult", listener);
     return () => {
-      socket.off("searchGameResult", listener);
-      socket.off("cancleSearchResult", cancelListener);
+      socket.off("inviteGameResult", listener);
     };
   });
 
   function setHandler(e: React.MouseEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("searching");
+    setNotice("");
+    setStatus("waiting");
     if (option) {
-      socket.emit("searchGame", {
+      socket.emit("inviteGame", {
+        username: props.targetUser,
         rule: option,
       });
     } else {
@@ -62,23 +61,12 @@ export default function MatchGameModal(props: modalProps) {
     }
   }
 
-  function cancelHandler() {
-    console.log(option)
-    if (status) {
-      socket.emit("cancleSearch", {
-        rule: option,
-      })
-    } else {
-      props.close();
-    }
-  }
-
   return (
     <S.MatchGameLayout>
-      <h2>게임 매치 등록하기</h2>
+      <h2>{props.targetUser} 에게 게임 신청 하기</h2>
       <form onSubmit={setHandler}>
         <S.Wrapper>
-          <select onChange={setStatusHandler} disabled={status === "searching"}>
+          <select onChange={setStatusHandler} disabled={status === "waiting"}>
             <option value="opt">-- 옵션을 선택해주세요 --</option>
             <option value="normal">일반 게임</option>
             <option value="rank">랭크 게임</option>
@@ -87,11 +75,13 @@ export default function MatchGameModal(props: modalProps) {
         </S.Wrapper>
         <S.Wrapper>
           <S.Span2 color="red">{notice}</S.Span2>
-          {notice && status === "searching" && <LoadingCircle w={30} h={30} />}
+          {notice && status === "waiting" && <LoadingCircle w={30} h={30} />}
         </S.Wrapper>
         <S.Wrapper>
-          <S.ModalButton2 type="submit" disabled={status === "searching"}>확인</S.ModalButton2>
-          <S.ModalButton2 type="button" onClick={cancelHandler}>
+          <S.ModalButton2 type="submit" disabled={status === "waiting"}>
+            확인
+          </S.ModalButton2>
+          <S.ModalButton2 type="button" disabled={status === "waiting"} onClick={props.close}>
             취소
           </S.ModalButton2>
         </S.Wrapper>

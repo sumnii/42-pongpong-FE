@@ -1,10 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getSocket } from "socket/socket";
 import { getUsername } from "userAuth";
 import * as S from "./style";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function Screen() {
+type PropsType = {
+  result: string;
+  setResult: Dispatch<SetStateAction<string>>;
+}
+
+export default function Screen(props: PropsType) {
   const { gameId } = useParams();
   const socket = getSocket();
   const username = getUsername();
@@ -21,17 +27,16 @@ export default function Screen() {
   const [blueX, setBlueX] = useState(0);
   const [redX, setRedX] = useState(0);
   const [camp, setCamp] = useState("");
+  const [score, setScore] = useState<{ blue: number; red: number }>({ blue: 0, red: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
+  const queryClient = useQueryClient();
 
-  const listener = (res: { type: string; status: any }) => {
-    if (res.status.roomId !== Number(gameId)) return;
+  const listener = (res: { type: string; roomId?: number; status: any }) => {
     if (res.type === "game") {
-      if (roomId !== res.status.roomId) {
-        setRoomId(res.status.roomId);
-        console.log(res.status);
-      }
+      if (res.status.roomId !== Number(gameId)) return;
+      if (roomId !== res.status.roomId) setRoomId(res.status.roomId);
       if (camp === "") {
         if (username === res.status.blueUser) setCamp("blue");
         else if (username === res.status.redUser) setCamp("red");
@@ -47,10 +52,37 @@ export default function Screen() {
       setBallY(res.status.ballY);
       setBlueY(res.status.bluePaddleY);
       setRedY(res.status.redPaddleY);
+      if (score.blue !== res.status.blueScore || score.red !== res.status.redScore) {
+        setScore({
+          red: res.status.redScore,
+          blue: res.status.blueScore,
+        });
+      }
+    } else if (res.type === "win") {
+      if (res.roomId !== Number(gameId)) return;
+      if (score.blue === 5) {
+        props.setResult("blue 승리");
+      } else if (score.red === 5) {
+        props.setResult("red 승리");
+      }else {
+        props.setResult("상대방이 나갔습니다")
+      }
+      queryClient.invalidateQueries(["profile"]);
+    } else if (res.type === "lose") {
+      if (res.roomId !== Number(gameId)) return;
+      props.setResult("패배");
+      queryClient.invalidateQueries(["profile"]);
     } else {
       console.log(res);
     }
   };
+
+  useEffect(() => {
+    socket.on("message", listener);
+    return () => {
+      socket.off("message", listener);
+    };
+  }, [roomId, score]);
 
   const keyDownHandler = (e: KeyboardEvent) => {
     if (e.keyCode === 38) {
@@ -102,20 +134,37 @@ export default function Screen() {
       ctx.closePath();
     }
   }
+
+  function drawResult() {
+    if (ctx && canvas && props.result) {
+      const result = props.result.split(" ")[1];
+      ctx.font = "35px Arial";
+      ctx.textAlign = "center";
+      if (result === "승리") ctx.fillStyle = "#0095DD";
+      else if (props.result === "패배") ctx.fillStyle = "#FF0088";
+      ctx.fillText(props.result, canvas.width / 2, canvas.height / 3);
+    }
+  }
+
+  function drawScore() {
+    if (ctx && canvas) {
+      ctx.font = "25px Arial";
+      ctx.fillStyle = "#000000";
+      ctx.textAlign = "center";
+      ctx.fillText(`${score.red} : ${score.blue}`, canvas.width / 2, canvas.height / 10);
+    }
+  }
+
   useEffect(() => {
     if (ctx && canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height); //clear
       drawBall(ballX, ballY, ballRadius);
       drawBluePaddle(blueX, blueY, blueWidth, blueHeight);
       drawRedPaddle(redX, redY, redWidth, redHeight);
+      drawScore();
+      drawResult();
     }
-  }, [ballX, ballY, redY, blueY]);
+  }, [ballX, ballY, redY, blueY, props.result]);
 
-  useEffect(() => {
-    socket.on("message", listener);
-    return () => {
-      socket.off("message", listener);
-    };
-  }, [roomId]);
   return <S.Canvas ref={canvasRef} width={540} height={360}></S.Canvas>;
 }

@@ -25,7 +25,7 @@ export const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
+  ${(props) => (props.id !== "noBack" ? "background-color: rgba(0, 0, 0, 0.4);" : "")}
   z-index: 1;
 `;
 
@@ -53,10 +53,17 @@ export const Button = styled.button`
   border: 1px solid lightgray;
   line-height: 1.5;
 `;
+
 export const Span = styled.span`
   font-size: 11px;
   color: ${(props) => props.color};
   cursor: pointer;
+`;
+
+export const Span2 = styled.span`
+  font-size: 11px;
+  color: ${(props) => props.color};
+  position: absolute;
 `;
 
 export const ModalButton2 = styled(Button)`
@@ -130,6 +137,7 @@ export const Wrapper = styled.div`
   margin: 5% 0;
   display: flex;
   justify-content: space-around;
+  align-items: center;
 `;
 
 /*
@@ -294,7 +302,7 @@ export const SettingPwLayout = styled.div`
   background: white;
   font-size: 12px;
   border-radius: 20px;
-`
+`;
 
 /* 
   match game
@@ -307,4 +315,22 @@ export const MatchGameLayout = styled.div`
   background: white;
   font-size: 12px;
   border-radius: 20px;
-`
+`;
+
+/* 
+  accept game
+*/
+
+export const AcceptGameLayout = styled.div`
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background: white;
+  font-size: 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+`;
+

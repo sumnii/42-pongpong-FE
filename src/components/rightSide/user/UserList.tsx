@@ -33,7 +33,7 @@ export default function UserList(props: UserListCase) {
                 key={user.username}
                 listOf={props.listOf}
                 username={user.username}
-                subLine={user.status === "login" ? "🟣 온라인" : "⚫️ 오프라인"}
+                subLine={user.status === "login" ? "🟣 온라인" : user.status === "logout" ? "⚫️ 오프라인" : "⚫️ 게임중"}
                 userStatus={{
                   status: user.status,
                   oper: user.owner ? "owner" : user.admin ? "admin" : "participant",

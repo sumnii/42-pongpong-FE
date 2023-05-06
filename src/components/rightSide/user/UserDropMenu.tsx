@@ -31,6 +31,7 @@ const ModalLayout = forwardRef(function ModalLayout(
 export default function UserDropMenu({
   onClose,
   onDmOpen,
+  onInviteGameOpen,
   menuFor,
   targetUser,
   targetStatus,
@@ -54,6 +55,11 @@ export default function UserDropMenu({
     onClose();
   }
 
+  function handleInviteGame() {
+    onInviteGameOpen();
+    onClose();
+  }
+
   const DefaultMenu = (
     <>
       <S.DropMenuItemBox
@@ -68,10 +74,10 @@ export default function UserDropMenu({
   );
 
   const InviteGame =
-    targetStatus?.status === "login" ? <S.DropMenuItemBox>게임 신청</S.DropMenuItemBox> : <></>;
+    targetStatus?.status === "login" ? <S.DropMenuItemBox onClick={handleInviteGame}>게임 신청</S.DropMenuItemBox> : <></>;
 
   const InviteChat =
-    myOper !== "participant" && targetStatus?.status === "login" ? (
+    roomId && myOper !== "participant" && targetStatus?.status === "login" ? (
       <InviteBtn roomId={roomId} username={targetUser} close={onClose} />
     ) : (
       <></>

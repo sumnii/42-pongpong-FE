@@ -11,6 +11,8 @@ import { getSocket } from "socket/socket";
 import { ExitDmResultType } from "socket/active/dmEventType";
 import * as T from "@rightSide/rightSideType";
 import * as S from "./style";
+import InviteGameModal from "modal/InviteGameModal";
+import useGameModal from "hooks/useGameModal";
 
 export default function UserInfo({ listOf, username, subLine, userStatus }: T.UserInfoProps) {
   const me = getUsername() === username;
@@ -19,6 +21,7 @@ export default function UserInfo({ listOf, username, subLine, userStatus }: T.Us
   const { isMouseEnter, onLeave } = useMouseOver({ listOf, user: username });
   const queryClient = useQueryClient();
   const socket = getSocket();
+  const InviteGame = useGameModal();
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${username}`],
@@ -94,6 +97,7 @@ export default function UserInfo({ listOf, username, subLine, userStatus }: T.Us
             <UserDropMenu
               onClose={onDropClose}
               onDmOpen={onOpen}
+              onInviteGameOpen={InviteGame.onOpen}
               targetUser={username}
               menuFor={listOf}
               targetStatus={userStatus}
@@ -104,6 +108,13 @@ export default function UserInfo({ listOf, username, subLine, userStatus }: T.Us
               <DmModal targetUser={username} onClose={onClose} />
             </Modal>
           )}
+          {
+            InviteGame.isOpen && (
+              <InviteGame.GameModal key={username}>
+                <InviteGameModal targetUser={username} close={InviteGame.onClose} />
+              </InviteGame.GameModal>
+            )
+          }
         </S.UserItem>
       );
   }
