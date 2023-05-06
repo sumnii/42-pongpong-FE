@@ -9,52 +9,12 @@ import { getSocket } from "socket/socket";
 import * as T from "socket/passive/gameType";
 import * as S from "./style";
 
-// 임시 더미데이터
-const initialGameRoomList = [
-  {
-    roomId: 1,
-    rule: "arcade",
-    red: "숨송",
-    blue: "아무개",
-  },
-  {
-    roomId: 2,
-    rule: "arcade",
-    red: "sumsong",
-    blue: "안녕하세요안녕하세요",
-  },
-  {
-    roomId: 3,
-    rule: "arcade",
-    red: "서진",
-    blue: "호쏭",
-  },
-  {
-    roomId: 4,
-    rule: "arcade",
-    red: "서진",
-    blue: "호쏭",
-  },
-  {
-    roomId: 3,
-    rule: "arcade",
-    red: "서진",
-    blue: "호쏭",
-  },
-  {
-    roomId: 4,
-    rule: "arcade",
-    red: "서진",
-    blue: "호쏭",
-  },
-];
-
 export default function GameList() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
-  
+
   const socket = getSocket();
-  const [gameRoomList, setGameRoomList] = useState<T.GameRoomListArray>(initialGameRoomList);
+  const [gameRoomList, setGameRoomList] = useState<T.GameRoomListArray>();
   let gameCnt = 0;
 
   const [showModal, setShowModal] = useState(false);
@@ -73,9 +33,9 @@ export default function GameList() {
   }, []);
 
   useEffect(() => {
-    socket.on("gameRoomList", gameRoomListListener);
+    socket.on("message", gameRoomListListener);
     return () => {
-      socket.off("gameRoomList", gameRoomListListener);
+      socket.off("message", gameRoomListListener);
     };
   }, []);
 
