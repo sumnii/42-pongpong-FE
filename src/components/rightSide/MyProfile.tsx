@@ -50,7 +50,7 @@ export default function MyProfile() {
         >
           {profileQuery?.data?.username}
           <br />
-          🟣 온라인
+          {profileQuery?.data?.status === "login" ? "🟣 온라인" : profileQuery?.data?.status === "logout" ? "⚫️ 오프라인" : "⚫️ 게임중"}
         </S.UserInfoText>
         {newNoti ? (
           <S.NewNotiIcon onClick={onOpenNotiModal} />
