@@ -68,7 +68,7 @@ export const EntryBtn = styled.button`
   width: 10%;
   ${button.mini}
   ${(props: { head?: boolean }) => {
-    return props.head ? "background-color: white; cursor: default;" : "";
+    return props.head ? "visibility: hidden;" : "";
   }}
   margin: auto;
 `;

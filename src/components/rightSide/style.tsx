@@ -8,6 +8,7 @@ export const RightSideLayout = styled.div`
   width: 20vw;
 
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   border-left: 0.5px solid;
 `;
