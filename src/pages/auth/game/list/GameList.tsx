@@ -52,6 +52,7 @@ const initialGameRoomList = [
 export default function GameList() {
   const navigate = useNavigate();
   if (!isAuth()) navigate("/");
+  
   const socket = getSocket();
   const [gameRoomList, setGameRoomList] = useState<T.GameRoomListArray>(initialGameRoomList);
   let gameCnt = 0;
@@ -102,7 +103,6 @@ export default function GameList() {
           {gameRoomList &&
             gameRoomList.map((game) => {
               return (
-                // TODO: 내가 참여중인 게임은 관전 대신 재접속 띄우기?
                 <GameItem
                   key={game.roomId}
                   no={(gameCnt += 1)}
