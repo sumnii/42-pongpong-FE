@@ -36,9 +36,9 @@ export default function signUp() {
   function onPwHandler(event: eventChangeType) {
     setPwInput(event.target.value);
     // TEST: 테스트 기간동안 주석 처리 / 패스워드 정책 확인
-    if (event.target.value === "") setPwRuleCheck("");
-    else if (passwdRegExp.test(event.target.value)) setPwRuleCheck("");
-    else setPwRuleCheck("영문, 숫자, 특수문자($@!%*#?&) 조합으로 8자 이상 입력해 주세요.");
+    // if (event.target.value === "") setPwRuleCheck("");
+    // else if (passwdRegExp.test(event.target.value)) setPwRuleCheck("");
+    // else setPwRuleCheck("영문, 숫자, 특수문자($@!%*#?&) 조합으로 8자 이상 입력해 주세요.");
 
     if (formCheck) setFormCheck("");
     if (pwMatchCheck) setPwMatchCheck("");

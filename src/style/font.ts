@@ -29,13 +29,13 @@ export const h1 = `
 `;
 
 export const inBtn = `
-  ${body}
+  ${bodyBold}
   font-size: 1.0rem;
   line-height: 1.0rem;
 `;
 
 export const footer = `
   ${body}
-  font-size: 1.0rem;
+  font-size: 1.1rem;
   line-height: 1.4rem;
 `;
