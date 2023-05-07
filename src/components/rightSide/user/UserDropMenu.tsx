@@ -2,7 +2,7 @@ import { useRef, useContext, forwardRef } from "react";
 import { useParams } from "react-router-dom";
 import { ProfileContext } from "hooks/context/ProfileContext";
 import { useOper, onProfile } from "hooks/useOper";
-import { UserListContext } from "hooks/context/UserListContext";
+import { ChatUserListSet, UserListContext } from "hooks/context/UserListContext";
 import { useOutsideClick } from "hooks/useOutsideClick";
 import InviteBtn from "./InviteBtn";
 import * as T from "@rightSide/rightSideType";
@@ -20,14 +20,6 @@ const ModalLayout = forwardRef(function ModalLayout(
   );
 });
 
-// TEST: 게임까지 구현 완료 후 삭제하기
-// 전체 필요한것 : onClose / onDmOpen / setProfile / menuFor(friend/participant/banned/player/observer) / targetUser
-// friend : 기본[프로필/게임신청/DM 보내기] + 채팅초대 : targetUser, isOnline(게임신청/채팅초대 block)
-// participant : 기본 + [차단] + 권한[음소거/내보내기/입장금지] + 방장[부방장 지정] : userOper, targetStatus(oper, muted, blocked, isOnline)
-// banned : 기본 + [입장금지 해제]
-// player : 기본[프로필/DM 보내기] - 게임신청
-// observer : 기본[프로필/게임신청/DM 보내기]
-
 export default function UserDropMenu({
   onClose,
   onDmOpen,
@@ -37,7 +29,7 @@ export default function UserDropMenu({
   targetStatus,
 }: T.DropMenuProps) {
   const setProfileUser = useContext(ProfileContext);
-  const myOper = useContext(UserListContext)?.myOper;
+  const myOper = (useContext(UserListContext) as ChatUserListSet)?.myOper;
   const roomId = Number(useParams().roomId);
   const dropRef = useRef<HTMLDivElement>(null);
   const onAppointAdmin = useOper("appointAdmin", roomId, targetUser, onClose);
@@ -74,7 +66,11 @@ export default function UserDropMenu({
   );
 
   const InviteGame =
-    targetStatus?.status === "login" ? <S.DropMenuItemBox onClick={handleInviteGame}>게임 신청</S.DropMenuItemBox> : <></>;
+    targetStatus?.status === "login" ? (
+      <S.DropMenuItemBox onClick={handleInviteGame}>게임 신청</S.DropMenuItemBox>
+    ) : (
+      <></>
+    );
 
   const InviteChat =
     roomId && myOper !== "participant" && targetStatus?.status === "login" ? (
@@ -140,12 +136,7 @@ export default function UserDropMenu({
     case "player":
       return <ModalLayout ref={dropRef}>{DefaultMenu}</ModalLayout>;
     case "observer":
-      return (
-        <ModalLayout ref={dropRef}>
-          {DefaultMenu}
-          {InviteGame}
-        </ModalLayout>
-      );
+      return <ModalLayout ref={dropRef}>{DefaultMenu}</ModalLayout>;
     default:
       return null;
   }
