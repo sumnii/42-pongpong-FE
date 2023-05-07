@@ -15,11 +15,19 @@ export type GameRoomData = {
   status: {
     redUser: string;
     blueUser: string;
-    spectator: string[];
   };
 };
 
 export type PlayerData = {
   red: string;
   blue: string;
+};
+
+export type SpectatorArray = {
+  username: string;
+}[];
+
+export type SpectatorData = {
+  type: "spectator";
+  list: SpectatorArray;
 };

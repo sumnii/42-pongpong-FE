@@ -5,7 +5,7 @@ import { getSocket } from "socket/socket";
 import { useEffect, useState } from "react";
 import Screen from "./Screen";
 import { UserListContext } from "hooks/context/UserListContext";
-import { GameRoomData, PlayerData } from "socket/passive/gameType";
+import { GameRoomData, PlayerData, SpectatorData } from "socket/passive/gameType";
 import * as S from "./style";
 
 export default function GameRoom() {
@@ -17,12 +17,13 @@ export default function GameRoom() {
   const roomId = Number(gameId);
   const [result, setResult] = useState("");
   const [players, setPlayers] = useState<PlayerData>();
-  const [spectators, setSpectators] = useState<string[]>([]);
+  const [spectators, setSpectators] = useState<{ username: string }[]>([]);
 
-  function gameRoomListener(res: GameRoomData) {
-    if (res.type === "game") {
-      if (players === undefined) setPlayers({ red: res.status.redUser, blue: res.status.blueUser });
-      setSpectators(res.status.spectator);
+  function gameRoomListener(res: GameRoomData | SpectatorData) {
+    if (res.type === "spectator") {
+      setSpectators(res.list);
+    } else if (res.type === "game" && players === undefined) {
+      setPlayers({ red: res.status.redUser, blue: res.status.blueUser });
     }
   }
 
@@ -31,7 +32,7 @@ export default function GameRoom() {
     return () => {
       socket.off("message", gameRoomListener);
     };
-  }, []);
+  }, [players, spectators]);
 
   const listener = (res: { type: string; status: any }) => {
     if (res.status === "approved") {

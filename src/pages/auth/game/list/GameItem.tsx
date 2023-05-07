@@ -33,7 +33,6 @@ export default function GameItem({ no, roomId, rule, p1, p2 }: GameItemProps) {
 
   function onJoinGameRoom() {
     socket.emit("joinGameRoom", { roomId: Number(roomId) });
-    console.log("emit!");
   }
 
   const redAvatarQuery = useQuery({

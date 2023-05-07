@@ -13,7 +13,9 @@ export type GameUserListSet = {
     red: string;
     blue: string;
   };
-  spectators: string[];
+  spectators: {
+    username: string;
+  }[];
 };
 
 export const UserListContext = createContext<ChatUserListSet | GameUserListSet | null>(null);

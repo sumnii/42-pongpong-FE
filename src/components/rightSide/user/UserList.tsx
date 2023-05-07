@@ -4,7 +4,7 @@ import { DmListArray } from "socket/passive/friendDmListType";
 import UserInfo from "./UserInfo";
 import FriendList from "./FriendList";
 import { ChatUserListSet, UserListContext } from "hooks/context/UserListContext";
-import { PlayerData } from "socket/passive/gameType";
+import { PlayerData, SpectatorArray } from "socket/passive/gameType";
 import * as S from "../style";
 
 type UserListCase =
@@ -13,7 +13,7 @@ type UserListCase =
   | { listOf: "participant"; list: UserListArray | null }
   | { listOf: "banned"; list: BanListArray | null }
   | { listOf: "player"; list: PlayerData }
-  | { listOf: "spectator"; list: string[] };
+  | { listOf: "spectator"; list: SpectatorArray };
 
 export default function UserList({ listOf, list }: UserListCase) {
   const blockList = (useContext(UserListContext) as ChatUserListSet)?.blocked;
@@ -82,7 +82,10 @@ export default function UserList({ listOf, list }: UserListCase) {
         )}
         {listOf === "spectator" &&
           list.map((user) => {
-            return <UserInfo listOf={listOf} key={user} username={user} subLine="👀 관전중" />;
+            const username = user.username;
+            return (
+              <UserInfo listOf={listOf} key={username} username={username} subLine="👀 관전중" />
+            );
           })}
       </S.UserList>
     </S.UserListLayout>
