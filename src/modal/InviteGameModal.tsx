@@ -35,6 +35,7 @@ export default function InviteGameModal(props: modalProps) {
       setNotice(`${res.username}님 수락 기다리는 중...`);
     } else if (res.status === "accept") {
       navigate(`/game/${res.roomId}`);
+      props.close();
     } else if (res.status === "decline") {
       setNotice(`${res.username}님과의 게임이 성사되지 않았습니다.`);
     }
@@ -58,6 +59,7 @@ export default function InviteGameModal(props: modalProps) {
       });
     } else {
       setNotice("옵션을 선택해주세요.");
+      setStatus("");
     }
   }
 
