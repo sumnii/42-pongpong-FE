@@ -1,10 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { isAuth } from "userAuth";
-import * as S from "./style";
 import RightSide from "@rightSide/RightSide";
 import { getSocket } from "socket/socket";
 import { useEffect, useState } from "react";
 import Screen from "./Screen";
+import { UserListContext } from "hooks/context/UserListContext";
+import { GameRoomData, PlayerData } from "socket/passive/gameType";
+import * as S from "./style";
 
 export default function GameRoom() {
   const navigate = useNavigate();
@@ -14,6 +16,22 @@ export default function GameRoom() {
   const socket = getSocket();
   const roomId = Number(gameId);
   const [result, setResult] = useState("");
+  const [players, setPlayers] = useState<PlayerData>();
+  const [spectators, setSpectators] = useState<string[]>([]);
+
+  function gameRoomListener(res: GameRoomData) {
+    if (res.type === "game") {
+      if (!players) setPlayers({ red: res.status.redUser, blue: res.status.blueUser });
+      setSpectators(res.status.spectator);
+    }
+  }
+
+  useEffect(() => {
+    socket.on("message", gameRoomListener);
+    return () => {
+      socket.off("message", gameRoomListener);
+    };
+  }, []);
 
   const listener = (res: { type: string; status: any }) => {
     if (res.status === "approved") {
@@ -57,7 +75,11 @@ export default function GameRoom() {
         </S.HeaderBox>
         <Screen result={result} setResult={setResult} />
       </S.PageLayout>
-      <RightSide />
+      {players && spectators && (
+        <UserListContext.Provider value={{ players, spectators }}>
+          <RightSide />
+        </UserListContext.Provider>
+      )}
     </>
   );
 }
