@@ -1,23 +1,18 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getAvatar } from "api/user";
-import { distroyAuth, getUsername } from "userAuth";
-import { AuthContext } from "hooks/context/AuthContext";
-import { disconnectSocket } from "socket/socket";
+import { getUsername } from "userAuth";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import AddFriendBtn from "./AddFriendBtn";
 import RemoveFrendBtn from "./RemoveFriendBtn";
-import { QuerySet, UserProfileProps } from "profile-types";
+import LogoutBtn from "./LogoutBtn";
+import { UserProfileProps } from "profile-types";
 import * as S from "./style";
 
 export function ProfileData({ user }: UserProfileProps) {
-  const setSigned = useContext(AuthContext);
-  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === user?.username;
-  const queryClient = useQueryClient();
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${user?.username}`],
@@ -34,20 +29,6 @@ export function ProfileData({ user }: UserProfileProps) {
   const closeModalHandler = () => {
     setShowModal(false);
   };
-
-  function onLogout() {
-    distroyAuth();
-    disconnectSocket();
-    if (setSigned) setSigned(false);
-    const querySet = queryClient.getQueriesData(["avatar"]);
-    (querySet as QuerySet).map((queryData) => {
-      if (queryData[1]) return URL.revokeObjectURL(queryData[1]);
-    });
-    queryClient.resetQueries(["profile"]);
-    queryClient.resetQueries(["avatar"]);
-    queryClient.resetQueries(["list"]);
-    navigate("/");
-  }
 
   return (
     <S.ProfileLayout>
@@ -108,7 +89,7 @@ export function ProfileData({ user }: UserProfileProps) {
           })}
       </S.HistoryList>
       <S.ButtonBox>
-        {(!user || user.relation === "myself") && <S.Button onClick={onLogout}>로그아웃</S.Button>}
+        {(!user || user.relation === "myself") && <LogoutBtn />}
         {user && user?.relation === "friend" && <RemoveFrendBtn username={user.username} />}
         {user && user.relation === "others" && <AddFriendBtn username={user.username} />}
       </S.ButtonBox>
