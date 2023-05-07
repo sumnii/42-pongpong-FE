@@ -21,13 +21,13 @@ function BadgeSet({ achivement, username }: BadgeProps) {
 
 export default function AchievementBadge({ achivements, username }: AchivementProps) {
   return (
-    <>
+    <S.InfoWrapper>
       <S.InfoLabel>업적</S.InfoLabel>
       <S.BadgeBox>
         {achivements?.map((achivement) => {
           return <BadgeSet key={achivement} achivement={achivement} username={username} />;
         })}
       </S.BadgeBox>
-    </>
+    </S.InfoWrapper>
   );
 }

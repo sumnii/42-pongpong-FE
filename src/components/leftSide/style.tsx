@@ -44,6 +44,7 @@ export const ProfileImg = styled.img<{ me: boolean }>`
 
 export const InfoWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 export const InfoLabel = styled.span`
@@ -58,19 +59,40 @@ export const InfoValue = styled.span`
 `;
 
 /*
+ *      Badge
+ */
+
+export const BadgeBox = styled.div`
+  display: flex;
+  gap: 10px;
+  padding-left: 5px;
+`;
+
+export const BadgeSet = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+`;
+
+export const BadgeImg = styled.img`
+  width: 35px;
+  border-radius: 50%;
+`;
+
+/*
  *      Game History
  */
 
 export const HistoryList = styled.ul`
-  /* height: 400px; */
-  flex: 1 0 auto;
+  /* max-height: 300px; */
+  /* flex: 1 0 auto; */
   overflow: auto;
 `;
 
 export const HistoryItem = styled.li`
   display: flex;
   flex-direction: column;
-  list-type: none;
 `;
 
 export const Players = styled.div`
