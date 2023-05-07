@@ -1,52 +1,26 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getAvatar } from "api/user";
-import { distroyAuth, getUsername } from "userAuth";
-import { AuthContext } from "hooks/context/AuthContext";
-import { disconnectSocket } from "socket/socket";
+import { getUsername } from "userAuth";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
-import AddFriendBtn from "./AddFriendBtn";
+import AddFriendBtn from "./buttons/AddFriendBtn";
+import RemoveFrendBtn from "./buttons/RemoveFriendBtn";
+import LogoutBtn from "./buttons/LogoutBtn";
+import { UserProfileProps } from "profile-types";
+import AchievementBadge from "./AchievementBadge";
 import * as S from "./style";
-import RemoveFrendBtn from "./RemoveFriendBtn";
 
-interface userProps {
-  user?: {
-    username: string;
-    rating: number;
-    win: number;
-    lose: number;
-    relation: "myself" | "friend" | "others";
-    gameHistory: [
-      {
-        uniqueId: number;
-        red: string;
-        blue: string;
-        redScore: number;
-        blueScore: number;
-        winner: string;
-        type: string;
-      },
-    ];
-  };
-}
-
-export function ProfileData(props: userProps) {
-  let user;
-  if (props) user = props.user;
-  const setSigned = useContext(AuthContext);
-  const navigate = useNavigate();
+export function ProfileData({ user }: UserProfileProps) {
   const [showModal, setShowModal] = useState(false);
-  const myProfile = getUsername() === props.user?.username;
-  const queryClient = useQueryClient();
+  const myProfile = getUsername() === user?.username;
 
   const avatarQuery = useQuery({
-    queryKey: ["avatar", `${props.user?.username}`],
+    queryKey: ["avatar", `${user?.username}`],
     queryFn: () => {
-      if (props.user) return getAvatar(props.user.username);
+      if (user) return getAvatar(user.username);
     },
-    enabled: !!props.user,
+    enabled: !!user,
   });
 
   const openModalHandler = () => {
@@ -57,16 +31,6 @@ export function ProfileData(props: userProps) {
     setShowModal(false);
   };
 
-  function onLogout() {
-    distroyAuth();
-    disconnectSocket();
-    if (setSigned) setSigned(false);
-    queryClient.resetQueries(["profile"]);
-    queryClient.resetQueries(["avatar"]);
-    queryClient.resetQueries(["list"]);
-    navigate("/");
-  }
-
   return (
     <S.ProfileLayout>
       {showModal && (
@@ -74,7 +38,7 @@ export function ProfileData(props: userProps) {
           <AvatarUploadModal
             close={closeModalHandler}
             prevUrl={String(avatarQuery.data)}
-            username={props.user?.username}
+            username={user?.username}
           />
         </Modal>
       )}
@@ -89,46 +53,46 @@ export function ProfileData(props: userProps) {
         />
       )}
       <S.InfoWrapper>
-        <S.InfoLabel>
-          닉네임
-          <br />
-          레이팅
-          <br />
-          전적
-        </S.InfoLabel>
-        <S.InfoValue>
-          {user && user.username}
-          <br />
-          {user && user.rating}
-          <br />
-          {user && `${user.win}승 ${user.lose}패`}
-        </S.InfoValue>
+        <S.InfoLabel>닉네임</S.InfoLabel>
+        <S.InfoValue>{user && user.username}</S.InfoValue>
       </S.InfoWrapper>
+      <S.InfoWrapper>
+        <S.InfoLabel>레이팅</S.InfoLabel>
+        <S.InfoValue>{user && user.rating}</S.InfoValue>
+      </S.InfoWrapper>
+      <S.InfoWrapper>
+        <S.InfoLabel>전적</S.InfoLabel>
+        <S.InfoValue>{user && `${user.win}승 ${user.lose}패`}</S.InfoValue>
+      </S.InfoWrapper>
+      <AchievementBadge achivements={user?.achievement} username={user?.username} />
       <S.InfoLabel>히스토리</S.InfoLabel>
       <S.HistoryList>
-        {user &&
-          user.gameHistory &&
-          // gameHistory 준비중
-          user.gameHistory.map((game) => {
-            return (
-              <S.HistoryItem key={game.uniqueId}>
-                <S.Score>
-                  {game.type === "rank" ? "경쟁" : game.type === "normal" ? "일반" : "아케이드"}전
+        {user?.gameHistory.reverse().map((game) => {
+          return (
+            <S.HistoryItem key={game.id}>
+              <S.Rule>
+                🚩 {game.rule === "rank" ? "경쟁" : game.rule === "normal" ? "일반" : "아케이드"}전
+              </S.Rule>
+              <S.Players>
+                <S.Player winner={game.winner === "red"}>{game.red}</S.Player>
+                <S.Versus>vs</S.Versus>
+                <S.Player winner={game.winner === "blue"}>{game.blue}</S.Player>
+              </S.Players>
+              <S.ScoreBox>
+                <S.Score red winner={game.winner === "red"}>
+                  {game.redScore}
                 </S.Score>
-                <S.Players>
-                  <S.Player>{game.red}</S.Player>
-                  <S.Versus>vs</S.Versus>
-                  <S.Player>{game.blue}</S.Player>
-                </S.Players>
-                <S.Score>
-                  {game.redScore} : {game.blueScore}
+                <S.Versus>:</S.Versus>
+                <S.Score blue winner={game.winner === "blue"}>
+                  {game.blueScore}
                 </S.Score>
-              </S.HistoryItem>
-            );
-          })}
+              </S.ScoreBox>
+            </S.HistoryItem>
+          );
+        })}
       </S.HistoryList>
       <S.ButtonBox>
-        {(!user || user.relation === "myself") && <S.Button onClick={onLogout}>로그아웃</S.Button>}
+        {(!user || user.relation === "myself") && <LogoutBtn />}
         {user && user?.relation === "friend" && <RemoveFrendBtn username={user.username} />}
         {user && user.relation === "others" && <AddFriendBtn username={user.username} />}
       </S.ButtonBox>

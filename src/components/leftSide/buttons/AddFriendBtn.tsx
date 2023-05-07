@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import * as S from "./style";
+import * as S from "../style";
 import { getSocket } from "socket/socket";
 import { ChatRoomResponse } from "socket/active/chatEventType";
 import { useQueryClient } from "@tanstack/react-query";
@@ -31,6 +31,6 @@ export default function AddFriendBtn(props: { username: string }) {
       username: props.username,
     });
   };
-  
+
   return <S.Button onClick={addBtnHandler}>친구 추가</S.Button>;
 }
