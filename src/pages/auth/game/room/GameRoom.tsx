@@ -21,7 +21,7 @@ export default function GameRoom() {
 
   function gameRoomListener(res: GameRoomData) {
     if (res.type === "game") {
-      if (!players) setPlayers({ red: res.status.redUser, blue: res.status.blueUser });
+      if (players === undefined) setPlayers({ red: res.status.redUser, blue: res.status.blueUser });
       setSpectators(res.status.spectator);
     }
   }
