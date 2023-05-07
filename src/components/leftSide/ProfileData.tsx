@@ -74,9 +74,9 @@ export function ProfileData({ user }: UserProfileProps) {
         {user &&
           user?.gameHistory.map((game) => {
             return (
-              <S.HistoryItem key={game.uniqueId}>
+              <S.HistoryItem key={game.id}>
                 <S.Score>
-                  {game.type === "rank" ? "경쟁" : game.type === "normal" ? "일반" : "아케이드"}전
+                  {game.rule === "rank" ? "경쟁" : game.rule === "normal" ? "일반" : "아케이드"}전
                 </S.Score>
                 <S.Players>
                   <S.Player>{game.red}</S.Player>

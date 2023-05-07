@@ -9,13 +9,13 @@ declare module "profile-types" {
       achievement: string[];
       gameHistory: [
         {
-          uniqueId: number;
+          id: number;
+          rule: "normal" | "rank" | "arcade";
           red: string;
           blue: string;
           redScore: number;
           blueScore: number;
           winner: string;
-          type: string;
         },
       ];
     };
