@@ -67,7 +67,7 @@ export function ProfileData({ user }: UserProfileProps) {
       <AchievementBadge achivements={user?.achievement} username={user?.username} />
       <S.InfoLabel>히스토리</S.InfoLabel>
       <S.HistoryList>
-        {user?.gameHistory.map((game) => {
+        {user?.gameHistory.reverse().map((game) => {
           return (
             <S.HistoryItem key={game.id}>
               <S.Rule>
