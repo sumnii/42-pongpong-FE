@@ -3,25 +3,27 @@ import { BanListArray, UserListArray } from "socket/passive/chatRoomType";
 import { DmListArray } from "socket/passive/friendDmListType";
 import UserInfo from "./UserInfo";
 import FriendList from "./FriendList";
-import { UserListContext } from "hooks/context/UserListContext";
+import { ChatUserListSet, UserListContext } from "hooks/context/UserListContext";
+import { PlayerData, SpectatorArray } from "socket/passive/gameType";
 import * as S from "../style";
 
-// TODO: 게임 구현 후 타입 파일로 보내기
 type UserListCase =
-  | { listOf: "friend" | "player" | "observer" }
+  | { listOf: "friend"; list: null }
   | { listOf: "dm"; list: DmListArray | null }
   | { listOf: "participant"; list: UserListArray | null }
-  | { listOf: "banned"; list: BanListArray | null };
+  | { listOf: "banned"; list: BanListArray | null }
+  | { listOf: "player"; list: PlayerData }
+  | { listOf: "spectator"; list: SpectatorArray };
 
-export default function UserList(props: UserListCase) {
-  const blockList = useContext(UserListContext)?.blocked;
+export default function UserList({ listOf, list }: UserListCase) {
+  const blockList = (useContext(UserListContext) as ChatUserListSet)?.blocked;
 
   return (
     <S.UserListLayout>
-      <h3>{props.listOf}</h3>
+      <h3>{listOf}</h3>
       <S.UserList>
-        {props.listOf === "participant" &&
-          props.list?.map((user) => {
+        {listOf === "participant" &&
+          list?.map((user) => {
             const blocked = blockList?.find((data) => {
               return data.username === user.username;
             })
@@ -31,9 +33,15 @@ export default function UserList(props: UserListCase) {
             return (
               <UserInfo
                 key={user.username}
-                listOf={props.listOf}
+                listOf={listOf}
                 username={user.username}
-                subLine={user.status === "login" ? "🟣 온라인" : user.status === "logout" ? "⚫️ 오프라인" : "⚫️ 게임중"}
+                subLine={
+                  user.status === "login"
+                    ? "🟣 온라인"
+                    : user.status === "logout"
+                    ? "⚫️ 오프라인"
+                    : "⚫️ 게임중"
+                }
                 userStatus={{
                   status: user.status,
                   oper: user.owner ? "owner" : user.admin ? "admin" : "participant",
@@ -43,29 +51,42 @@ export default function UserList(props: UserListCase) {
               />
             );
           })}
-        {props.listOf === "banned" &&
-          props.list?.map((user) => {
+        {listOf === "banned" &&
+          list?.map((user) => {
             return (
               <UserInfo
                 key={user.username}
-                listOf={props.listOf}
+                listOf={listOf}
                 username={user.username}
                 subLine="❌ 입장금지"
               />
             );
           })}
-        {props.listOf === "dm" &&
-          props.list?.map((dm) => {
+        {listOf === "dm" &&
+          list?.map((dm) => {
             return (
               <UserInfo
                 key={dm.username}
-                listOf={props.listOf}
+                listOf={listOf}
                 username={dm.username}
                 subLine={dm.content}
               />
             );
           })}
-        {props.listOf === "friend" && <FriendList listOf={props.listOf} />}
+        {listOf === "friend" && <FriendList listOf={listOf} />}
+        {listOf === "player" && (
+          <>
+            <UserInfo key="red" listOf={listOf} username={list.red} subLine="🟥 red 플레이어" />
+            <UserInfo key="blue" listOf={listOf} username={list.blue} subLine="🟦 blue 플레이어" />
+          </>
+        )}
+        {listOf === "spectator" &&
+          list.map((user) => {
+            const username = user.username;
+            return (
+              <UserInfo listOf={listOf} key={username} username={username} subLine="👀 관전중" />
+            );
+          })}
       </S.UserList>
     </S.UserListLayout>
   );

@@ -55,6 +55,7 @@ export default function GameList() {
                 <GameItem
                   key={game.roomId}
                   no={(gameCnt += 1)}
+                  roomId={game.roomId}
                   rule={game.rule}
                   p1={game.red}
                   p2={game.blue}

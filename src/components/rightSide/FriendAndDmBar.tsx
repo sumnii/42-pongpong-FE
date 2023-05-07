@@ -77,7 +77,7 @@ export default function FriendAndDmBar() {
             <UserList key={"dm"} listOf={isOpen} list={dmListQuery.data?.list} />
           )
         ) : (
-          <UserList key={"friend"} listOf={isOpen} />
+          <UserList key={"friend"} listOf={isOpen} list={null} />
         ))}
     </>
   );
