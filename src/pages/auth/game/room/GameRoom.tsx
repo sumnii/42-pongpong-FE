@@ -5,6 +5,7 @@ import RightSide from "@rightSide/RightSide";
 import { getSocket } from "socket/socket";
 import { useEffect, useState } from "react";
 import Screen from "./Screen";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function GameRoom() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function GameRoom() {
   const socket = getSocket();
   const roomId = Number(gameId);
   const [result, setResult] = useState("");
+  const queryClient = useQueryClient();
 
   const listener = (res: { type: string; status: any }) => {
     if (res.status === "approved") {
@@ -22,6 +24,7 @@ export default function GameRoom() {
       console.log(res);
       navigate("/game/list");
     }
+    queryClient.refetchQueries(["profile"]);
   };
 
   useEffect(() => {
@@ -48,6 +51,15 @@ export default function GameRoom() {
       });
     }
   };
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      queryClient.refetchQueries(["profile"]);
+    }, 300);
+    return () => {
+      clearTimeout(id);
+    }
+  }, [result])
 
   return (
     <>

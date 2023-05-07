@@ -67,11 +67,9 @@ export default function Screen(props: PropsType) {
       }else {
         props.setResult("상대방이 나갔습니다")
       }
-      queryClient.invalidateQueries(["profile"]);
     } else if (res.type === "lose") {
       if (res.roomId !== Number(gameId)) return;
       props.setResult("패배");
-      queryClient.invalidateQueries(["profile"]);
     } else {
       console.log(res);
     }
