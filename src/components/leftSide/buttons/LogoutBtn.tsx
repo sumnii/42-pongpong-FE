@@ -27,6 +27,7 @@ export default function LogoutBtn() {
     queryClient.resetQueries(["profile"]);
     queryClient.resetQueries(["avatar"]);
     queryClient.resetQueries(["list"]);
+    queryClient.resetQueries(["badge"]);
     navigate("/");
   }
 
