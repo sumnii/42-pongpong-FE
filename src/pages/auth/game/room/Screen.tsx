@@ -31,7 +31,7 @@ export default function Screen(props: PropsType) {
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
 
-  const listener = (res: { type: string; roomId?: number; status: any }) => {
+  const listener = (res: { type: string; roomId?: number; status: any; winner?: string; }) => {
     if (res.type === "game") {
       if (res.status.roomId !== Number(gameId)) return;
       if (roomId !== res.status.roomId) setRoomId(res.status.roomId);
@@ -68,7 +68,13 @@ export default function Screen(props: PropsType) {
     } else if (res.type === "lose") {
       if (res.roomId !== Number(gameId)) return;
       props.setResult("패배");
-    } else {
+    } else if (res.type === "finish") {
+      if (res.winner === "blue") {
+        props.setResult("blue 승리");
+      } else if (res.winner === "red") {
+        props.setResult("red 승리");
+      }
+    }else {
       console.log(res);
     }
   };
@@ -133,13 +139,6 @@ export default function Screen(props: PropsType) {
   }
 
   function drawResult() {
-    if (!props.result && (score.blue === 5 || score.red === 5)) {
-      if (score.blue === 5) {
-        props.setResult("blue 승리");
-      } else if (score.red === 5) {
-        props.setResult("red 승리");
-      }
-    }
     if (ctx && canvas && props.result) {
       const result = props.result.split(" ")[1];
       ctx.font = "35px Arial";
