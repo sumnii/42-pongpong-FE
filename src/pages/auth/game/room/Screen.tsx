@@ -16,7 +16,10 @@ export default function Screen(props: PropsType) {
   const [roomId, setRoomId] = useState(0);
   const [ballX, setBallX] = useState(0);
   const [ballY, setBallY] = useState(0);
+  const [ball2X, setBall2X] = useState(0);
+  const [ball2Y, setBall2Y] = useState(0);
   const [ballRadius, setBallRadius] = useState(0);
+  const [ball2, setBall2] = useState(false);
   const [blueWidth, setBlueWidth] = useState(0);
   const [redWidth, setRedWidth] = useState(0);
   const [blueHeight, setBlueHeight] = useState(0);
@@ -48,6 +51,12 @@ export default function Screen(props: PropsType) {
       if (blueX === 0) setBlueX(res.status.bluePaddleX);
       setBallX(res.status.ballX);
       setBallY(res.status.ballY);
+      if (res.status.rule !== "arcade" && ball2) setBall2(false);
+      if (res.status.rule === "arcade" && !ball2) setBall2(true);
+      if (res.status.rule === "arcade") {
+        setBall2X(res.status.ball2X);
+        setBall2Y(res.status.ball2Y);
+      }
       setBlueY(res.status.bluePaddleY);
       setRedY(res.status.redPaddleY);
       if (score.blue !== res.status.blueScore || score.red !== res.status.redScore) {
@@ -162,12 +171,13 @@ export default function Screen(props: PropsType) {
     if (ctx && canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height); //clear
       drawBall(ballX, ballY, ballRadius);
+      if (ball2) drawBall(ball2X, ball2Y, ballRadius);
       drawBluePaddle(blueX, blueY, blueWidth, blueHeight);
       drawRedPaddle(redX, redY, redWidth, redHeight);
       drawScore();
       drawResult();
     }
-  }, [ballX, ballY, redY, blueY, props.result]);
+  }, [ballX, ballY, redY, blueY, props.result, ball2, ball2X, ball2Y]);
 
   return <S.Canvas ref={canvasRef} width={540} height={360}></S.Canvas>;
 }
