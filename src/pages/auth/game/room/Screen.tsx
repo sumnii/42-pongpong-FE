@@ -81,8 +81,9 @@ export default function Screen(props: PropsType) {
     socket.on("message", listener);
     return () => {
       socket.off("message", listener);
+      props.setResult("");
     };
-  }, [roomId, score]);
+  }, [roomId, score, gameId]);
 
   const keyDownHandler = (e: KeyboardEvent) => {
     if (e.keyCode === 38) {
