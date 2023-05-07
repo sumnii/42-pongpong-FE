@@ -5,7 +5,7 @@ import { AuthContext } from "hooks/context/AuthContext";
 import { distroyAuth } from "userAuth";
 import { disconnectSocket } from "socket/socket";
 import { QuerySet } from "profile-types";
-import { Button } from "./style";
+import { Button } from "../style";
 
 export default function LogoutBtn() {
   const setSigned = useContext(AuthContext);

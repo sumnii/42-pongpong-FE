@@ -4,9 +4,9 @@ import { getAvatar } from "api/user";
 import { getUsername } from "userAuth";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
-import AddFriendBtn from "./AddFriendBtn";
-import RemoveFrendBtn from "./RemoveFriendBtn";
-import LogoutBtn from "./LogoutBtn";
+import AddFriendBtn from "./buttons/AddFriendBtn";
+import RemoveFrendBtn from "./buttons/RemoveFriendBtn";
+import LogoutBtn from "./buttons/LogoutBtn";
 import { UserProfileProps } from "profile-types";
 import * as S from "./style";
 

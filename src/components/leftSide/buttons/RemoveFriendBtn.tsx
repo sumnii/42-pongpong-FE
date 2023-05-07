@@ -1,5 +1,5 @@
 import { getSocket } from "socket/socket";
-import * as S from "./style";
+import * as S from "../style";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomResponse } from "socket/active/chatEventType";
 import { useEffect } from "react";
