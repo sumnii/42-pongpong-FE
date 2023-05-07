@@ -8,45 +8,23 @@ import { disconnectSocket } from "socket/socket";
 import Modal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import AddFriendBtn from "./AddFriendBtn";
-import * as S from "./style";
 import RemoveFrendBtn from "./RemoveFriendBtn";
+import { QuerySet, UserProfileProps } from "profile-types";
+import * as S from "./style";
 
-interface userProps {
-  user?: {
-    username: string;
-    rating: number;
-    win: number;
-    lose: number;
-    relation: "myself" | "friend" | "others";
-    gameHistory: [
-      {
-        uniqueId: number;
-        red: string;
-        blue: string;
-        redScore: number;
-        blueScore: number;
-        winner: string;
-        type: string;
-      },
-    ];
-  };
-}
-
-export function ProfileData(props: userProps) {
-  let user;
-  if (props) user = props.user;
+export function ProfileData({ user }: UserProfileProps) {
   const setSigned = useContext(AuthContext);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const myProfile = getUsername() === props.user?.username;
+  const myProfile = getUsername() === user?.username;
   const queryClient = useQueryClient();
 
   const avatarQuery = useQuery({
-    queryKey: ["avatar", `${props.user?.username}`],
+    queryKey: ["avatar", `${user?.username}`],
     queryFn: () => {
-      if (props.user) return getAvatar(props.user.username);
+      if (user) return getAvatar(user.username);
     },
-    enabled: !!props.user,
+    enabled: !!user,
   });
 
   const openModalHandler = () => {
@@ -61,6 +39,10 @@ export function ProfileData(props: userProps) {
     distroyAuth();
     disconnectSocket();
     if (setSigned) setSigned(false);
+    const querySet = queryClient.getQueriesData(["avatar"]);
+    (querySet as QuerySet).map((queryData) => {
+      if (queryData[1]) return URL.revokeObjectURL(queryData[1]);
+    });
     queryClient.resetQueries(["profile"]);
     queryClient.resetQueries(["avatar"]);
     queryClient.resetQueries(["list"]);
@@ -74,7 +56,7 @@ export function ProfileData(props: userProps) {
           <AvatarUploadModal
             close={closeModalHandler}
             prevUrl={String(avatarQuery.data)}
-            username={props.user?.username}
+            username={user?.username}
           />
         </Modal>
       )}
@@ -107,9 +89,7 @@ export function ProfileData(props: userProps) {
       <S.InfoLabel>히스토리</S.InfoLabel>
       <S.HistoryList>
         {user &&
-          user.gameHistory &&
-          // gameHistory 준비중
-          user.gameHistory.map((game) => {
+          user?.gameHistory.map((game) => {
             return (
               <S.HistoryItem key={game.uniqueId}>
                 <S.Score>
