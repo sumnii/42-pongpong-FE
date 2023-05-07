@@ -20,6 +20,7 @@ export default function GameRoom() {
       navigate("/game/list");
     } else {
       console.log(res);
+      navigate("/game/list");
     }
   };
 
