@@ -16,8 +16,12 @@ export default function LogoutBtn() {
     distroyAuth();
     disconnectSocket();
     if (setSigned) setSigned(false);
-    const querySet = queryClient.getQueriesData(["avatar"]);
-    (querySet as QuerySet).map((queryData) => {
+    const avartarSet = queryClient.getQueriesData(["avatar"]);
+    (avartarSet as QuerySet).map((queryData) => {
+      if (queryData[1]) return URL.revokeObjectURL(queryData[1]);
+    });
+    const badgeSet = queryClient.getQueriesData(["badge"]);
+    (badgeSet as QuerySet).map((queryData) => {
       if (queryData[1]) return URL.revokeObjectURL(queryData[1]);
     });
     queryClient.resetQueries(["profile"]);
