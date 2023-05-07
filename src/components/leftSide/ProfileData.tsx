@@ -53,20 +53,16 @@ export function ProfileData({ user }: UserProfileProps) {
         />
       )}
       <S.InfoWrapper>
-        <S.InfoLabel>
-          닉네임
-          <br />
-          레이팅
-          <br />
-          전적
-        </S.InfoLabel>
-        <S.InfoValue>
-          {user && user.username}
-          <br />
-          {user && user.rating}
-          <br />
-          {user && `${user.win}승 ${user.lose}패`}
-        </S.InfoValue>
+        <S.InfoLabel>닉네임</S.InfoLabel>
+        <S.InfoValue>{user && user.username}</S.InfoValue>
+      </S.InfoWrapper>
+      <S.InfoWrapper>
+        <S.InfoLabel>레이팅</S.InfoLabel>
+        <S.InfoValue>{user && user.rating}</S.InfoValue>
+      </S.InfoWrapper>
+      <S.InfoWrapper>
+        <S.InfoLabel>전적</S.InfoLabel>
+        <S.InfoValue>{user && `${user.win}승 ${user.lose}패`}</S.InfoValue>
       </S.InfoWrapper>
       <AchievementBadge achivements={user?.achievement} username={user?.username} />
       <S.InfoLabel>히스토리</S.InfoLabel>
