@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { darkGray } from "style/color";
+import { darkGray, lightBlue, lightRed } from "style/color";
 import * as font from "style/font";
 import * as button from "style/button";
 
@@ -44,6 +44,7 @@ export const ProfileImg = styled.img<{ me: boolean }>`
 
 export const InfoWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 export const InfoLabel = styled.span`
@@ -58,19 +59,63 @@ export const InfoValue = styled.span`
 `;
 
 /*
+ *      Badge
+ */
+
+export const BadgeBox = styled.div`
+  display: flex;
+  gap: 10px;
+  padding-left: 5px;
+`;
+
+export const BadgeSet = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+`;
+
+export const BadgeImg = styled.img`
+  width: 35px;
+  border-radius: 50%;
+`;
+
+/*
  *      Game History
  */
 
 export const HistoryList = styled.ul`
-  /* height: 400px; */
-  flex: 1 0 auto;
+  /* max-height: 300px; */
+  /* flex: 1 0 auto; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
   overflow: auto;
+  padding: 0;
 `;
 
 export const HistoryItem = styled.li`
   display: flex;
   flex-direction: column;
-  list-type: none;
+  ${font.footer}
+  line-height: 1.5;
+
+  border: 1px solid;
+  margin: 8px 5% 0;
+  padding: 10px 0 5px;
+  position: relative;
+`;
+
+export const Rule = styled.span`
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  white-space: nowrap;
+
+  background-color: white;
+  padding: 0 5px;
 `;
 
 export const Players = styled.div`
@@ -78,18 +123,35 @@ export const Players = styled.div`
   justify-content: center;
 `;
 
-export const Player = styled.span`
-  width: 40;
+export const Player = styled.span<{ winner?: boolean }>`
+  width: 40%;
   text-align: center;
+  ${(props) => {
+    if (props.winner) return `font-weight: 600;`;
+  }}
 `;
 
 export const Versus = styled.span`
-  width: 20%;
+  width: 10%;
   text-align: center;
 `;
 
-export const Score = styled.span`
+export const ScoreBox = styled.div`
+  display: flex;
+  justify-content: center;
+  /* text-align: center; */
+`;
+
+export const Score = styled.span<{ winner?: boolean; blue?: boolean; red?: boolean }>`
+  width: 40%;
   text-align: center;
+  ${(props) => {
+    if (props.winner) return `font-weight: 600;`;
+  }}
+  ${(props) => {
+    if (props.blue) return `color: ${lightBlue};`;
+    if (props.red) return `color: ${lightRed};`;
+  }}
 `;
 
 /*

@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom";
 import { getSocket } from "socket/socket";
 import { getUsername } from "userAuth";
 import * as S from "./style";
-import { useQueryClient } from "@tanstack/react-query";
 
 type PropsType = {
   result: string;
   setResult: Dispatch<SetStateAction<string>>;
-}
+};
 
 export default function Screen(props: PropsType) {
   const { gameId } = useParams();
@@ -31,7 +30,6 @@ export default function Screen(props: PropsType) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
-  const queryClient = useQueryClient();
 
   const listener = (res: { type: string; roomId?: number; status: any }) => {
     if (res.type === "game") {
@@ -64,14 +62,12 @@ export default function Screen(props: PropsType) {
         props.setResult("blue 승리");
       } else if (score.red === 5) {
         props.setResult("red 승리");
-      }else {
-        props.setResult("상대방이 나갔습니다")
+      } else {
+        props.setResult("상대방이 나갔습니다");
       }
-      queryClient.invalidateQueries(["profile"]);
     } else if (res.type === "lose") {
       if (res.roomId !== Number(gameId)) return;
       props.setResult("패배");
-      queryClient.invalidateQueries(["profile"]);
     } else {
       console.log(res);
     }
@@ -81,8 +77,9 @@ export default function Screen(props: PropsType) {
     socket.on("message", listener);
     return () => {
       socket.off("message", listener);
+      props.setResult("");
     };
-  }, [roomId, score]);
+  }, [roomId, score, gameId]);
 
   const keyDownHandler = (e: KeyboardEvent) => {
     if (e.keyCode === 38) {
@@ -136,6 +133,13 @@ export default function Screen(props: PropsType) {
   }
 
   function drawResult() {
+    if (!props.result && (score.blue === 5 || score.red === 5)) {
+      if (score.blue === 5) {
+        props.setResult("blue 승리");
+      } else if (score.red === 5) {
+        props.setResult("red 승리");
+      }
+    }
     if (ctx && canvas && props.result) {
       const result = props.result.split(" ")[1];
       ctx.font = "35px Arial";

@@ -42,7 +42,7 @@ function Auth() {
       console.log("sub", res);
     } else {
       if (res.type === "chatInvitation") {
-        queryClient.invalidateQueries(["profile", getUsername()]);
+        queryClient.resetQueries(["profile", getUsername()]);
       }
     }
   }

@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { isAuth } from "userAuth";
 import RightSide from "@rightSide/RightSide";
 import { getSocket } from "socket/socket";
-import { useEffect, useState } from "react";
 import Screen from "./Screen";
 import { UserListContext } from "hooks/context/UserListContext";
 import { GameRoomData, PlayerData, SpectatorData } from "socket/passive/gameType";
@@ -18,6 +19,7 @@ export default function GameRoom() {
   const [result, setResult] = useState("");
   const [players, setPlayers] = useState<PlayerData>();
   const [spectators, setSpectators] = useState<{ username: string }[]>([]);
+  const queryClient = useQueryClient();
 
   function gameRoomListener(res: GameRoomData | SpectatorData) {
     if (res.type === "spectator") {
@@ -39,7 +41,9 @@ export default function GameRoom() {
       navigate("/game/list");
     } else {
       console.log(res);
+      navigate("/game/list");
     }
+    queryClient.refetchQueries(["profile"]);
   };
 
   useEffect(() => {
@@ -66,6 +70,15 @@ export default function GameRoom() {
       });
     }
   };
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      queryClient.refetchQueries(["profile"]);
+    }, 300);
+    return () => {
+      clearTimeout(id);
+    }
+  }, [roomId, result])
 
   return (
     <>

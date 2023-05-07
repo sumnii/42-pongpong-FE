@@ -59,6 +59,7 @@ export default function MatchGameModal(props: modalProps) {
       });
     } else {
       setNotice("옵션을 선택해주세요.");
+      setStatus("");
     }
   }
 
