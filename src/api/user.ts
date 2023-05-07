@@ -59,3 +59,17 @@ export async function postAvatar(form: FormData) {
     }
   }
 }
+
+export async function getBadge(win: string) {
+  try {
+    const res = await axios.get(`/user/badge/${win}`, {
+      responseType: "blob",
+    });
+    return URL.createObjectURL(res.data);
+  } catch (err: unknown) {
+    if (err instanceof AxiosError && err.response) {
+      console.error(err.response);
+      return err.response;
+    }
+  }
+}
