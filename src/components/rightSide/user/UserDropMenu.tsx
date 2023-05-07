@@ -135,7 +135,7 @@ export default function UserDropMenu({
       );
     case "player":
       return <ModalLayout ref={dropRef}>{DefaultMenu}</ModalLayout>;
-    case "observer":
+    case "spectator":
       return <ModalLayout ref={dropRef}>{DefaultMenu}</ModalLayout>;
     default:
       return null;
