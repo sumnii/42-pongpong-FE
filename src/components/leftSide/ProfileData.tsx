@@ -68,7 +68,7 @@ export function ProfileData({ user }: UserProfileProps) {
           {user && `${user.win}승 ${user.lose}패`}
         </S.InfoValue>
       </S.InfoWrapper>
-      <AchievementBadge achivements={user?.achievement} />
+      <AchievementBadge achivements={user?.achievement} username={user?.username} />
       <S.InfoLabel>히스토리</S.InfoLabel>
       <S.HistoryList>
         {user &&

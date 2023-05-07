@@ -22,4 +22,14 @@ declare module "profile-types" {
   };
 
   export type QuerySet = [QueryKey, string | undefined][];
+
+  export type AchivementProps = {
+    achivements?: string[];
+    username?: string;
+  };
+
+  export type BadgeProps = {
+    achivement: string;
+    username?: string;
+  };
 }
