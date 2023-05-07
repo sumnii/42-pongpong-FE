@@ -5,12 +5,13 @@ import * as S from "./style";
 
 type GameItemProps = {
   no: number;
+  roomId: number;
   rule: string;
   p1: string;
   p2: string;
 };
 
-export default function GameItem({ no, rule, p1, p2 }: GameItemProps) {
+export default function GameItem({ no, roomId, rule, p1, p2 }: GameItemProps) {
   const navigate = useNavigate();
 
   const redAvatarQuery = useQuery({
@@ -36,7 +37,7 @@ export default function GameItem({ no, rule, p1, p2 }: GameItemProps) {
       <S.GameHeaderBox>
         <S.No>{no}</S.No>
         <S.Rule>🚩 {rule}</S.Rule>
-        <S.EntryBtn onClick={() => navigate(`/game/${no}`)}>관전</S.EntryBtn>
+        <S.EntryBtn onClick={() => navigate(`/game/${roomId}`)}>관전</S.EntryBtn>
       </S.GameHeaderBox>
       <S.PlayersBox>
         <S.PlayerBox>
