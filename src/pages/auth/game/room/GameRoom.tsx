@@ -59,7 +59,7 @@ export default function GameRoom() {
     return () => {
       clearTimeout(id);
     }
-  }, [result])
+  }, [roomId, result])
 
   return (
     <>
