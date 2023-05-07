@@ -6,6 +6,7 @@ declare module "profile-types" {
       win: number;
       lose: number;
       relation: "myself" | "friend" | "others";
+      achievement: string[];
       gameHistory: [
         {
           uniqueId: number;

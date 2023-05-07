@@ -8,6 +8,7 @@ import AddFriendBtn from "./buttons/AddFriendBtn";
 import RemoveFrendBtn from "./buttons/RemoveFriendBtn";
 import LogoutBtn from "./buttons/LogoutBtn";
 import { UserProfileProps } from "profile-types";
+import AchievementBadge from "./AchievementBadge";
 import * as S from "./style";
 
 export function ProfileData({ user }: UserProfileProps) {
@@ -67,6 +68,7 @@ export function ProfileData({ user }: UserProfileProps) {
           {user && `${user.win}승 ${user.lose}패`}
         </S.InfoValue>
       </S.InfoWrapper>
+      <AchievementBadge achivements={user?.achievement} />
       <S.InfoLabel>히스토리</S.InfoLabel>
       <S.HistoryList>
         {user &&
