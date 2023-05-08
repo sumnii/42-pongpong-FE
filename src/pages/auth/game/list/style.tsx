@@ -26,7 +26,7 @@ export const H2 = styled.h2`
 export const MatchMakingBtn = styled.button`
   ${button.basicColor};
   font-size: 1.2rem;
-  padding: 10px 10px;
+  padding: 8px 10px;
 `;
 
 export const GameList = styled.ul`

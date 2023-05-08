@@ -29,7 +29,8 @@ export const H2 = styled.h2`
 
 export const MakeRoomBtn = styled.button`
   ${button.basicColor};
-  height: 25px;
+  font-size: 1.2rem;
+  padding: 8px 10px;
 `;
 
 export const ChatList = styled.ul`
@@ -79,8 +80,8 @@ export const ParticipantsCnt = styled.span`
 `;
 
 export const EntryBtn = styled.button`
-  width: 10%;
   ${button.mini}
+  width: 45px;
   ${(props: { head?: boolean }) => {
     return props.head ? "visibility: hidden;" : "";
   }}

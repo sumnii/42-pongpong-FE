@@ -20,7 +20,7 @@ export default function CreateChatRoom() {
           <CreateChatRoomModal close={closeModalHandler} />
         </Modal>
       )}
-      <MakeRoomBtn onClick={showModalHandler}>새로만들기</MakeRoomBtn>
+      <MakeRoomBtn onClick={showModalHandler}>채팅방 생성</MakeRoomBtn>
     </>
   );
 }

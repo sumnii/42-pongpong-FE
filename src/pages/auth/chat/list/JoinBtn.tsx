@@ -82,7 +82,7 @@ export default function JoinChatRoom(props: PropsType) {
         </Modal>
       )}
       {props.myRoom ? (
-        <S.EntryBtn onClick={joinMyChatHandler}>입장</S.EntryBtn>
+        <S.EntryBtn onClick={joinMyChatHandler}>재입장</S.EntryBtn>
       ) : (
         <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
           참여
