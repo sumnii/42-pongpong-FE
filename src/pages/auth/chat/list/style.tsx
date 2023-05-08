@@ -81,7 +81,7 @@ export const ParticipantsCnt = styled.span`
 
 export const EntryBtn = styled.button`
   ${button.mini}
-  width: 45px;
+  width: 48px;
   ${(props: { head?: boolean }) => {
     return props.head ? "visibility: hidden;" : "";
   }}
