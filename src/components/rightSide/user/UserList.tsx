@@ -40,7 +40,7 @@ export default function UserList({ listOf, list }: UserListCase) {
                     ? "🟣 온라인"
                     : user.status === "logout"
                     ? "⚫️ 오프라인"
-                    : "⚫️ 게임중"
+                    : "🟠 게임중"
                 }
                 userStatus={{
                   status: user.status,
