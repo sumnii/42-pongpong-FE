@@ -16,7 +16,10 @@ export default function Screen(props: PropsType) {
   const [roomId, setRoomId] = useState(0);
   const [ballX, setBallX] = useState(0);
   const [ballY, setBallY] = useState(0);
+  const [ball2X, setBall2X] = useState(0);
+  const [ball2Y, setBall2Y] = useState(0);
   const [ballRadius, setBallRadius] = useState(0);
+  const [ball2, setBall2] = useState(false);
   const [blueWidth, setBlueWidth] = useState(0);
   const [redWidth, setRedWidth] = useState(0);
   const [blueHeight, setBlueHeight] = useState(0);
@@ -31,7 +34,7 @@ export default function Screen(props: PropsType) {
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
 
-  const listener = (res: { type: string; roomId?: number; status: any }) => {
+  const listener = (res: { type: string; roomId?: number; status: any; winner?: string; }) => {
     if (res.type === "game") {
       if (res.status.roomId !== Number(gameId)) return;
       if (roomId !== res.status.roomId) setRoomId(res.status.roomId);
@@ -48,6 +51,12 @@ export default function Screen(props: PropsType) {
       if (blueX === 0) setBlueX(res.status.bluePaddleX);
       setBallX(res.status.ballX);
       setBallY(res.status.ballY);
+      if (res.status.rule !== "arcade" && ball2) setBall2(false);
+      if (res.status.rule === "arcade" && !ball2) setBall2(true);
+      if (res.status.rule === "arcade") {
+        setBall2X(res.status.ball2X);
+        setBall2Y(res.status.ball2Y);
+      }
       setBlueY(res.status.bluePaddleY);
       setRedY(res.status.redPaddleY);
       if (score.blue !== res.status.blueScore || score.red !== res.status.redScore) {
@@ -68,7 +77,13 @@ export default function Screen(props: PropsType) {
     } else if (res.type === "lose") {
       if (res.roomId !== Number(gameId)) return;
       props.setResult("패배");
-    } else {
+    } else if (res.type === "finish") {
+      if (res.winner === "blue") {
+        props.setResult("blue 승리");
+      } else if (res.winner === "red") {
+        props.setResult("red 승리");
+      }
+    }else {
       console.log(res);
     }
   };
@@ -133,13 +148,6 @@ export default function Screen(props: PropsType) {
   }
 
   function drawResult() {
-    if (!props.result && (score.blue === 5 || score.red === 5)) {
-      if (score.blue === 5) {
-        props.setResult("blue 승리");
-      } else if (score.red === 5) {
-        props.setResult("red 승리");
-      }
-    }
     if (ctx && canvas && props.result) {
       const result = props.result.split(" ")[1];
       ctx.font = "35px Arial";
@@ -163,12 +171,13 @@ export default function Screen(props: PropsType) {
     if (ctx && canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height); //clear
       drawBall(ballX, ballY, ballRadius);
+      if (ball2) drawBall(ball2X, ball2Y, ballRadius);
       drawBluePaddle(blueX, blueY, blueWidth, blueHeight);
       drawRedPaddle(redX, redY, redWidth, redHeight);
       drawScore();
       drawResult();
     }
-  }, [ballX, ballY, redY, blueY, props.result]);
+  }, [ballX, ballY, redY, blueY, props.result, ball2, ball2X, ball2Y]);
 
   return <S.Canvas ref={canvasRef} width={540} height={360}></S.Canvas>;
 }
