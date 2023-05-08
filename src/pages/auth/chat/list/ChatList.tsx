@@ -52,7 +52,6 @@ export default function ChatList() {
     <>
       <S.PageLayout>
         <AvailableList chatList={chatList} />
-        <hr />
         <JoinedList myChatList={myChatList} />
       </S.PageLayout>
       <RightSide />

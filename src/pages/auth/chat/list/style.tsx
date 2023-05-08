@@ -5,7 +5,12 @@ import * as button from "style/button";
 export const PageLayout = styled.div`
   height: 100%;
   padding: 5px 15px;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
+`;
+
+export const ChatListLayout = styled.div`
+  height: calc(50% - 17px);
+  border-bottom: 0.5px solid;
 `;
 
 export const HeaderBox = styled.div`
@@ -22,8 +27,18 @@ export const H2 = styled.h2`
   padding: 5px 0;
 `;
 
+export const MakeRoomBtn = styled.button`
+  ${button.basicColor};
+  font-size: 1.2rem;
+  padding: 8px 10px;
+`;
+
 export const ChatList = styled.ul`
+  margin: 0;
   padding: 0;
+
+  height: 80%;
+  overflow: auto;
 `;
 
 export const ChatItem = styled.li`
@@ -65,8 +80,8 @@ export const ParticipantsCnt = styled.span`
 `;
 
 export const EntryBtn = styled.button`
-  width: 10%;
   ${button.mini}
+  width: 48px;
   ${(props: { head?: boolean }) => {
     return props.head ? "visibility: hidden;" : "";
   }}

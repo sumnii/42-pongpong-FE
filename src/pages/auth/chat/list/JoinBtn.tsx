@@ -53,7 +53,7 @@ export default function JoinChatRoom(props: PropsType) {
 
   const closeModalHandler = () => {
     setShowModal(false);
-    if (notice) setNotice("")
+    if (notice) setNotice("");
   };
 
   function joinHandler() {
@@ -82,10 +82,10 @@ export default function JoinChatRoom(props: PropsType) {
         </Modal>
       )}
       {props.myRoom ? (
-        <S.EntryBtn onClick={joinMyChatHandler}>참가</S.EntryBtn>
+        <S.EntryBtn onClick={joinMyChatHandler}>재입장</S.EntryBtn>
       ) : (
         <S.EntryBtn onClick={props.status !== "protected" ? joinHandler : showModalHandler}>
-          참가
+          참여
         </S.EntryBtn>
       )}
     </>
