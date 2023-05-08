@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
+import * as button from "style/button";
 import { darkMain, lightMain } from "style/color";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { RiSendPlane2Line } from "react-icons/ri";
@@ -31,9 +32,8 @@ export const Backdrop = styled.div`
 
 export const Modal = styled.dialog`
   width: 40%;
-  ${(props) => (props.id === "noti" ? "height: 240px;" : "height: 180px;")}
+  ${(props) => (props.id === "noti" ? "height: 240px;" : "height: 220px;")}
   border: none;
-  border-radius: 12px;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08);
   z-index: 1;
   top: 100px;
@@ -47,10 +47,11 @@ export const BtnWrapper = styled.div`
 `;
 
 export const Button = styled.button`
+  ${button.basicColor}
+  font-size: 1.1rem;
+
   display: inline-block;
   padding: 6px 12px;
-  border-radius: 5px;
-  border: 1px solid lightgray;
   line-height: 1.5;
 `;
 
