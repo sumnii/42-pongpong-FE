@@ -16,6 +16,7 @@ export type userInfoType = {
   username: string;
   password: string;
   phonenumber: string;
+  intraId: string;
 };
 
 export async function create(userInfo: userInfoType) {
@@ -24,6 +25,7 @@ export async function create(userInfo: userInfoType) {
       username: userInfo.username,
       password: userInfo.password,
       phonenumber: userInfo.phonenumber,
+      intraId: userInfo.intraId,
     });
     return res;
   } catch (err: unknown) {

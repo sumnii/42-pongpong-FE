@@ -81,3 +81,15 @@ export async function login(body: { username: string; password: string }) {
     }
   }
 }
+
+export async function oauth(code: string) {
+  try {
+    const res = await axios.get(`/auth/oauth/${code}`);
+    return res;
+  } catch (err: unknown) {
+    if (err instanceof AxiosError && err.response) {
+      console.error(err.response);
+      return err.response;
+    }
+  }
+}

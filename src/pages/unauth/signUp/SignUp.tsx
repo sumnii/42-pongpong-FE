@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "hooks/context/AuthContext";
 import * as S from "./style";
 import * as user from "api/user";
@@ -26,6 +26,7 @@ export default function signUp() {
 
   const passwdRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{8,}$/;
   const phoneRegExp = /^[0-9]{0,13}$/;
+  const intraId = useLocation().search.split("?")[1];
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
@@ -112,6 +113,7 @@ export default function signUp() {
         username: idInput,
         password: pwInput,
         phonenumber: phoneInput,
+        intraId: intraId,
       };
       const res = await user.create(userInfo);
       if (res && (res.status === 200 || res.status === 201)) {
