@@ -101,7 +101,7 @@ export const HistoryItem = styled.li`
   ${font.footer}
   line-height: 1.5;
 
-  border: 1px solid;
+  border: 1.5px solid;
   margin: 8px 5% 0;
   padding: 10px 0 5px;
   position: relative;
