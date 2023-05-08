@@ -58,7 +58,7 @@ export const SendBtn = styled.button`
   border: 1px solid lightgray;
   line-height: 1.5;
   align-items: center;
-  background-color: ${(props) => (props.disabled ? "lightgray" : `${color.basicMain}`)};
+  background-color: ${(props) => (props.disabled ? `${color.lightGray}` : `${color.darkMain}`)};
   cursor: pointer;
 `;
 
@@ -81,4 +81,4 @@ export const TitleWrapper = styled.div`
 export const SettingBtnIcon = styled(AiOutlineSetting)`
   padding: 5px 0;
   cursor: pointer;
-`
+`;
