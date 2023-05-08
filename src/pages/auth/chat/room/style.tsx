@@ -6,7 +6,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 
 export const PageLayout = styled.div`
   height: 100%;
-  padding: 5px 15px;
+  padding: 5px 2%;
   flex: 1 0 auto;
 `;
 
@@ -35,10 +35,9 @@ export const H2 = styled.h2`
 `;
 
 export const Screen = styled.div`
-  width: 95%;
+  width: 100%;
   height: 100%;
-  border: none;
-  border-radius: 12px;
+  border: 1px solid;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08);
   overflow-y: auto;
   padding: 12px 18px 12px;
@@ -46,9 +45,8 @@ export const Screen = styled.div`
 `;
 
 export const Form = styled.form`
-  width: 90%;
-  margin: 0 auto;
-  padding: 12px 18px 12px;
+  width: 100%;
+  margin-top: 12px;
 `;
 
 export const Wrapper = styled.div`
@@ -60,8 +58,7 @@ export const Wrapper = styled.div`
 export const SendBtn = styled.button`
   display: flex;
   padding: 6px 12px;
-  border-radius: 5px;
-  border: 1px solid lightgray;
+  border: 1px solid;
   line-height: 1.5;
   align-items: center;
   background-color: ${(props) => (props.disabled ? `${color.lightGray}` : `${color.darkMain}`)};
@@ -69,12 +66,13 @@ export const SendBtn = styled.button`
 `;
 
 export const Input = styled.input`
-  width: 90%;
+  ${font.body}
+  width: 100%;
   padding: 12px 18px 12px;
-  border: 1.5px solid lightgray;
-  border-radius: 8px;
+  border: 1px solid;
   transition: border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-  margin-right: 5px;
+  margin-right: 10px;
+  outline: none;
 `;
 
 export const TitleWrapper = styled.div`
