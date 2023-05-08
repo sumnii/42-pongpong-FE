@@ -31,7 +31,7 @@ export const Backdrop = styled.div`
 
 export const Modal = styled.dialog`
   width: 40%;
-  ${(props) => (props.id === "noti" ? "height: 200px;" : "")}
+  ${(props) => (props.id === "noti" ? "height: 240px;" : "height: 180px;")}
   border: none;
   border-radius: 12px;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08);
@@ -333,4 +333,3 @@ export const AcceptGameLayout = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-
