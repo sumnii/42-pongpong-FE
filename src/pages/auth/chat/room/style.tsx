@@ -6,9 +6,10 @@ import { AiOutlineSetting } from "react-icons/ai";
 import { lightMain } from "style/color";
 
 export const PageLayout = styled.div`
+  width: 60vw;
   height: 100%;
   padding: 5px 2%;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 `;
 
 export const HeaderBox = styled.div`
@@ -63,6 +64,7 @@ export const NoticeChat = styled.li`
 `;
 
 export const MyChat = styled.li`
+  word-wrap: break-word;
   max-width: calc(100% - 20px);
   padding: 2px 5px;
   border: 1px solid;
@@ -106,6 +108,7 @@ export const OpponentFrom = styled.span`
 `;
 
 export const OpponentChat = styled.li`
+  word-wrap: break-word;
   max-width: calc(100% - 20px);
   padding: 2px 5px;
   border: 1px solid;

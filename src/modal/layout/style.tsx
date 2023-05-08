@@ -207,6 +207,7 @@ export const DmChatList = styled.ul`
 `;
 
 export const MyChat = styled.li`
+  word-wrap: break-word;
   max-width: calc(100% - 20px);
   padding: 2px 5px;
   border: 1px solid;
@@ -239,6 +240,7 @@ export const MyChat = styled.li`
 `;
 
 export const OpponentChat = styled.li`
+  word-wrap: break-word;
   max-width: calc(100% - 20px);
   padding: 2px 5px;
   border: 1px solid;

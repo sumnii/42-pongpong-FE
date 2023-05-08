@@ -5,7 +5,7 @@ import * as button from "style/button";
 export const PageLayout = styled.div`
   height: 100%;
   padding: 5px 15px;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 `;
 
 export const ChatListLayout = styled.div`
