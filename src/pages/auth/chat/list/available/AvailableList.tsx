@@ -7,15 +7,15 @@ export default function AvailableList(props: { chatList: ChatListArray }) {
   let no = 1;
 
   return (
-    <>
+    <S.ChatListLayout>
       <S.HeaderBox>
         <S.H2>참여 가능한 채팅방</S.H2>
         <CreateChatRoom />
       </S.HeaderBox>
+      <S.ChatItem head>
+        <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
+      </S.ChatItem>
       <S.ChatList>
-        <S.ChatItem head>
-          <ChatItem no={"No"} subject={"방제"} owner={"방장"} participantsCnt={"인원"} head />
-        </S.ChatItem>
         {props.chatList.map((room) => {
           return (
             <S.ChatItem key={room.roomId}>
@@ -31,6 +31,6 @@ export default function AvailableList(props: { chatList: ChatListArray }) {
           );
         })}
       </S.ChatList>
-    </>
+    </S.ChatListLayout>
   );
 }

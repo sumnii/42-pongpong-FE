@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatRoomResponse } from "socket/active/chatEventType";
 import { getSocket } from "socket/socket";
+import * as S from "./style";
 
 export default function ExitBtn(props: { room: number }) {
   const navigate = useNavigate();
@@ -29,5 +30,5 @@ export default function ExitBtn(props: { room: number }) {
       roomId: props.room,
     });
   }
-  return <button onClick={exitHandler}>나가기</button>;
+  return <S.ExitBtn onClick={exitHandler}>퇴장</S.ExitBtn>;
 }

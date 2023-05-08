@@ -1,6 +1,5 @@
-export const basicMain = "#CCC2DC";
-export const lightMain = "#EADDFF";
-export const darkMain = "#4F378B";
+export const lightMain = "#E6E1EF";
+export const darkMain = "#8185B9";
 
 export const lightGray = "#D9D9D9";
 export const darkGray = "#373737";

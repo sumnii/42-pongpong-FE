@@ -77,15 +77,15 @@ export default function GameRoom() {
     }, 300);
     return () => {
       clearTimeout(id);
-    }
-  }, [roomId, result])
+    };
+  }, [roomId, result]);
 
   return (
     <>
       <S.PageLayout>
         <S.HeaderBox>
-          <S.H2>{gameId}번 게임방 접속 완료</S.H2>
-          <button onClick={exitGameHandler}>나가기</button>
+          <S.H2>{players && `LIVE MATCH ~ 🟥 ${players.red} vs ${players.blue} 🟦`}</S.H2>
+          <S.ExitBtn onClick={exitGameHandler}>퇴장</S.ExitBtn>
         </S.HeaderBox>
         <Screen result={result} setResult={setResult} />
       </S.PageLayout>

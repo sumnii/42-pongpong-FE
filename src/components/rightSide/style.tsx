@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { FiUsers } from "react-icons/fi";
-import { BsEnvelope, BsEnvelopeExclamation } from "react-icons/bs";
+import { BsPeople, BsEnvelope, BsEnvelopeExclamation } from "react-icons/bs";
 import { darkMain } from "style/color";
 
 export const RightSideLayout = styled.div`
@@ -41,7 +40,7 @@ export const IconWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const FriendIcon = styled(FiUsers)`
+export const FriendIcon = styled(BsPeople)`
   width: 20px;
   height: 20px;
   pointer-events: none;

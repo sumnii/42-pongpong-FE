@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CreateChatRoomModal from "modal/CreateChatRoomModal";
 import Modal from "modal/layout/Modal";
+import { MakeRoomBtn } from "../style";
 
 export default function CreateChatRoom() {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +20,7 @@ export default function CreateChatRoom() {
           <CreateChatRoomModal close={closeModalHandler} />
         </Modal>
       )}
-      <button onClick={showModalHandler}>새로만들기</button>
+      <MakeRoomBtn onClick={showModalHandler}>채팅방 생성</MakeRoomBtn>
     </>
   );
 }
