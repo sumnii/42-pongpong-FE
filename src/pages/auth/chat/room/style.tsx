@@ -23,7 +23,8 @@ export const ExitBtn = styled.button`
 
 export const MainBox = styled.div`
   width: 100%;
-  height: 60%;
+  height: 85%;
+  margin-top: 10px;
 `;
 
 export const H2 = styled.h2`
@@ -34,7 +35,7 @@ export const H2 = styled.h2`
 `;
 
 export const Screen = styled.div`
-  width: 90%;
+  width: 95%;
   height: 100%;
   border: none;
   border-radius: 12px;
