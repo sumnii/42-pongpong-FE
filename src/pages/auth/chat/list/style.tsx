@@ -8,6 +8,11 @@ export const PageLayout = styled.div`
   flex: 1 0 auto;
 `;
 
+export const ChatListLayout = styled.div`
+  height: calc(50% - 17px);
+  border-bottom: 0.5px solid;
+`;
+
 export const HeaderBox = styled.div`
   display: flex;
   justify-content: space-between;
@@ -22,8 +27,17 @@ export const H2 = styled.h2`
   padding: 5px 0;
 `;
 
+export const MakeRoomBtn = styled.button`
+  ${button.basicColor};
+  height: 25px;
+`;
+
 export const ChatList = styled.ul`
+  margin: 0;
   padding: 0;
+
+  height: 80%;
+  overflow: auto;
 `;
 
 export const ChatItem = styled.li`
