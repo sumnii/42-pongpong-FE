@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
-// import * as button from "style/button"
+import { mini } from "style/button";
 
 export const PageLayout = styled.div`
   height: 100%;
@@ -22,8 +22,12 @@ export const H2 = styled.h2`
   padding: 5px 0;
 `;
 
+export const ExitBtn = styled.button`
+  ${mini}
+`;
+
 export const Canvas = styled.canvas`
   background: #eee;
   display: block;
   margin: 0 auto;
-`
+`;
