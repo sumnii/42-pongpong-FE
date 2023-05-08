@@ -29,7 +29,7 @@ export const MainBox = styled.div`
 `;
 
 export const H2 = styled.h2`
-  ${font.body};
+  ${font.title};
   font-weight: 600;
   margin: 0;
   padding: 5px 0;

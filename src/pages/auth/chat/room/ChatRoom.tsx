@@ -64,10 +64,7 @@ export default function ChatRoom() {
       <S.PageLayout>
         <S.HeaderBox>
           <S.TitleWrapper>
-            <S.H2>
-              {" "}
-              #{roomId} {target.get("title")} 채팅방 입장완료
-            </S.H2>
+            <S.H2>{target.get("title")}</S.H2>
             {myOper.current === "owner" && <SettingBtn />}
           </S.TitleWrapper>
           <ExitBtn room={Number(roomId)} />
