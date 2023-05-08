@@ -73,8 +73,6 @@ export const Rule = styled.span`
 
 export const EntryBtn = styled.button`
   ${button.mini}
-  width: 35px;
-  height: 22px;
 `;
 
 export const PlayersBox = styled.div`
