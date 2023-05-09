@@ -8,18 +8,24 @@ import { UserListContext } from "hooks/context/UserListContext";
 import { getUsername } from "userAuth";
 import { getSocket } from "socket/socket";
 import RightSide from "@rightSide/RightSide";
+import SettingBtn from "./SettingBtn";
+import useSubListener from "hooks/useSubListener";
 import * as T from "socket/passive/chatRoomType";
 import * as S from "./style";
-import SettingBtn from "./SettingBtn";
 
 export default function ChatRoom() {
   const navigate = useNavigate();
-  if (!isAuth()) navigate("/");
   const { roomId } = useParams();
-  if (Number.isNaN(Number(roomId))) navigate("/404");
+  const [target] = useSearchParams();
+  useSubListener({ type: "chatRoom", navigate });
+
+  useEffect(() => {
+    if (!isAuth()) navigate("/");
+    if (Number.isNaN(Number(roomId))) navigate("/404");
+    if (!target.get("title")) navigate("/404");
+  });
 
   const socket = getSocket();
-  const [target, setTarget] = useSearchParams();
   const [participant, setParticipant] = useState<T.UserListArray | null>(null);
   const [banned, setBanned] = useState<T.BanListArray | null>(null);
   const [blocked, setBlocked] = useState<T.BanListArray | null>(null);
@@ -50,7 +56,7 @@ export default function ChatRoom() {
     return () => {
       socket.off("message", handleChatRoom);
     };
-  });
+  }, [myOper]);
 
   useEffect(() => {
     socket.emit("subscribe", { type: "chatRoom", roomId: Number(roomId) });

@@ -7,13 +7,19 @@ import { getSocket } from "socket/socket";
 import Screen from "./Screen";
 import { UserListContext } from "hooks/context/UserListContext";
 import { GameRoomData, PlayerData, SpectatorData } from "socket/passive/gameType";
+import useSubListener from "hooks/useSubListener";
 import * as S from "./style";
 
 export default function GameRoom() {
   const navigate = useNavigate();
-  if (!isAuth()) navigate("/");
   const { gameId } = useParams();
-  if (Number.isNaN(Number(gameId))) navigate("/404");
+  useSubListener({ type: "gameRoom", navigate });
+
+  useEffect(() => {
+    if (!isAuth()) navigate("/");
+    if (Number.isNaN(Number(gameId))) navigate("/404");
+  }, [gameId]);
+
   const socket = getSocket();
   const roomId = Number(gameId);
   const [result, setResult] = useState("");
