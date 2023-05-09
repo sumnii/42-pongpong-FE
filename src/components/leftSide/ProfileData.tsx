@@ -42,7 +42,10 @@ export function ProfileData({ user }: UserProfileProps) {
           />
         </Modal>
       )}
-      <S.Title>프로필</S.Title>
+      <S.HeaderBox>
+        <S.Title>프로필</S.Title>
+        {myProfile && <S.SettingBtn />}
+      </S.HeaderBox>
       {avatarQuery.isLoading ? (
         <S.LoadingImg />
       ) : (

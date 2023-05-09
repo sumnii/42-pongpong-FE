@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { darkGray, lightBlue, lightRed } from "style/color";
+import { AiOutlineSetting } from "react-icons/ai";
 import * as font from "style/font";
 import * as button from "style/button";
 
@@ -11,9 +12,22 @@ export const ProfileLayout = styled.div`
   padding: 10px;
 `;
 
+export const HeaderBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+`
+
 export const Title = styled.h2`
   ${font.titleBold};
-  margin-bottom: 0;
+  margin: 0;
+`;
+
+export const SettingBtn = styled(AiOutlineSetting)`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 `;
 
 /*
