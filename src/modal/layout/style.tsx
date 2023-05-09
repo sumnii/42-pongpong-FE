@@ -100,6 +100,7 @@ export const NotiContent = styled.div`
 export const AvatarUploadLayout = styled.div`
   position: relative;
   width: 100%;
+  height: 95%;
   text-align: center;
   background: white;
   font-size: 14px;
