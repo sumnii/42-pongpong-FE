@@ -50,6 +50,7 @@ export const Input = styled.input`
 
 export const Input1 = styled(Input)`
   width: 100%;
+  margin: 5px;
 `
 
 export const Span = styled.span`

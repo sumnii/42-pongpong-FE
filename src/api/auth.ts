@@ -67,24 +67,9 @@ export async function checkOtpLogin(OTP: string) {
   }
 }
 
-export async function login(body: { username: string; password: string }) {
+export async function login(code: string) {
   try {
-    const res = await axios.post(`/auth/login`, {
-      username: body.username,
-      password: body.password,
-    });
-    return res;
-  } catch (err: unknown) {
-    if (err instanceof AxiosError && err.response) {
-      console.error(err.response);
-      return err.response;
-    }
-  }
-}
-
-export async function oauth(code: string) {
-  try {
-    const res = await axios.get(`/auth/oauth/${code}`);
+    const res = await axios.get(`/auth/login/${code}`);
     return res;
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {
