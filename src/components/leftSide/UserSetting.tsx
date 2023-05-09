@@ -11,7 +11,11 @@ type PropType = {
 export default function UserSetting({ handleClose }: PropType) {
   const { Modal, isOpen, onOpen, onClose } = useModal();
   const modalRef = useRef(null);
-  useOutsideClick({ modalRef, onClose: handleClose });
+  function handleDoubleModalClose(e: MouseEvent) {
+    if (!isOpen) handleClose(e);
+  }
+  useOutsideClick({ modalRef, onClose: handleDoubleModalClose });
+
   // TODO: api 결과에 따라 true/false 설정
   const [isToggleOn, setIsToggleOn] = useState(true);
   // TODO: api 결과에 따라 이미 등록되어있는 휴대폰번호 넣어주기

@@ -1,4 +1,6 @@
+import { useOutsideClick } from "hooks/useOutsideClick";
 import * as S from "./layout/style";
+import { useRef } from "react";
 
 type RecheckProps = {
   onClose: (e: MouseEvent) => void;
@@ -6,6 +8,9 @@ type RecheckProps = {
 };
 
 export default function RecheckModal({ onClose, handleState }: RecheckProps) {
+  const modalRef = useRef(null);
+  useOutsideClick({ modalRef, onClose });
+
   function onSubmit(e: MouseEvent) {
     handleState();
     onClose(e);
@@ -16,7 +21,7 @@ export default function RecheckModal({ onClose, handleState }: RecheckProps) {
   }
 
   return (
-    <S.ModalLayout>
+    <S.ModalLayout ref={modalRef}>
       <S.Content>
         2단계 인증을
         <br />
