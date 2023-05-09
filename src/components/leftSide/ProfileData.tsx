@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAvatar } from "api/user";
 import { getUsername } from "userAuth";
@@ -38,7 +38,7 @@ export function ProfileData({ user }: UserProfileProps) {
     <S.ProfileLayout>
       {isOpen && (
         <Modal>
-          <UserSetting onClose={onClose} />
+          <UserSetting handleClose={onClose} />
         </Modal>
       )}
       {showModal && (
