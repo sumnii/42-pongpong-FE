@@ -15,6 +15,13 @@ export const basicColor = `
     border: 1.5px solid ${color.lightMain};
     color: black;
   }
+
+  :disabled {
+    background-color: ${color.lightMain};
+    border: 1.5px solid ${color.lightMain};
+    color: black;
+    cursor: default;
+  }
 `;
 
 export const disabled = `
