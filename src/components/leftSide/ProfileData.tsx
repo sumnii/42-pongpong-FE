@@ -1,19 +1,22 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAvatar } from "api/user";
 import { getUsername } from "userAuth";
-import Modal from "modal/layout/Modal";
+import AvartarModal from "modal/layout/Modal";
 import AvatarUploadModal from "modal/AvatarUploadModal";
 import AddFriendBtn from "./buttons/AddFriendBtn";
 import RemoveFrendBtn from "./buttons/RemoveFriendBtn";
 import LogoutBtn from "./buttons/LogoutBtn";
 import { UserProfileProps } from "profile-types";
 import AchievementBadge from "./AchievementBadge";
+import useModal from "hooks/useModal";
+import UserSetting from "./UserSetting";
 import * as S from "./style";
 
 export function ProfileData({ user }: UserProfileProps) {
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === user?.username;
+  const {Modal, isOpen, onOpen, onClose} = useModal();
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${user?.username}`],
@@ -33,18 +36,19 @@ export function ProfileData({ user }: UserProfileProps) {
 
   return (
     <S.ProfileLayout>
+      {isOpen && <Modal><UserSetting onClose={onClose} /></Modal>}
       {showModal && (
-        <Modal setView={closeModalHandler}>
+        <AvartarModal setView={closeModalHandler}>
           <AvatarUploadModal
             close={closeModalHandler}
             prevUrl={String(avatarQuery.data)}
             username={user?.username}
           />
-        </Modal>
+        </AvartarModal>
       )}
       <S.HeaderBox>
         <S.Title>프로필</S.Title>
-        {myProfile && <S.SettingBtn />}
+        {myProfile && <S.SettingBtn onClick={onOpen} />}
       </S.HeaderBox>
       {avatarQuery.isLoading ? (
         <S.LoadingImg />
