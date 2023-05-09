@@ -38,7 +38,7 @@ export const SettingBtn = styled(AiOutlineSetting)`
 export const SettingBox = styled.div`
   position: absolute;
   width: 350px;
-  height: 250px;
+  height: 220px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
