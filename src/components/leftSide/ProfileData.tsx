@@ -16,7 +16,7 @@ import * as S from "./style";
 export function ProfileData({ user }: UserProfileProps) {
   const [showModal, setShowModal] = useState(false);
   const myProfile = getUsername() === user?.username;
-  const {Modal, isOpen, onOpen, onClose} = useModal();
+  const { Modal, isOpen, onOpen, onClose } = useModal();
 
   const avatarQuery = useQuery({
     queryKey: ["avatar", `${user?.username}`],
@@ -36,7 +36,11 @@ export function ProfileData({ user }: UserProfileProps) {
 
   return (
     <S.ProfileLayout>
-      {isOpen && <Modal><UserSetting onClose={onClose} /></Modal>}
+      {isOpen && (
+        <Modal>
+          <UserSetting onClose={onClose} />
+        </Modal>
+      )}
       {showModal && (
         <AvartarModal setView={closeModalHandler}>
           <AvatarUploadModal

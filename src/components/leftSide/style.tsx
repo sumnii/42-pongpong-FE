@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { darkGray, lightBlue, lightRed } from "style/color";
+import { darkGray, lightBlue, lightRed, lightMain } from "style/color";
 import { AiOutlineSetting } from "react-icons/ai";
-import {BsToggleOff, BsToggleOn} from "react-icons/bs";
+import { BsToggleOff, BsToggleOn } from "react-icons/bs";
 import * as font from "style/font";
 import * as button from "style/button";
 
@@ -47,22 +47,72 @@ export const SettingBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
+
   padding: 20px;
 `;
 
-export const ToggleBox = styled.div`
-  
-`
+export const RowBox = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+`;
+
+export const ToggleWrapper = styled.div``;
 
 export const ToggleOnIcon = styled(BsToggleOn)`
   width: 20px;
   height: 20px;
-`
+`;
 
 export const ToggleOffIcon = styled(BsToggleOff)`
   width: 20px;
   height: 20px;
-`
+`;
+
+export const AuthSection = styled.div<{ visible?: boolean }>`
+  margin-top: 10px;
+  padding: 0 20px;
+  width: 100%;
+  ${(props) => {
+    return props.visible ? `` : `visibility: hidden;`;
+  }}
+`;
+
+export const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+`;
+
+export const Input = styled.input`
+  width: 70%;
+  height: 35px;
+  padding: 12px 10px 12px;
+  border: 1.5px solid lightgray;
+  outline: none;
+
+  ${font.footer}
+  font-size: 1.2rem;
+
+  margin-bottom: 4px;
+`;
+
+export const SubmitButton = styled.button<{ disabled?: boolean }>`
+  width: 30%;
+  height: 35px;
+  ${(props) => {
+    return props.disabled ? `${button.disabled}` : `${button.basicColor}`;
+  }}
+`;
+
+export const Span = styled.span`
+  font-size: 11px;
+  color: ${(props) => props.color};
+  padding-left: 5px;
+  text-align: start;
+`;
 
 /*
  *      Profile Item

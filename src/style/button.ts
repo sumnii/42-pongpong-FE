@@ -17,6 +17,14 @@ export const basicColor = `
   }
 `;
 
+export const disabled = `
+  background-color: ${color.lightMain};
+  border: 1.5px solid ${color.lightMain};
+
+  cursor: not-allowed;
+  ${font.inBtn};
+`;
+
 export const mini = `
   ${basicColor}
   
