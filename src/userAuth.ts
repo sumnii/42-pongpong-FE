@@ -16,14 +16,14 @@ export function setAuth(props: { username: string; token: string }) {
     username: props.username,
     token: props.token,
   };
-  cookie.save("username", props.username, { path: "/", secure: true });
-  cookie.save("token", props.token, { path: "/", secure: true });
+  cookie.save("username", props.username, { path: "/" });
+  cookie.save("token", props.token, { path: "/" });
   setSocket(props.token);
 }
 
 export function distroyAuth() {
-  cookie.remove("username");
-  cookie.remove("token");
+  cookie.remove("username", { path: "/" });
+  cookie.remove("token", { path: "/" });
 }
 
 export function setToken(newToken: string) {
