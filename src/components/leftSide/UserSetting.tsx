@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { activate2fa, get2faStatus, getOtpCode, inactivate2fa } from "api/2fa";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
@@ -40,12 +39,12 @@ export default function UserSetting({ handleClose }: PropType) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (statusOf2faQuery.data) {
+    if (statusOf2faQuery.isSuccess) {
       setIsToggleOn(statusOf2faQuery.data.status);
       setAuthenticated(true);
+      if (statusOf2faQuery.data.status) setPhoneNumber(statusOf2faQuery.data.phonenumber);
     }
-    if (statusOf2faQuery.data.status) setPhoneNumber(statusOf2faQuery.data.phonenumber);
-  }, [statusOf2faQuery.data]);
+  }, [statusOf2faQuery.isSuccess]);
 
   function handleToggle() {
     if (isToggleOn) onOpen();
@@ -77,9 +76,8 @@ export default function UserSetting({ handleClose }: PropType) {
         setSended(true);
         setPhoneNumberMessage("인증번호를 보냈습니다");
       } catch (err) {
-        if (err instanceof AxiosError && err.response?.status === 400)
-          setPhoneNumberMessage("휴대폰 번호를 확인해 주세요.");
-        else setPhoneNumberMessage("잠시 후에 다시 시도해주세요.");
+        if (err === "invalidPhoneNumber") setPhoneNumberMessage("휴대폰 번호를 확인해 주세요.");
+        else if (err === "serverError") setPhoneNumberMessage("잠시 후에 다시 시도해주세요.");
       }
     }
   }
@@ -93,22 +91,20 @@ export default function UserSetting({ handleClose }: PropType) {
         setAuthenticated(true);
         setAuthResultMessage("2단계 인증이 설정되었습니다.");
       } catch (err) {
-        if (err instanceof AxiosError && err.response?.status === 401)
-          setAuthResultMessage("인증 번호를 확인해 주세요.");
+        if (err === "wrongOtpCode") setAuthResultMessage("인증 번호를 확인해 주세요.");
+        else if (err === "serverError") setAuthResultMessage("잠시 후에 다시 시도해주세요.");
       }
     }
   }
 
-  async function twoFactorAuthOff() {
+  async function twoFactorAuthOff(setErrMsg: React.Dispatch<React.SetStateAction<string>>) {
     try {
       await inactivate2fa();
       queryClient.refetchQueries(["2fa"]);
       setIsToggleOn(false);
       setAuthenticated(false);
     } catch (err) {
-      if (err instanceof AxiosError && err.response?.status === 401)
-        // TODO: 토큰 이상 핸들링
-        console.log(err);
+      if (err === "serverError") setErrMsg("잠시 후에 다시 시도해주세요.");
     }
   }
 

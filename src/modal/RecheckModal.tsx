@@ -1,18 +1,19 @@
 import { useOutsideClick } from "hooks/useOutsideClick";
 import * as S from "./layout/style";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 type RecheckProps = {
   onClose: (e: MouseEvent) => void;
-  handleState: () => void;
+  handleState: (setErrMsg: React.Dispatch<React.SetStateAction<string>>) => Promise<void>;
 };
 
 export default function RecheckModal({ onClose, handleState }: RecheckProps) {
   const modalRef = useRef(null);
   useOutsideClick({ modalRef, onClose });
+  const [errMsg, setErrMsg] = useState("");
 
-  function onSubmit(e: MouseEvent) {
-    handleState();
+  async function onSubmit(e: MouseEvent) {
+    await handleState(setErrMsg);
     onClose(e);
   }
 
@@ -27,6 +28,7 @@ export default function RecheckModal({ onClose, handleState }: RecheckProps) {
         <br />
         해제하시겠습니까?
       </S.Content>
+      <S.Span>{errMsg}</S.Span>
       <S.ButtonBox>
         <S.Btn onClick={onCancel as unknown as React.MouseEventHandler<HTMLButtonElement>}>
           취소

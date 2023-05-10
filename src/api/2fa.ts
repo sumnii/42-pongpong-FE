@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export async function get2faStatus() {
   const res = await axios.get("/user/is2fa");
@@ -6,10 +6,17 @@ export async function get2faStatus() {
 }
 
 export async function getOtpCode(phoneNumber: string) {
-  const res = await axios.post("/auth/activate/2fa", {
-    phonenumber: phoneNumber,
-  });
-  return res.data;
+  try {
+    const res = await axios.post("/auth/activate/2fa", {
+      phonenumber: phoneNumber,
+    });
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.response?.status === 400) throw "invalidPhoneNumber";
+      else throw "serverError";
+    }
+  }
 }
 
 type activaate2faProps = {
@@ -18,21 +25,34 @@ type activaate2faProps = {
 };
 
 export async function activate2fa({ token, otpCode }: activaate2faProps) {
-  const res = await axios.post(
-    "/auth/check/otp",
-    {
-      otp: otpCode,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  try {
+    const res = await axios.post(
+      "/auth/check/otp",
+      {
+        otp: otpCode,
       },
-    },
-  );
-  return res.data;
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.response?.status === 401) throw "wrongOtpCode";
+      else throw "serverError";
+    }
+  }
 }
 
 export async function inactivate2fa() {
-  const res = await axios.get("/auth/inactivate/2fa");
-  return res.data;
+  try {
+    const res = await axios.get("/auth/inactivate/2fa");
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.response?.status === 403) throw "serverError";
+    }
+  }
 }
