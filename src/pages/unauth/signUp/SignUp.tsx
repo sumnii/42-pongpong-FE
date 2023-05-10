@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./style";
 import * as user from "api/user";
@@ -7,21 +7,19 @@ import * as auth from "api/auth";
 type eventChangeType = React.ChangeEvent<HTMLInputElement>;
 type eventClickType = React.MouseEvent<HTMLButtonElement>;
 
-export default function signUp(props: { accessToken: string; }) {
+export default function signUp(props: { accessToken: string }) {
   const navigate = useNavigate();
   const [idInput, setIdInput] = useState("");
-  const [idCheck, setIdCheck] = useState(false);
   const [formCheck, setFormCheck] = useState("");
 
   function onIdHandler(event: eventChangeType) {
     setIdInput(event.target.value);
     if (formCheck) setFormCheck("");
-    if (idCheck) setIdCheck(false);
   }
 
   async function isComplete(event: eventClickType) {
     event.preventDefault();
-    await onCheckIdHandler();
+    const idCheck = await onCheckIdHandler();
     if (idCheck) {
       const userInfo: user.userInfoType = {
         username: idInput,
@@ -44,12 +42,15 @@ export default function signUp(props: { accessToken: string; }) {
       const res = await auth.existUsername(idInput);
       if (res && (res.status === 200 || res.status === 201)) {
         const isUsing: boolean = res.data.status;
-        if (isUsing) setFormCheck("이미 존재하는 닉네임입니다.");
-        else setIdCheck(true);
+        if (!isUsing) {
+          return true;
+        }
+        setFormCheck("이미 존재하는 닉네임입니다.");
       } else {
         console.log(res);
       }
     }
+    return false;
   }
 
   return (
