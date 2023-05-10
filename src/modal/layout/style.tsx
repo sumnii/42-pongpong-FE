@@ -32,7 +32,7 @@ export const Backdrop = styled.div`
 
 export const Modal = styled.dialog`
   width: 40%;
-  ${(props) => (props.id === "noti" ? "height: 240px;" : "height: 220px;")}
+  ${(props) => (props.id === "noti" ? "height: 220px;" : "")}
   border: none;
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08);
   z-index: 1;
@@ -100,7 +100,6 @@ export const NotiContent = styled.div`
 export const AvatarUploadLayout = styled.div`
   position: relative;
   width: 100%;
-  height: 95%;
   text-align: center;
   background: white;
   font-size: 14px;
