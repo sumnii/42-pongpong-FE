@@ -14,16 +14,17 @@ export async function getProfile(username: string) {
 
 export type userInfoType = {
   username: string;
-  password: string;
-  phonenumber: string;
+  accessToken: string;
 };
 
 export async function create(userInfo: userInfoType) {
   try {
     const res = await axios.post(`/user/create`, {
       username: userInfo.username,
-      password: userInfo.password,
-      phonenumber: userInfo.phonenumber,
+    }, {
+      headers: {
+        Authorization: `bearer ${userInfo.accessToken}`
+      }
     });
     return res;
   } catch (err: unknown) {

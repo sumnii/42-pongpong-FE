@@ -67,12 +67,9 @@ export async function checkOtpLogin(OTP: string) {
   }
 }
 
-export async function login(body: { username: string; password: string }) {
+export async function login(code: string) {
   try {
-    const res = await axios.post(`/auth/login`, {
-      username: body.username,
-      password: body.password,
-    });
+    const res = await axios.get(`/auth/login/${code}`);
     return res;
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {

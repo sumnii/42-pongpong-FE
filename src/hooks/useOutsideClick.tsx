@@ -7,6 +7,7 @@ type OutSideClickProps = {
 
 export function useOutsideClick({ modalRef, onClose }: OutSideClickProps) {
   function handleClose(e: MouseEvent) {
+    e.stopPropagation();
     if (modalRef.current && !modalRef.current.contains(e.target as Element)) onClose(e);
   }
 
@@ -15,5 +16,5 @@ export function useOutsideClick({ modalRef, onClose }: OutSideClickProps) {
     return () => {
       window.removeEventListener("mousedown", handleClose);
     };
-  }, [modalRef]);
+  }, [modalRef, onClose]);
 }

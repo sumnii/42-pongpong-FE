@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
-import { darkGray, lightBlue, lightRed } from "style/color";
+import { darkGray, lightBlue, lightRed, lightMain } from "style/color";
+import { AiOutlineSetting } from "react-icons/ai";
+import { BsToggleOff, BsToggleOn } from "react-icons/bs";
 import * as font from "style/font";
 import * as button from "style/button";
 
@@ -11,9 +13,103 @@ export const ProfileLayout = styled.div`
   padding: 10px;
 `;
 
+export const HeaderBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+`;
+
 export const Title = styled.h2`
   ${font.titleBold};
-  margin-bottom: 0;
+  margin: 0;
+`;
+
+export const SettingBtn = styled(AiOutlineSetting)`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`;
+
+/*
+ *      Setting Modal
+ */
+
+export const SettingBox = styled.div`
+  position: absolute;
+  width: 350px;
+  height: 220px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 20px;
+`;
+
+export const RowBox = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+`;
+
+export const ToggleWrapper = styled.div``;
+
+export const ToggleOnIcon = styled(BsToggleOn)`
+  width: 20px;
+  height: 20px;
+`;
+
+export const ToggleOffIcon = styled(BsToggleOff)`
+  width: 20px;
+  height: 20px;
+`;
+
+export const AuthSection = styled.div<{ visible?: boolean }>`
+  margin-top: 10px;
+  padding: 0 20px;
+  width: 100%;
+  ${(props) => {
+    return props.visible ? `` : `visibility: hidden;`;
+  }}
+`;
+
+export const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+`;
+
+export const Input = styled.input`
+  width: 60%;
+  height: 35px;
+  padding: 12px 10px 12px;
+  border: 1.5px solid lightgray;
+  outline: none;
+
+  ${font.footer}
+  font-size: 1.2rem;
+
+  margin-bottom: 4px;
+`;
+
+export const SubmitButton = styled.button<{ disabled?: boolean }>`
+  ${button.basicColor}
+  width: 40%;
+  height: 35px;
+`;
+
+export const Span = styled.span`
+  font-size: 11px;
+  color: ${(props) => props.color};
+  padding-left: 5px;
+  text-align: start;
 `;
 
 /*
@@ -138,7 +234,6 @@ export const Versus = styled.span`
 export const ScoreBox = styled.div`
   display: flex;
   justify-content: center;
-  /* text-align: center; */
 `;
 
 export const Score = styled.span<{ winner?: boolean; blue?: boolean; red?: boolean }>`

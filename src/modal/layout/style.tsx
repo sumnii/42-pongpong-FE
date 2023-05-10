@@ -335,3 +335,42 @@ export const AcceptGameLayout = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
+
+/*
+ *      Recheck Modal
+ */
+
+export const ModalLayout = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 200px;
+  height: 120px;
+  background: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+`;
+
+export const Content = styled.span`
+  ${font.body};
+  text-align: center;
+`;
+
+export const ButtonBox = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 30px;
+`;
+
+export const Btn = styled.button`
+  ${button.basicColor};
+  height: 25px;
+`;
