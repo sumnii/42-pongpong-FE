@@ -1,8 +1,13 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { activate2fa, get2faStatus, getOtpCode, inactivate2fa } from "api/2fa";
+import useInput from "hooks/useInput";
+import useModal from "hooks/useModal";
 import { useOutsideClick } from "hooks/useOutsideClick";
-import * as S from "./style";
-import useModal from "../../hooks/useModal";
 import RecheckModal from "modal/RecheckModal";
+import { getUsername } from "userAuth";
+import * as S from "./style";
 
 type PropType = {
   handleClose: (e: MouseEvent) => void;
@@ -16,35 +21,31 @@ export default function UserSetting({ handleClose }: PropType) {
   }
   useOutsideClick({ modalRef, onClose: handleDoubleModalClose });
 
-  // TODO: api 결과에 따라 true/false 설정
-  const [isToggleOn, setIsToggleOn] = useState(true);
-  // TODO: api 결과에 따라 이미 등록되어있는 휴대폰번호 넣어주기
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [otpCode, setOtpCode] = useState("");
+  const phoneRegExp = /^[0-9]{0,13}$/;
+  const [otpCode, setOtpCode, resetOtpCode] = useInput("");
+  const otpAccessToken = useRef("");
 
+  const [isToggleOn, setIsToggleOn] = useState(true);
   const [sended, setSended] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
 
   const [phoneNumberMessage, setPhoneNumberMessage] = useState("");
   const [authResultMessage, setAuthResultMessage] = useState("");
 
-  const phoneRegExp = /^[0-9]{0,13}$/;
+  const statusOf2faQuery = useQuery({
+    queryKey: ["2fa", getUsername()],
+    queryFn: get2faStatus,
+  });
+  const queryClient = useQueryClient();
 
-  function twoFactorAuthOn() {
-    if (!otpCode) setAuthResultMessage("인증 번호를 입력해 주세요.");
-    else {
-      // TODO: API 결과에 따라
+  useEffect(() => {
+    if (statusOf2faQuery.data) {
+      setIsToggleOn(statusOf2faQuery.data.status);
       setAuthenticated(true);
-      setAuthResultMessage("2단계 인증이 설정되었습니다.");
-      // setAuthResultMessage("인증 번호를 확인해 주세요.");
     }
-  }
-
-  function twoFactorAuthOff() {
-    // API 필요
-    setIsToggleOn(false);
-    setAuthenticated(false);
-  }
+    if (statusOf2faQuery.data.status) setPhoneNumber(statusOf2faQuery.data.phonenumber);
+  }, [statusOf2faQuery.data]);
 
   function handleToggle() {
     if (isToggleOn) onOpen();
@@ -57,23 +58,57 @@ export default function UserSetting({ handleClose }: PropType) {
       setPhoneNumber(e.target.value);
     } else setPhoneNumberMessage("하이픈(-) 없이 숫자만 입력해 주세요.");
     if (sended) setSended(false);
-    if (otpCode) setOtpCode("");
+    if (otpCode) resetOtpCode();
     if (authResultMessage) setAuthResultMessage("");
     if (authenticated) setAuthenticated(false);
   }
 
   function handleOtpCodeChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (authResultMessage) setAuthResultMessage("");
-    setOtpCode(e.target.value);
+    setOtpCode(e);
   }
 
-  function handleSend() {
+  async function handleSend() {
     if (!phoneNumber) setPhoneNumberMessage("휴대폰 번호를 입력해 주세요.");
     else {
-      // TODO: API 결과에 따라
-      setSended(true);
-      setPhoneNumberMessage("인증번호를 보냈습니다");
-      // setPhoneNumberMessage("휴대폰 번호를 확인해 주세요.");
+      try {
+        const res = await getOtpCode(phoneNumber);
+        otpAccessToken.current = res.accessToken;
+        setSended(true);
+        setPhoneNumberMessage("인증번호를 보냈습니다");
+      } catch (err) {
+        if (err instanceof AxiosError && err.response?.status === 400)
+          setPhoneNumberMessage("휴대폰 번호를 확인해 주세요.");
+        else setPhoneNumberMessage("잠시 후에 다시 시도해주세요.");
+      }
+    }
+  }
+
+  async function twoFactorAuthOn() {
+    if (!otpCode) setAuthResultMessage("인증 번호를 입력해 주세요.");
+    else {
+      try {
+        await activate2fa({ token: otpAccessToken.current, otpCode });
+        queryClient.refetchQueries(["2fa"]);
+        setAuthenticated(true);
+        setAuthResultMessage("2단계 인증이 설정되었습니다.");
+      } catch (err) {
+        if (err instanceof AxiosError && err.response?.status === 401)
+          setAuthResultMessage("인증 번호를 확인해 주세요.");
+      }
+    }
+  }
+
+  async function twoFactorAuthOff() {
+    try {
+      await inactivate2fa();
+      queryClient.refetchQueries(["2fa"]);
+      setIsToggleOn(false);
+      setAuthenticated(false);
+    } catch (err) {
+      if (err instanceof AxiosError && err.response?.status === 401)
+        // TODO: 토큰 이상 핸들링
+        console.log(err);
     }
   }
 
