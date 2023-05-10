@@ -41,23 +41,19 @@ export async function existUsername(username: string) {
   }
 }
 
-export async function getOtpLogin() {
+export async function checkOtpLogin(OTP: string, token: string) {
   try {
-    const res = await axios.get(`/auth/get/otp/login`)
-    return res;
-  } catch (err: unknown) {
-    if (err instanceof AxiosError && err.response) {
-      console.error(err.response);
-      return err.response;
-    }
-  }
-}
-
-export async function checkOtpLogin(OTP: string) {
-  try {
-    const res = await axios.post(`/auth/check/otp`, {
-      otp: OTP,
-    });
+    const res = await axios.post(
+      `/auth/check/otp`,
+      {
+        otp: OTP,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
     return res;
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {

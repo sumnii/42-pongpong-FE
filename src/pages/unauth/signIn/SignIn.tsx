@@ -47,6 +47,7 @@ export default function signIn() {
           // 2차 인증 o
           setIsSign("2fa");
           setUsername(res.data.username);
+          setAccessToken(res.data.accessToken);
         }
       } else if (res?.status === 409) {
         alert("이미 접속중 입니다.");
@@ -76,7 +77,7 @@ export default function signIn() {
 
   switch (isSign) {
     case "2fa":
-      return <OtpCheck username={username} />;
+      return <OtpCheck username={username} accessToken={accessToken} />;
     case "signup":
       return <SignUp accessToken={accessToken} />;
     default:

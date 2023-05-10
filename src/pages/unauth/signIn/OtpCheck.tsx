@@ -4,9 +4,11 @@ import React, { useContext, useState } from "react";
 import * as auth from "api/auth";
 import { setAuth } from "userAuth";
 import { AuthContext } from "hooks/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-export default function OtpCheck(props: { username: string }) {
+export default function OtpCheck(props: { username: string; accessToken: string; }) {
   const setSigned = useContext(AuthContext);
+  const navigate = useNavigate();
   const [otpInput, setOtpInput] = useState("");
   const [noticeFail, setNoticeFail] = useState("");
 
@@ -18,13 +20,14 @@ export default function OtpCheck(props: { username: string }) {
   async function postOtpHandler(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (otpInput) {
-      const res = await auth.checkOtpLogin(otpInput);
-      if (res && (res.status === 200)) {
+      const res = await auth.checkOtpLogin(otpInput, props.accessToken);
+      if (res && (res.status === 201)) {
         if (setSigned) setSigned(true);
         setAuth({
           username: props.username,
           token: res.data.accessToken,
         });
+        navigate("/");
       } else {
         console.log(res);
       }

@@ -19,13 +19,17 @@ export type userInfoType = {
 
 export async function create(userInfo: userInfoType) {
   try {
-    const res = await axios.post(`/user/create`, {
-      username: userInfo.username,
-    }, {
-      headers: {
-        Authorization: `bearer ${userInfo.accessToken}`
-      }
-    });
+    const res = await axios.post(
+      `/user/create`,
+      {
+        username: userInfo.username,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.accessToken}`,
+        },
+      },
+    );
     return res;
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {
