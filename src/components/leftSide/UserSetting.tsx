@@ -69,6 +69,8 @@ export default function UserSetting({ handleClose }: PropType) {
 
   async function handleSend() {
     if (!phoneNumber) setPhoneNumberMessage("휴대폰 번호를 입력해 주세요.");
+    else if (statusOf2faQuery && phoneNumber === statusOf2faQuery.data.phonenumber)
+      setPhoneNumberMessage("변경된 휴대폰 번호를 입력해 주세요.");
     else {
       try {
         const res = await getOtpCode(phoneNumber);
@@ -129,10 +131,22 @@ export default function UserSetting({ handleClose }: PropType) {
                 placeholder="휴대폰 번호"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
+                disabled={authenticated}
               ></S.Input>
-              <S.SubmitButton type="button" onClick={handleSend} disabled={authenticated || sended}>
-                인증번호 받기
-              </S.SubmitButton>
+              {authenticated ? (
+                <S.SubmitButton
+                  type="button"
+                  onClick={() => {
+                    setAuthenticated(false);
+                  }}
+                >
+                  휴대폰번호 변경
+                </S.SubmitButton>
+              ) : (
+                <S.SubmitButton type="button" onClick={handleSend} disabled={sended}>
+                  인증번호 받기
+                </S.SubmitButton>
+              )}
             </S.RowBox>
             <S.Span color={phoneNumberMessage === "인증번호를 보냈습니다" ? "green" : "red"}>
               {phoneNumberMessage}

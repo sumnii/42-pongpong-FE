@@ -87,7 +87,7 @@ export const InputBox = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 70%;
+  width: 60%;
   height: 35px;
   padding: 12px 10px 12px;
   border: 1.5px solid lightgray;
@@ -101,7 +101,7 @@ export const Input = styled.input`
 
 export const SubmitButton = styled.button<{ disabled?: boolean }>`
   ${button.basicColor}
-  width: 30%;
+  width: 40%;
   height: 35px;
 `;
 
