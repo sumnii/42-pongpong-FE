@@ -55,7 +55,7 @@ export async function getOtpLogin() {
 
 export async function checkOtpLogin(OTP: string) {
   try {
-    const res = await axios.post(`/auth/check/otp/login`, {
+    const res = await axios.post(`/auth/check/otp`, {
       otp: OTP,
     });
     return res;
