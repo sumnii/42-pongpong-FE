@@ -100,11 +100,9 @@ export const Input = styled.input`
 `;
 
 export const SubmitButton = styled.button<{ disabled?: boolean }>`
+  ${button.basicColor}
   width: 30%;
   height: 35px;
-  ${(props) => {
-    return props.disabled ? `${button.disabled}` : `${button.basicColor}`;
-  }}
 `;
 
 export const Span = styled.span`

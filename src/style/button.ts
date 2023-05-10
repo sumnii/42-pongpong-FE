@@ -19,17 +19,9 @@ export const basicColor = `
   :disabled {
     background-color: ${color.lightMain};
     border: 1.5px solid ${color.lightMain};
-    color: black;
-    cursor: default;
+    color: white;
+    cursor: not-allowed;
   }
-`;
-
-export const disabled = `
-  background-color: ${color.lightMain};
-  border: 1.5px solid ${color.lightMain};
-
-  cursor: not-allowed;
-  ${font.inBtn};
 `;
 
 export const mini = `
