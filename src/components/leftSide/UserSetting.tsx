@@ -41,14 +41,15 @@ export default function UserSetting({ handleClose }: PropType) {
   useEffect(() => {
     if (statusOf2faQuery.isSuccess) {
       setIsToggleOn(statusOf2faQuery.data.status);
-      setAuthenticated(true);
+      setAuthenticated(statusOf2faQuery.data.status);
       if (statusOf2faQuery.data.status) setPhoneNumber(statusOf2faQuery.data.phonenumber);
     }
   }, [statusOf2faQuery.isSuccess]);
 
   function handleToggle() {
-    if (isToggleOn) onOpen();
-    else setIsToggleOn(true);
+    if (isToggleOn) {
+      authenticated ? onOpen() : setIsToggleOn(false);
+    } else setIsToggleOn(true);
   }
 
   function handlePhoneNumberChange(e: React.ChangeEvent<HTMLInputElement>) {
