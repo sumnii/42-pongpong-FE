@@ -48,7 +48,7 @@ export default function UserSetting({ handleClose }: PropType) {
 
   function handleToggle() {
     if (isToggleOn) {
-      authenticated ? onOpen() : setIsToggleOn(false);
+      statusOf2faQuery?.data.status ? onOpen() : setIsToggleOn(false);
     } else setIsToggleOn(true);
   }
 
