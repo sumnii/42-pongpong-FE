@@ -8,6 +8,7 @@ import { useState } from "react";
 type modalProps = {
   close: () => void;
   notiList: NotiType[];
+  onRemove: (key: number) => void;
 };
 
 function NotificationModal(props: modalProps) {
@@ -25,7 +26,9 @@ function NotificationModal(props: modalProps) {
   };
 
   const gameJoinHandler = (e: React.MouseEvent<HTMLSpanElement>) => {
-    setFrom(e.currentTarget.id);
+    const target = e.currentTarget.id.split("-");
+    setFrom(target[0]);
+    props.onRemove(Number(target[1]));
     G.onOpen();
   };
 
@@ -46,7 +49,7 @@ function NotificationModal(props: modalProps) {
                   </div>
                 ) : (
                   <div key={`${Date.now()}_${noti.from}`}>
-                    <S.Span onClick={gameJoinHandler} id={`${noti.from}`}>
+                    <S.Span onClick={gameJoinHandler} id={`${noti.from}-${noti.key}`}>
                       {noti.title}
                     </S.Span>
                   </div>
