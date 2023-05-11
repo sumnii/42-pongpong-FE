@@ -122,6 +122,10 @@ export const Label = styled.label`
   }
 `
 
+export const SpanDefault = styled(Span)`
+  cursor: default;
+`
+
 /* 
   password room entry
 */

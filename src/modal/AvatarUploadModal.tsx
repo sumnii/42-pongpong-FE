@@ -31,12 +31,14 @@ function AvatarUploadModal(props: modalProps) {
     const dialog = document.getElementById("modal-dialog");
     dialog?.setAttribute("open", "");
     const reader = new FileReader();
-    if (files) {
+    if (files && files[0]) {
       setFileList(files);
       reader.readAsDataURL(files[0]);
       reader.onloadend = () => {
         if (reader.result) setTmpImg(reader.result as string);
       };
+    } else {
+      setTmpImg("");
     }
     document.body.onfocus = null;
   };
@@ -51,7 +53,7 @@ function AvatarUploadModal(props: modalProps) {
         URL.revokeObjectURL(props.prevUrl);
         props.close();
       } else {
-        setNoti(res ? res.data.message : "");
+        setNoti("이미지 크기를 확인해주세요.");
       }
     },
   });
@@ -62,6 +64,8 @@ function AvatarUploadModal(props: modalProps) {
     if (fileList) {
       formData.append("avatar", fileList[0]);
       avatarMutation.mutate(formData);
+    } else {
+      setNoti("이미지를 선택해주세요.");
     }
   };
 
@@ -72,7 +76,7 @@ function AvatarUploadModal(props: modalProps) {
         <span> png / 20KB 이하 업로드 가능</span>
         <S.SelectImgWrapper>
           <S.Img src={tmpImg ? tmpImg : props.prevUrl} alt="프로필 이미지" />
-          <S.Label htmlFor="avatar">프로필 이미지 선택</S.Label>
+          <S.Label htmlFor="avatar">{tmpImg? "다른 이미지 선택" : "프로필 이미지 선택"}</S.Label>
           <input
             style={{ display: "none" }}
             ref={inputRef}
@@ -83,7 +87,7 @@ function AvatarUploadModal(props: modalProps) {
             onClick={onHandler}
           />
         </S.SelectImgWrapper>
-        <S.Span color="red">{noti}</S.Span>
+        <S.SpanDefault color="red">{noti}</S.SpanDefault>
         <S.BtnWrapper>
           <S.ModalButton type="submit"> 확인 </S.ModalButton>
           <S.ModalButton type="button" onClick={props.close}>
