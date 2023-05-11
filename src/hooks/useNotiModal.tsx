@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getSocket } from "socket/socket";
 import Modal from "modal/layout/Modal";
 import NotificationModal from "modal/NotificationModal";
-import { idText } from "typescript";
 
 export type NotiType = {
   key: number;
@@ -26,27 +25,28 @@ export default function useNotiModal(status: string) {
   const [noti, setNoti] = useState<NotiType[]>([]);
   const [newNoti, setNewNoti] = useState(false);
   const [showNotiModal, setShowNotiModal] = useState(false);
-  let idx = 0;
+  const [idx, setIdx] = useState(0);
 
   const listener = (res: InvitationType) => {
     if (res.type === "chatInvitation") {
       setNoti((prev) => [
         ...prev,
         {
-          key: idx++,
+          key: idx,
           type: "chat",
           title: `${res.from} 님으로 부터 #${res.roomId} 채팅방에 초대 되었습니다.`,
           chatId: res.roomId,
           chatTitle: "초대된 ",
         },
       ]);
+      
       setNewNoti(true);
       if (status === "login") setShowNotiModal(true); // 게임 중 일때는 팝업 x
     } else if (res.type === "gameInvitation") {
       setNoti((prev) => [
         ...prev,
         {
-          key: idx++,
+          key: idx,
           type: "game",
           title: `${res.from} 님으로 부터 게임 신청이 왔습니다.`,
           from: res.from,
@@ -55,6 +55,7 @@ export default function useNotiModal(status: string) {
       setNewNoti(true);
       if (status === "login") setShowNotiModal(true);
     }
+    setIdx(idx + 1);
   };
 
   const onRemove = (key: number) => {
