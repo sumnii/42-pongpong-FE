@@ -10,6 +10,8 @@ import { ProfileContext } from "hooks/context/ProfileContext";
 import { getSocket } from "socket/socket";
 import * as S from "./style";
 import { useQueryClient } from "@tanstack/react-query";
+import { NoticeListContext } from "hooks/context/NoticeListContext";
+import { NotiType } from "hooks/useNotiModal";
 
 const ChatList = loadable(() => {
   return import("@page/chat/list/ChatList");
@@ -26,6 +28,7 @@ const GameRoom = loadable(() => {
 
 function Auth() {
   const [profileUser, setProfileUser] = useState(getUsername());
+  const [noti, setNoti] = useState<NotiType[]>([]);
   const socket = getSocket();
   const queryClient = useQueryClient();
 
@@ -36,7 +39,7 @@ function Auth() {
     }
   };
 
-  const subListener = (res: {status: string; type: string}) => {
+  const subListener = (res: { status: string; type: string }) => {
     console.log("구독", res.type);
     if (res.status === "error") {
       console.log("sub", res);
@@ -45,14 +48,14 @@ function Auth() {
         queryClient.resetQueries(["profile", getUsername()]);
       }
     }
-  }
+  };
 
-  const unSubListener = (res: {status: string; type: string}) => {
+  const unSubListener = (res: { status: string; type: string }) => {
     console.log("구독해제", res.type);
     if (res.status === "error") {
       console.log("unsub", res);
     }
-  }
+  };
 
   useEffect(() => {
     socket.on("subscribeResult", subListener);
@@ -86,22 +89,24 @@ function Auth() {
     <S.AppLayout>
       <BrowserRouter>
         <ProfileContext.Provider value={setProfileUser}>
-          <ListTabBar />
-          <S.HomeLayout>
-            <S.LeftSideLayout>
-              <Profile username={profileUser} />
-            </S.LeftSideLayout>
-            <S.PageLayout>
-              <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/chat/list" element={<ChatList />} />
-                <Route path="/game/list" element={<GameList />} />
-                <Route path="/chat/:roomId" element={<ChatRoom />} />
-                <Route path="/game/:gameId" element={<GameRoom />} />
-                <Route path="/*" element={<NotFound />} />
-              </Routes>
-            </S.PageLayout>
-          </S.HomeLayout>
+          <NoticeListContext.Provider value={{ notiList: noti, setNotiList: setNoti }}>
+            <ListTabBar />
+            <S.HomeLayout>
+              <S.LeftSideLayout>
+                <Profile username={profileUser} />
+              </S.LeftSideLayout>
+              <S.PageLayout>
+                <Routes>
+                  <Route path="/" element={<Main />} />
+                  <Route path="/chat/list" element={<ChatList />} />
+                  <Route path="/game/list" element={<GameList />} />
+                  <Route path="/chat/:roomId" element={<ChatRoom />} />
+                  <Route path="/game/:gameId" element={<GameRoom />} />
+                  <Route path="/*" element={<NotFound />} />
+                </Routes>
+              </S.PageLayout>
+            </S.HomeLayout>
+          </NoticeListContext.Provider>
         </ProfileContext.Provider>
       </BrowserRouter>
     </S.AppLayout>

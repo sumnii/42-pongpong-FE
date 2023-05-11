@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { NotiType } from "hooks/useNotiModal";
 import * as S from "./layout/style";
 import useGameModal from "hooks/useGameModal";
 import AcceptGameModal from "./AcceptGameModal";
 import { useState } from "react";
+import { NotiType } from "hooks/useNotiModal";
 
 type modalProps = {
   close: () => void;
-  notiList: NotiType[];
+  notiList: NotiType[] | undefined;
+  onRemove: (key: number) => void;
 };
 
 function NotificationModal(props: modalProps) {
@@ -21,11 +22,14 @@ function NotificationModal(props: modalProps) {
       pathname: `/chat/${target[0]}`,
       search: `title=${target[1]}`,
     });
+    props.onRemove(Number(target[2]));
     props.close();
   };
 
   const gameJoinHandler = (e: React.MouseEvent<HTMLSpanElement>) => {
-    setFrom(e.currentTarget.id);
+    const target = e.currentTarget.id.split("-");
+    setFrom(target[0]);
+    props.onRemove(Number(target[1]));
     G.onOpen();
   };
 
@@ -33,20 +37,20 @@ function NotificationModal(props: modalProps) {
     <S.NotificationLayout>
       <h3> 알림 </h3>
       <S.NotiContent>
-        {props.notiList.length > 0 ? (
+        {props.notiList && props.notiList.length > 0 ? (
           props.notiList.map((noti) => {
             return (
               <>
                 {noti.type === "chat" ? (
                   <div key={noti.chatId}>
-                    <S.Span onClick={chatJoinHandler} id={`${noti.chatId}-${noti.chatTitle}`}>
+                    <S.Span onClick={chatJoinHandler} id={`${noti.chatId}-${noti.chatTitle}-${noti.key}`}>
                       {noti.title}
                     </S.Span>
                     <br />
                   </div>
                 ) : (
                   <div key={`${Date.now()}_${noti.from}`}>
-                    <S.Span onClick={gameJoinHandler} id={`${noti.from}`}>
+                    <S.Span onClick={gameJoinHandler} id={`${noti.from}-${noti.key}`}>
                       {noti.title}
                     </S.Span>
                   </div>
