@@ -37,7 +37,7 @@ export default function signUp(props: { accessToken: string }) {
 
   async function onCheckIdHandler() {
     if (!idInput) {
-      setFormCheck("아이디를 입력해주세요.");
+      setFormCheck("닉네임을 입력해주세요.");
     } else {
       const res = await auth.existUsername(idInput);
       if (res && (res.status === 200 || res.status === 201)) {

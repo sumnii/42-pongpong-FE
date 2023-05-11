@@ -54,7 +54,9 @@ export default function signIn() {
         navigate("/");
       } else {
         console.log(res);
-      }
+        alert("잠시 후에 다시 시도해주세요.");
+        navigate("/");
+      } 
     },
   });
 
