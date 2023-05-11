@@ -13,7 +13,7 @@ export default function Modal(props: modalProps) {
   return createPortal(
     <>
       <S.Backdrop onClick={props.setView} id={props.back} />
-      <S.Modal id={props.set} open>
+      <S.Modal id={props.set ? props.set : "modal-dialog"} open>
         {props.children}
       </S.Modal>
     </>,

@@ -11,6 +11,8 @@ type modalProps = {
 
 function AvatarUploadModal(props: modalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [fileList, setFileList] = useState<FileList>();
+  const [tmpImg, setTmpImg] = useState<string>("");
   const [noti, setNoti] = useState("");
   const queryCli = useQueryClient();
 
@@ -20,14 +22,21 @@ function AvatarUploadModal(props: modalProps) {
 
   const onHandler = () => {
     let id;
-    document.body.onfocus = () => (id = setTimeout(check, 300));
+    document.body.onfocus = () => (id = setTimeout(check, 400));
     clearTimeout(id);
   };
 
   const check = () => {
-    const length = inputRef.current?.files?.length;
-    if (length !== undefined && length < 1) {
-      props.close();
+    const files = inputRef.current?.files;
+    const dialog = document.getElementById("modal-dialog");
+    dialog?.setAttribute("open", "");
+    const reader = new FileReader();
+    if (files) {
+      setFileList(files);
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = () => {
+        if (reader.result) setTmpImg(reader.result as string);
+      };
     }
     document.body.onfocus = null;
   };
@@ -49,10 +58,9 @@ function AvatarUploadModal(props: modalProps) {
 
   const uploadAvatarHandler = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const files = inputRef.current?.files;
     const formData = new FormData();
-    if (files) {
-      formData.append("avatar", files[0]);
+    if (fileList) {
+      formData.append("avatar", fileList[0]);
       avatarMutation.mutate(formData);
     }
   };
@@ -60,11 +68,21 @@ function AvatarUploadModal(props: modalProps) {
   return (
     <S.AvatarUploadLayout>
       <form onSubmit={uploadAvatarHandler} encType="multipart/form-data">
-        <h3>프로필 이미지 업로드</h3>
-        <S.Span> png / 20KB 이하 업로드 가능</S.Span>
-        <S.BtnWrapper>
-          <input ref={inputRef} type="file" name="avatar" onChange={changeInput} />
-        </S.BtnWrapper>
+        <h2>프로필 이미지 업로드</h2>
+        <span> png / 20KB 이하 업로드 가능</span>
+        <S.SelectImgWrapper>
+          <S.Img src={tmpImg ? tmpImg : props.prevUrl} alt="프로필 이미지" />
+          <S.Label htmlFor="avatar">프로필 이미지 선택</S.Label>
+          <input
+            style={{ display: "none" }}
+            ref={inputRef}
+            type="file"
+            accept=".png"
+            id="avatar"
+            onChange={changeInput}
+            onClick={onHandler}
+          />
+        </S.SelectImgWrapper>
         <S.Span color="red">{noti}</S.Span>
         <S.BtnWrapper>
           <S.ModalButton type="submit"> 확인 </S.ModalButton>

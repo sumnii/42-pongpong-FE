@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
 import * as button from "style/button";
-import { darkMain, lightMain } from "style/color";
+import { darkMain, lightBlue, lightMain } from "style/color";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { RiSendPlane2Line } from "react-icons/ri";
 
@@ -99,6 +99,28 @@ export const AvatarUploadLayout = styled.div`
   font-size: 14px;
   border-radius: 20px;
 `;
+
+export const SelectImgWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const Img = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  margin: 10px;
+`
+
+export const Label = styled.label`
+  color: ${lightBlue};
+  cursor: pointer;
+
+  :hover {
+    color: blue;
+  }
+`
 
 /* 
   password room entry
