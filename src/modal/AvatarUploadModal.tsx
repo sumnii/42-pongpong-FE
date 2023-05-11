@@ -39,6 +39,7 @@ function AvatarUploadModal(props: modalProps) {
       };
     } else {
       setTmpImg("");
+      setFileList(undefined);
     }
     document.body.onfocus = null;
   };
@@ -61,7 +62,7 @@ function AvatarUploadModal(props: modalProps) {
   const uploadAvatarHandler = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData();
-    if (fileList) {
+    if (fileList && fileList[0]) {
       formData.append("avatar", fileList[0]);
       avatarMutation.mutate(formData);
     } else {
