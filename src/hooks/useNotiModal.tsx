@@ -73,6 +73,7 @@ export default function useNotiModal(status: string) {
   const closeModalHandler = () => {
     setShowNotiModal(false);
     setNewNoti(false);
+    notice?.setNotiList(notice.notiList.filter((elem) => elem.type !== "chat"));
   };
 
   const onOpenNotiModal = () => {
