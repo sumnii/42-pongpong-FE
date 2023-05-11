@@ -36,7 +36,7 @@ export default function useNotiModal(status: string) {
           type: "chat",
           title: `${res.from} 님으로 부터 #${res.roomId} 채팅방에 초대 되었습니다.`,
           chatId: res.roomId,
-          chatTitle: "초대된 ",
+          chatTitle: "초대된 채팅방",
         },
       ]);
       
