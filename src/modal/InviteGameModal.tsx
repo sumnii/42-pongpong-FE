@@ -76,16 +76,16 @@ export default function InviteGameModal(props: modalProps) {
           </select>
         </S.Wrapper>
         <S.Wrapper>
-          <S.Span2 color="red">{notice}</S.Span2>
+          <S.SpanAbsolute color="red">{notice}</S.SpanAbsolute>
           {notice && status === "waiting" && <LoadingCircle w={30} h={30} />}
         </S.Wrapper>
         <S.Wrapper>
-          <S.ModalButton2 type="submit" disabled={status === "waiting"}>
+          <S.ModalButton type="submit" disabled={status === "waiting"}>
             확인
-          </S.ModalButton2>
-          <S.ModalButton2 type="button" disabled={status === "waiting"} onClick={props.close}>
+          </S.ModalButton>
+          <S.ModalButton type="button" disabled={status === "waiting"} onClick={props.close}>
             취소
-          </S.ModalButton2>
+          </S.ModalButton>
         </S.Wrapper>
       </form>
     </S.MatchGameLayout>

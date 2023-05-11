@@ -59,7 +59,7 @@ function NotificationModal(props: modalProps) {
         )}
       </S.NotiContent>
       <S.BtnWrapper>
-        <S.ModalButton2 onClick={props.close}>확인</S.ModalButton2>
+        <S.ModalButton onClick={props.close}>확인</S.ModalButton>
       </S.BtnWrapper>
       {
         G.isOpen && (

@@ -1,6 +1,6 @@
 import { postAvatar } from "api/user";
 import * as S from "./layout/style";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type modalProps = {
@@ -20,9 +20,9 @@ function AvatarUploadModal(props: modalProps) {
 
   const onHandler = () => {
     let id;
-    document.body.onfocus = (() => id = setTimeout(check, 300));
+    document.body.onfocus = () => (id = setTimeout(check, 300));
     clearTimeout(id);
-  }
+  };
 
   const check = () => {
     const length = inputRef.current?.files?.length;
@@ -30,7 +30,7 @@ function AvatarUploadModal(props: modalProps) {
       props.close();
     }
     document.body.onfocus = null;
-  }
+  };
 
   const avatarMutation = useMutation({
     mutationFn: (form: FormData) => {
@@ -63,14 +63,14 @@ function AvatarUploadModal(props: modalProps) {
         <h3>프로필 이미지 업로드</h3>
         <S.Span> png / 20KB 이하 업로드 가능</S.Span>
         <S.BtnWrapper>
-          <input ref={inputRef} type="file" name="avatar" onChange={changeInput} onClick={onHandler}/>
+          <input ref={inputRef} type="file" name="avatar" onChange={changeInput} />
         </S.BtnWrapper>
         <S.Span color="red">{noti}</S.Span>
         <S.BtnWrapper>
-          <S.ModalButton2 type="submit"> 확인 </S.ModalButton2>
-          <S.ModalButton2 type="button" onClick={props.close}>
+          <S.ModalButton type="submit"> 확인 </S.ModalButton>
+          <S.ModalButton type="button" onClick={props.close}>
             취소
-          </S.ModalButton2>
+          </S.ModalButton>
         </S.BtnWrapper>
       </form>
     </S.AvatarUploadLayout>

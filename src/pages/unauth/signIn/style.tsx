@@ -59,10 +59,10 @@ export const Wrapper = styled.div`
   margin: 0 auto;
 `
 
-export const Input2 = styled(Input)`
+export const FullWidthInput = styled(Input)`
   width: 100%;
 `
 
-export const Button2 = styled(Button)`
+export const FullWidthBtn = styled(Button)`
   width: 100%;
 `

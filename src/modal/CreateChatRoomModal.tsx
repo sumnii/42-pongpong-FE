@@ -111,7 +111,7 @@ function CreateChatRoomModal(props: modalProps) {
         </S.Wrapper>
         <S.Span color="red">{notice}</S.Span>
         <S.Wrapper>
-          <S.ModalButton2> 만들기 </S.ModalButton2>
+          <S.ModalButton> 만들기 </S.ModalButton>
         </S.Wrapper>
       </form>
     </S.CreateRoomLayout>

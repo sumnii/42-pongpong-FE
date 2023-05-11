@@ -61,13 +61,7 @@ export const Span = styled.span`
   cursor: pointer;
 `;
 
-export const Span2 = styled.span`
-  font-size: 11px;
-  color: ${(props) => props.color};
-  position: absolute;
-`;
-
-export const ModalButton2 = styled(Button)`
+export const ModalButton = styled(Button)`
   width: 30%;
   margin-top: 10px;
 `;
@@ -317,6 +311,13 @@ export const MatchGameLayout = styled.div`
   background: white;
   font-size: 12px;
   border-radius: 20px;
+`;
+
+export const SpanAbsolute = styled(Span)`
+  font-size: 11px;
+  color: ${(props) => props.color};
+  cursor: default;
+  position: absolute;
 `;
 
 /* 

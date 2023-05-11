@@ -44,8 +44,8 @@ export default function OtpCheck(props: { username: string; accessToken: string;
       </S.FormLogo>
       <h2> 휴대폰 인증번호를 입력해주세요</h2>
       <S.Wrapper>
-        <S.Input2 onChange={onInputOtpHandler}></S.Input2>
-        <S.Button2 onClick={postOtpHandler}>인증하기</S.Button2>
+        <S.FullWidthInput onChange={onInputOtpHandler}></S.FullWidthInput>
+        <S.FullWidthBtn onClick={postOtpHandler}>인증하기</S.FullWidthBtn>
       </S.Wrapper>
       <S.Span color="red">{noticeFail}</S.Span>
     </S.SignInLayout>
