@@ -37,9 +37,6 @@ function AvatarUploadModal(props: modalProps) {
       reader.onloadend = () => {
         if (reader.result) setTmpImg(reader.result as string);
       };
-    } else {
-      setTmpImg("");
-      setFileList(undefined);
     }
     document.body.onfocus = null;
   };
