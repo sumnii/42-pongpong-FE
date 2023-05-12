@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
-import { mini } from "style/button";
+import { mini, warningColor } from "style/button";
 
 export const PageLayout = styled.div`
   height: 100%;
@@ -24,6 +24,7 @@ export const H2 = styled.h2`
 
 export const ExitBtn = styled.button`
   ${mini}
+  ${warningColor}
 `;
 
 export const Canvas = styled.canvas`
