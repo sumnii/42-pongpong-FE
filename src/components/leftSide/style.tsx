@@ -259,8 +259,10 @@ export const ButtonBox = styled.div`
   margin: 30px 0;
 `;
 
-export const Button = styled.button`
-  ${button.basicColor}
+export const Button = styled.button<{ warning?: boolean }>`
+  ${(props) => {
+    return props.warning ? `${button.warningColor}` : `${button.basicColor}`;
+  }}
   width: 70px;
   height: 25px;
 `;

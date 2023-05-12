@@ -32,5 +32,9 @@ export default function RemoveFrendBtn(props: { username: string }) {
     });
   };
 
-  return <S.Button onClick={removeBtnHandler}>친구 취소</S.Button>;
+  return (
+    <S.Button warning onClick={removeBtnHandler}>
+      친구 취소
+    </S.Button>
+  );
 }
