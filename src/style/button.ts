@@ -2,7 +2,7 @@ import * as color from "style/color";
 import * as font from "style/font";
 
 export const basicColor = `
-  border: 1.5px solid ${color.darkMain};
+  border: 0;
   background-color: ${color.darkMain};
 
   ${font.inBtn}
@@ -12,15 +12,24 @@ export const basicColor = `
 
   :hover {
     background-color: ${color.lightMain};
-    border: 1.5px solid ${color.lightMain};
     color: black;
   }
 
   :disabled {
     background-color: ${color.lightMain};
-    border: 1.5px solid ${color.lightMain};
     color: white;
     cursor: not-allowed;
+  }
+`;
+
+export const warningColor = `
+  ${basicColor};
+  color: black;
+  background-color: ${color.lightPink};
+
+  :hover {
+    color: white;
+    background-color: ${color.lightRed};
   }
 `;
 
