@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
 import * as button from "style/button";
-import { darkMain, lightMain } from "style/color";
+import { darkMain, lightBlue, lightMain } from "style/color";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { RiSendPlane2Line } from "react-icons/ri";
 
@@ -61,13 +61,7 @@ export const Span = styled.span`
   cursor: pointer;
 `;
 
-export const Span2 = styled.span`
-  font-size: 11px;
-  color: ${(props) => props.color};
-  position: absolute;
-`;
-
-export const ModalButton2 = styled(Button)`
+export const ModalButton = styled(Button)`
   width: 30%;
   margin-top: 10px;
 `;
@@ -105,6 +99,32 @@ export const AvatarUploadLayout = styled.div`
   font-size: 14px;
   border-radius: 20px;
 `;
+
+export const SelectImgWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const Img = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  margin: 10px;
+`
+
+export const Label = styled.label`
+  color: ${lightBlue};
+  cursor: pointer;
+
+  :hover {
+    color: blue;
+  }
+`
+
+export const SpanDefault = styled(Span)`
+  cursor: default;
+`
 
 /* 
   password room entry
@@ -317,6 +337,13 @@ export const MatchGameLayout = styled.div`
   background: white;
   font-size: 12px;
   border-radius: 20px;
+`;
+
+export const SpanAbsolute = styled(Span)`
+  font-size: 11px;
+  color: ${(props) => props.color};
+  cursor: default;
+  position: absolute;
 `;
 
 /* 

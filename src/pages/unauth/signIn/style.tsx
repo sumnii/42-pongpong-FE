@@ -42,9 +42,27 @@ export const Input = styled.input`
   border-radius: 8px;
   transition: border-color .2s cubic-bezier(.25,.1,.25,1);
   margin-bottom: 4px;
+  text-align: center;
 `
 
 export const Span = styled.span`
   color: red;
   font-size: 11px;
+`
+
+export const Wrapper = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+`
+
+export const FullWidthInput = styled(Input)`
+  width: 100%;
+`
+
+export const FullWidthBtn = styled(Button)`
+  width: 100%;
 `

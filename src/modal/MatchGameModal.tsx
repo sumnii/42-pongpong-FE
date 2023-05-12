@@ -87,14 +87,14 @@ export default function MatchGameModal(props: modalProps) {
           </select>
         </S.Wrapper>
         <S.Wrapper>
-          <S.Span2 color="red">{notice}</S.Span2>
+          <S.SpanAbsolute color="red">{notice}</S.SpanAbsolute>
           {notice && status === "searching" && <LoadingCircle w={30} h={30} />}
         </S.Wrapper>
         <S.Wrapper>
-          <S.ModalButton2 type="submit" disabled={status === "searching"}>확인</S.ModalButton2>
-          <S.ModalButton2 type="button" onClick={cancelHandler}>
+          <S.ModalButton type="submit" disabled={status === "searching"}>확인</S.ModalButton>
+          <S.ModalButton type="button" onClick={cancelHandler}>
             취소
-          </S.ModalButton2>
+          </S.ModalButton>
         </S.Wrapper>
       </form>
     </S.MatchGameLayout>

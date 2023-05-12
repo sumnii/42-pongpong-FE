@@ -70,10 +70,10 @@ export default function AcceptGameModal(props: modalProps) {
   return (
     <S.AcceptGameLayout>
       <h2>{props.targetUser}님의 게임 수락하시겠습니까?</h2>
-      <S.Span2 color="red">{notice}</S.Span2>
+      <S.SpanAbsolute color="red">{notice}</S.SpanAbsolute>
       <S.Wrapper>
-        <S.ModalButton2 onClick={acceptHandler}>확인</S.ModalButton2>
-        <S.ModalButton2 onClick={declineHandler}>취소</S.ModalButton2>
+        <S.ModalButton onClick={acceptHandler}>확인</S.ModalButton>
+        <S.ModalButton onClick={declineHandler}>취소</S.ModalButton>
       </S.Wrapper>
     </S.AcceptGameLayout>
   );

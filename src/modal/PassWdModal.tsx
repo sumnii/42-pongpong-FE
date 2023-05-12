@@ -47,10 +47,10 @@ function PassWdModal(props: modalProps) {
         </S.BtnWrapper>
         <S.Span color="red">{props.noti}</S.Span>
         <S.BtnWrapper>
-          <S.ModalButton2 type="submit"> 확인 </S.ModalButton2>
-          <S.ModalButton2 type="button" onClick={props.close}>
+          <S.ModalButton type="submit"> 확인 </S.ModalButton>
+          <S.ModalButton type="button" onClick={props.close}>
             취소
-          </S.ModalButton2>
+          </S.ModalButton>
         </S.BtnWrapper>
       </form>
     </S.CreateRoomLayout>

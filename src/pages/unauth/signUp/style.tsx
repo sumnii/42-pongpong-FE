@@ -46,6 +46,7 @@ export const Input = styled.input`
   border-radius: 8px;
   transition: border-color .2s cubic-bezier(.25,.1,.25,1);
   margin-bottom: 4px;
+  text-align: center;
 `
 
 export const Input1 = styled(Input)`
