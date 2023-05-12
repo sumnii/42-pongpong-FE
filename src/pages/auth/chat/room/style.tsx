@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import * as font from "style/font";
 import * as color from "style/color";
-import { mini } from "style/button";
+import { mini, warningColor } from "style/button";
 import { AiOutlineSetting } from "react-icons/ai";
+import { IoChevronBackSharp } from "react-icons/io5";
 import { lightMain } from "style/color";
 
 export const PageLayout = styled.div`
@@ -21,12 +22,20 @@ export const HeaderBox = styled.div`
 
 export const ExitBtn = styled.button`
   ${mini}
+  ${warningColor}
 `;
 
 export const MainBox = styled.div`
   width: 100%;
   height: 85%;
   margin-top: 10px;
+`;
+
+export const backBtn = styled(IoChevronBackSharp)`
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  margin-right: 10px;
 `;
 
 export const H2 = styled.h2`

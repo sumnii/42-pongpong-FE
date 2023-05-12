@@ -70,6 +70,7 @@ export default function ChatRoom() {
       <S.PageLayout>
         <S.HeaderBox>
           <S.TitleWrapper>
+            <S.backBtn />
             <S.H2>{target.get("title")}</S.H2>
             {myOper.current === "owner" && <SettingBtn />}
           </S.TitleWrapper>
