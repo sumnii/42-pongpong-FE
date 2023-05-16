@@ -8,7 +8,7 @@ import { NotiType } from "hooks/useNotiModal";
 type modalProps = {
   close: () => void;
   notiList: NotiType[] | undefined;
-  onRemove: (key: number) => void;
+  onRemove: (key: string) => void;
 };
 
 function NotificationModal(props: modalProps) {
@@ -22,14 +22,14 @@ function NotificationModal(props: modalProps) {
       pathname: `/chat/${target[0]}`,
       search: `title=${target[1]}`,
     });
-    props.onRemove(Number(target[2]));
+    props.onRemove(target[2]);
     props.close();
   };
 
   const gameJoinHandler = (e: React.MouseEvent<HTMLSpanElement>) => {
     const target = e.currentTarget.id.split("-");
     setFrom(target[0]);
-    props.onRemove(Number(target[1]));
+    props.onRemove(target[1]);
     G.onOpen();
   };
 
@@ -40,22 +40,23 @@ function NotificationModal(props: modalProps) {
         {props.notiList && props.notiList.length > 0 ? (
           props.notiList.map((noti) => {
             return (
-              <>
+              <div key={noti.key}>
                 {noti.type === "chat" ? (
-                  <div key={noti.chatId}>
-                    <S.Span onClick={chatJoinHandler} id={`${noti.chatId}-${noti.chatTitle}-${noti.key}`}>
+                  <>
+                    <S.Span
+                      onClick={chatJoinHandler}
+                      id={`${noti.chatId}-${noti.chatTitle}-${noti.key}`}
+                    >
                       {noti.title}
                     </S.Span>
                     <br />
-                  </div>
+                  </>
                 ) : (
-                  <div key={`${Date.now()}_${noti.from}`}>
-                    <S.Span onClick={gameJoinHandler} id={`${noti.from}-${noti.key}`}>
-                      {noti.title}
-                    </S.Span>
-                  </div>
+                  <S.Span onClick={gameJoinHandler} id={`${noti.from}-${noti.key}`}>
+                    {noti.title}
+                  </S.Span>
                 )}
-              </>
+              </div>
             );
           })
         ) : (
@@ -65,13 +66,11 @@ function NotificationModal(props: modalProps) {
       <S.BtnWrapper>
         <S.ModalButton onClick={props.close}>확인</S.ModalButton>
       </S.BtnWrapper>
-      {
-        G.isOpen && (
-          <G.GameModal back="noBack">
-            <AcceptGameModal close={G.onClose} targetUser={from} parentClose={props.close} />
-          </G.GameModal>
-        )
-      }
+      {G.isOpen && (
+        <G.GameModal back="noBack">
+          <AcceptGameModal close={G.onClose} targetUser={from} parentClose={props.close} />
+        </G.GameModal>
+      )}
     </S.NotificationLayout>
   );
 }
