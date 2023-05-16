@@ -9,13 +9,18 @@ type modalProps = {
   targetUser: string;
 };
 
+type ResponseType = {
+  status: string;
+  roomId: number;
+  detail: string;
+}
+
 export default function AcceptGameModal(props: modalProps) {
   const [notice, setNotice] = useState("");
   const socket = getSocket();
   const navigate = useNavigate();
 
-  const acceptListener = (res: any) => {
-    console.log("accept", res);
+  const acceptListener = (res: ResponseType) => {
     if (res.status === "approved") {
       navigate(`/game/${res.roomId}`);
       props.close();
@@ -27,8 +32,7 @@ export default function AcceptGameModal(props: modalProps) {
     }
   };
 
-  const declineListener = (res: any) => {
-    console.log("decline", res);
+  const declineListener = (res: ResponseType) => {
     if (res.status === "approved") {
       props.close();
     } else if (res.status === "warning") {

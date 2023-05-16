@@ -16,9 +16,9 @@ export default function signIn() {
   const [accessToken, setAccessToken] = useState("");
   const [username, setUsername] = useState("");
 
-  if (window.location.href === "http://localhost:5173/signin") {
+  if (window.location.href === "http://localhost/signin") {
     window.location.href =
-      "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-db474dcca0aa0382fee3c57b7b5e984abdcb2dc9c3ede199b49f470b3fe1ca46&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fsignin&response_type=code";
+      "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-db474dcca0aa0382fee3c57b7b5e984abdcb2dc9c3ede199b49f470b3fe1ca46&redirect_uri=http%3A%2F%2Flocalhost%2Fsignin&response_type=code";
   }
 
   const oauthQuery = useQuery({

@@ -30,7 +30,10 @@ export default function GameRoom() {
   function gameRoomListener(res: GameRoomData | SpectatorData) {
     if (res.type === "spectator") {
       setSpectators(res.list);
-    } else if (res.type === "game" && players === undefined) {
+    } else if (
+      res.type === "game" &&
+      (players === undefined || players.blue !== res.status.blueUser) //players camp가 바뀌었을때 
+    ) {
       setPlayers({ red: res.status.redUser, blue: res.status.blueUser });
     }
   }
@@ -42,7 +45,7 @@ export default function GameRoom() {
     };
   }, [players, spectators]);
 
-  const listener = (res: { type: string; status: any }) => {
+  const listener = (res: { type: string; status: string }) => {
     if (res.status === "approved") {
       navigate("/game/list");
     } else {
