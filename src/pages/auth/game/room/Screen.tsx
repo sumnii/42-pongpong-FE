@@ -34,7 +34,7 @@ export default function Screen(props: PropsType) {
   const canvas = canvasRef.current;
   const ctx = canvas?.getContext("2d");
 
-  const listener = (res: { type: string; roomId?: number; status: any; winner?: string; }) => {
+  const listener = (res: { type: string; roomId?: number; status: any; winner?: string }) => {
     if (res.type === "game") {
       if (res.status.roomId !== Number(gameId)) return;
       if (roomId !== res.status.roomId) setRoomId(res.status.roomId);
@@ -42,21 +42,23 @@ export default function Screen(props: PropsType) {
         if (username === res.status.blueUser) setCamp("blue");
         else if (username === res.status.redUser) setCamp("red");
       }
-      if (ballRadius === 0) setBallRadius(res.status.ballRadius);
-      if (redWidth === 0) setRedWidth(res.status.redPaddleWidth);
-      if (redHeight === 0) setRedHeight(res.status.redPaddleHeight);
-      if (blueWidth === 0) setBlueWidth(res.status.bluePaddleWidth);
-      if (blueHeight === 0) setBlueHeight(res.status.bluePaddleHeight);
-      if (redX === 0) setRedX(res.status.redPaddleX);
-      if (blueX === 0) setBlueX(res.status.bluePaddleX);
+      if (ballRadius === 0) {
+        setBallRadius(res.status.ballRadius);
+        setRedWidth(res.status.redPaddleWidth);
+        setRedHeight(res.status.redPaddleHeight);
+        setBlueWidth(res.status.bluePaddleWidth);
+        setBlueHeight(res.status.bluePaddleHeight);
+        setRedX(res.status.redPaddleX);
+        setBlueX(res.status.bluePaddleX);
+      }
       setBallX(res.status.ballX);
       setBallY(res.status.ballY);
-      if (res.status.rule !== "arcade" && ball2) setBall2(false);
-      if (res.status.rule === "arcade" && !ball2) setBall2(true);
       if (res.status.rule === "arcade") {
+        if (!ball2) setBall2(true);
         setBall2X(res.status.ball2X);
         setBall2Y(res.status.ball2Y);
       }
+      if (res.status.rule !== "arcade" && ball2) setBall2(false);
       setBlueY(res.status.bluePaddleY);
       setRedY(res.status.redPaddleY);
       if (score.blue !== res.status.blueScore || score.red !== res.status.redScore) {
@@ -74,16 +76,18 @@ export default function Screen(props: PropsType) {
       } else {
         props.setResult("상대방이 나갔습니다");
       }
+      setCamp("");
     } else if (res.type === "lose") {
       if (res.roomId !== Number(gameId)) return;
       props.setResult("패배");
+      setCamp(""); // 게임이 끝났을 떄 초기화
     } else if (res.type === "finish") {
       if (res.winner === "blue") {
         props.setResult("blue 승리");
       } else if (res.winner === "red") {
         props.setResult("red 승리");
       }
-    }else {
+    } else {
       console.log(res);
     }
   };
@@ -97,12 +101,12 @@ export default function Screen(props: PropsType) {
   }, [roomId, score, gameId]);
 
   const keyDownHandler = (e: KeyboardEvent) => {
-    if (e.keyCode === 38) {
+    if (e.key === "ArrowUp") {
       socket.emit("up", {
         roomId: roomId,
         role: camp,
       });
-    } else if (e.keyCode === 40) {
+    } else if (e.key === "ArrowDown") {
       socket.emit("down", {
         roomId: roomId,
         role: camp,
