@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 export async function getProfile(username: string) {
   try {
     const res = await axios.get(`/user/profile/${username}`);
+    if (res.data.data.user.gameHistory) res.data.data.user.gameHistory.reverse();
     return res.data;
   } catch (err: unknown) {
     if (err instanceof AxiosError && err.response) {
