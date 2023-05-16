@@ -9,6 +9,13 @@ type modalProps = {
   targetUser: string;
 };
 
+type ResponseType = {
+  status: string;
+  detail: string;
+  username: string;
+  roomId: number;
+}
+
 export default function InviteGameModal(props: modalProps) {
   const [option, setOption] = useState("");
   const [notice, setNotice] = useState("");
@@ -21,9 +28,7 @@ export default function InviteGameModal(props: modalProps) {
     if (notice) setNotice("");
   }
 
-  const listener = (res: any) => {
-    console.log(res);
-
+  const listener = (res: ResponseType) => {
     setStatus(res.status);
     if (res.status === "error") {
       alert(res.detail);

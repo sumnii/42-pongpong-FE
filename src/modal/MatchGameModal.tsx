@@ -8,6 +8,12 @@ type modalProps = {
   close: () => void;
 };
 
+type ResponseType = {
+  status: string;
+  roomId: number;
+  detail: string;
+}
+
 export default function MatchGameModal(props: modalProps) {
   const [option, setOption] = useState("");
   const [notice, setNotice] = useState("");
@@ -20,8 +26,7 @@ export default function MatchGameModal(props: modalProps) {
     if (notice) setNotice("");
   }
 
-  const listener = (res: any) => {
-    console.log(res);
+  const listener = (res: ResponseType) => {
     setStatus(res.status);
     if (res.status === "match") {
       navigate(`/game/${res.roomId}`);
@@ -34,8 +39,7 @@ export default function MatchGameModal(props: modalProps) {
     }
   };
 
-  const cancelListener = (res: any) => {
-    console.log(res);
+  const cancelListener = (res: ResponseType) => {
     if (res.status === "approved") {
       props.close();
     }
@@ -64,7 +68,6 @@ export default function MatchGameModal(props: modalProps) {
   }
 
   function cancelHandler() {
-    console.log(option)
     if (status) {
       socket.emit("cancleSearch", {
         rule: option,
