@@ -38,13 +38,15 @@ export default function Screen(props: { room: number }) {
       <S.Screen ref={scrollRef}>
         <S.ChatList>
           {screen?.map((chat: ChatData) => {
-            if (chat.from === "server") return <S.NoticeChat>📣 {chat.content}</S.NoticeChat>;
-            if (chat.from === me) return <S.MyChat>{chat.content}</S.MyChat>;
+            if (chat.from === "server")
+              return <S.NoticeChat key={chat.from + keyCnt++}>📣 {chat.content}</S.NoticeChat>;
+            if (chat.from === me)
+              return <S.MyChat key={chat.from + keyCnt++}>{chat.content}</S.MyChat>;
             else
               return (
-                <S.OpponentSet>
+                <S.OpponentSet key={chat.from + keyCnt++}>
                   <S.OpponentFrom>{chat.from}</S.OpponentFrom>
-                  <S.OpponentChat key={chat.from + keyCnt++}>{chat.content}</S.OpponentChat>
+                  <S.OpponentChat>{chat.content}</S.OpponentChat>
                 </S.OpponentSet>
               );
           })}
