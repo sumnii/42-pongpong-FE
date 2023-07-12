@@ -8,7 +8,12 @@
 
 ### 기술 스택
 - **공통**: Docker, Socket.io, Figma/Figjam
-- **FE**: React, TypeScript, Vite, Npm, Axios, React-Query, Emotion/styled-components
+- **FE**
+ - 코어: React, TypeScript
+ - 상태 관리: React-Query, Context API
+ - 스타일링 : Emotion/styled-components
+ - 패키지 매니저 : Npm
+ - 빌드 : Vite(ESM, ESBuild, Rollup)
 - **BE**: Nest.js, TypeScript, Npm, PostgreSQL
 
 ### 기능 명세
